@@ -19,7 +19,7 @@ AddOnsDb require two .txt files in the specs folder to load attacks and items.
 #include <ctime>
 #include <typeinfo>
 #include <string>
-#include "mstr.h"
+#include "minalib.h"
 
 using namespace std;
 
