@@ -13,15 +13,15 @@ Namespace minalib is a container for common functions to get and validate user i
 #define MINALIB_H
 
 #include <iostream>
-#include <cstring>
+#include <cctype>
 
 using namespace std;
 
 namespace minalib
 {
-	int getInt(const char *, int = 0, int = 1000);		// get and validate user int input between min and max
-	char getChar(const char *, char = 'A', char = 'Z'); // get and validate user char input between min and max
-	char getYesNo(const char *);						// get and validate user input limit to yes and no answers
+	int getInt(const char *prompt, int min = 0, int max = 1000);		// get and validate user int input between min and max
+	char getChar(const char *prompt, char min = 'A', char max = 'Z'); // get and validate user char input between min and max
+	char getYesNo(const char *prompt);						// get and validate user input limit to yes and no answers
 	void enterContinue();								// user press enter to continue
 	void clearScreen();									// clear screen using newline
 };

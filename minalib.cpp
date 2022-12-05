@@ -14,16 +14,7 @@ Implementations are for namespace minalib.
 // get and validate user input for int
 int minalib::getInt(const char *prompt, int min, int max)
 {
-	int num = 0;
-	cout << prompt;
-	cin >> num;
-	while (!cin)
-	{
-		cin.clear();
-		cin.ignore(100, '\n');
-		cout << prompt;
-		cin >> num;
-	}
+	int num = -1;
 	while (num < min || num > max)
 	{
 		cout << prompt;
@@ -43,16 +34,7 @@ int minalib::getInt(const char *prompt, int min, int max)
 // get and validate user input for char
 char minalib::getChar(const char *prompt, char min, char max)
 {
-	char ch;
-	cout << prompt;
-	cin >> ch;
-	while (!cin)
-	{
-		cin.clear();
-		cin.ignore(100, '\n');
-		cout << prompt;
-		cin >> ch;
-	}
+	char ch = '\0';
 	while (toupper(ch) < min || toupper(ch) > max)
 	{
 		cout << prompt;
@@ -72,16 +54,7 @@ char minalib::getChar(const char *prompt, char min, char max)
 // get and validate user input for yes/no answers
 char minalib::getYesNo(const char *prompt)
 {
-	char ch;
-	cout << prompt;
-	cin >> ch;
-	while (!cin)
-	{
-		cin.clear();
-		cin.ignore(100, '\n');
-		cout << prompt;
-		cin >> ch;
-	}
+	char ch = '\0';
 	while (toupper(ch) != 'Y' && toupper(ch) != 'N')
 	{
 		cout << prompt;
@@ -108,8 +81,6 @@ void minalib::enterContinue()
 // clear the screen using newline characters
 void minalib::clearScreen()
 {
-	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-	cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+	for (int i {0}; i < 4; ++i)
+		cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }

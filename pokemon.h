@@ -14,7 +14,7 @@ a pointer to the attacks/items database to populate their moves set.
 #define POKEMON_H
 
 #include <iostream>
-#include "attacks.h"
+#include "addonsdb.h"
 
 using namespace std;
 
