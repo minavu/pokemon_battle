@@ -1,5 +1,8 @@
-main: main.cpp minalib.o attacks.o pokemon.o gym.o
-	g++ -g -o main main.cpp minalib.o attacks.o pokemon.o gym.o
+a.out: main.o minalib.o attacks.o pokemon.o gym.o
+	g++ -g *.o
+
+main.o: main.cpp
+	g++ -g -c main.cpp
 
 gym.o: gym.h gym.cpp
 	g++ -g -c gym.cpp
@@ -14,4 +17,4 @@ minalib.o: minalib.h minalib.cpp
 	g++ -g -c minalib.cpp
 
 clean:
-	rm -rvf *.o main
+	rm -rvf *.o a.out
