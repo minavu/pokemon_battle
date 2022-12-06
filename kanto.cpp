@@ -248,23 +248,74 @@ void Kanto::battleSim()
 	{
 		pokemon2 = backpack.choose("A Pokemon can't battle itself.\nSelect a second Pokemon for battle simulation: ");
 	}
-	cout << banner;
 	battle(*pokemon1, *pokemon2);
+}
+
+// output string
+void Kanto::announce(const string string)
+{
+	if (string != "")
+	{
+		cout << string << endl;
+	}
+}
+
+// alternate turns of pokemons attacking each other until one is knocked out
+void Kanto::battle(Pokemon &pokemon1, Pokemon &pokemon2)
+{
+	minalib::clearScreen();
+	cout << banner;
+	announce("\n\t\t\t   Commence Battle Simulation!\n\n");
+
+	cout << "\t\t\t     " << pokemon1 << " vs " << pokemon2;
+	cout << "\n\n\n\n\n\n\n";
+
+	int turn = rand() % 2;
+	while (pokemon1.state() && pokemon2.state())
+	{
+		switch (turn)
+		{
+		case 0:
+			attack(pokemon1, pokemon2)
+			break;
+		case 1:
+			attack(pokemon2, pokemon1)
+			break;
+		default:;
+		}
+		turn = (turn == 0) ? 1 : 0;
+	}
+	declareWinner(pokemon1, pokemon2);
+}
+
+void Kanto::attack(Pokemon & attacker, Pokemon & defender) {
+	cout << attacker << " attack!\n";
+	attacker.battleStats();
+	attacker.attack(defender);
+	cout << "Opponent ";
+	defender.battleStats();
+	cout << endl << endl;
+}
+
+void Kanto::declareWinner(Pokemon & pokemon1, Pokemon & pokemon2) {
+	if (!pokemon1.state())
+		cout << pokemon1 << " KO! Winner is " << pokemon2 << endl;
+	if (!pokemon2.state())
+		cout << pokemon2 << " KO! Winner is " << pokemon1 << endl;
+	cout << endl << endl;
 }
 
 // display all pokemons
 void Kanto::viewPokemon()
 {
-	char answer;
-	if (!backpack.isEmpty())
-	{
-		cout << "Here are your Pokemons!\n\n";
-		backpack.displayInorder();
-	}
-	else
+	if (backpack.isEmpty())
 	{
 		cout << "You don't have any Pokemon!\n\n";
+		return;
 	}
+
+	cout << "Here are your Pokemons!\n\n";
+	backpack.displayInorder();
 }
 
 // train pokemon
@@ -282,62 +333,4 @@ void Kanto::healPokemon()
 {
 	backpack.restore();
 	cout << "\n\nYour Pokemons are all healed!\n\n";
-}
-
-// output string
-void Kanto::announce(const string string)
-{
-	if (string != "")
-	{
-		cout << string << endl;
-	}
-}
-
-// alternate turns of pokemons attacking each other until one is knocked out
-void Kanto::battle(Pokemon &pokemon1, Pokemon &pokemon2)
-{
-	announce("\n\t\t\t   Commence Battle Simulation!\n\n");
-
-	cout << "\t\t\t     " << pokemon1 << " vs " << pokemon2 << endl;
-	cout << endl
-		 << endl
-		 << endl
-		 << endl
-		 << endl
-		 << endl;
-
-	int turn = rand() % 2;
-
-	while (pokemon1.state() && pokemon2.state())
-	{
-		switch (turn)
-		{
-		case 0:
-			cout << pokemon1 << " attack!\n";
-			pokemon1.battleStats();
-			pokemon1.attack(pokemon2);
-			cout << "Opponent ";
-			pokemon2.battleStats();
-			cout << endl
-				 << endl;
-			break;
-		case 1:
-			cout << pokemon2 << " attack!\n";
-			pokemon2.battleStats();
-			pokemon2.attack(pokemon1);
-			cout << "Opponent ";
-			pokemon1.battleStats();
-			cout << endl
-				 << endl;
-			break;
-		default:;
-		}
-		turn = (turn == 0) ? 1 : 0;
-	}
-	if (!pokemon1.state())
-		cout << pokemon1 << " KO! Winner is " << pokemon2 << endl;
-	if (!pokemon2.state())
-		cout << pokemon2 << " KO! Winner is " << pokemon1 << endl;
-	cout << endl
-		 << endl;
 }
