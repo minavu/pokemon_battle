@@ -103,6 +103,13 @@ public:
 	Pokemon &operator=(Pokemon &);					   //= operator overload
 	Pokemon &operator+=(const Items &);				   //+= operator overload to hold item
 
+	// string & operator+=(const char *);
+	// string & operator+=(const string &);
+
+	friend string operator+(const string &, const Pokemon &);
+	friend string operator+(const Pokemon &, const string &);
+	friend string operator+(const Pokemon &, const Pokemon &);
+
 	friend bool operator==(const Pokemon &, const Pokemon &); //== operator overload
 	friend bool operator==(const Pokemon &, const string &);  //== operator overload
 	friend bool operator==(const string &, const Pokemon &);  //== operator overload

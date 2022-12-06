@@ -265,10 +265,10 @@ void Kanto::battle(Pokemon &pokemon1, Pokemon &pokemon2)
 {
 	minalib::clearScreen();
 	cout << banner;
-	announce("\n\t\t\t   Commence Battle Simulation!\n\n");
 
-	cout << "\t\t\t     " << pokemon1 << " vs " << pokemon2;
-	cout << "\n\n\n\n\n\n\n";
+	string announcement = "\n\t\t\t   Commence Battle Simulation!\n\n"
+	"\t\t\t     " + pokemon1 + " vs " + pokemon2 + "\n\n\n\n\n\n\n";
+	announce(announcement);
 
 	int turn = rand() % 2;
 	while (pokemon1.state() && pokemon2.state())
@@ -276,10 +276,10 @@ void Kanto::battle(Pokemon &pokemon1, Pokemon &pokemon2)
 		switch (turn)
 		{
 		case 0:
-			attack(pokemon1, pokemon2)
+			attack(pokemon1, pokemon2);
 			break;
 		case 1:
-			attack(pokemon2, pokemon1)
+			attack(pokemon2, pokemon1);
 			break;
 		default:;
 		}

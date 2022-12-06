@@ -31,7 +31,7 @@ private:
 	string drawPokemon();
 	void announce(const string = "");  // output an announcement
 	void battle(Pokemon & pokemon1, Pokemon & pokemon2); // pokemon battle!
-	void attack(Pokemon & pokemon1, Pokemon & pokemon2);
+	void attack(Pokemon & attacker, Pokemon & defender);
 	void declareWinner(Pokemon & pokemon1, Pokemon & pokemon2);
 
 public:
