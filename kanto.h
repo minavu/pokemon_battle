@@ -23,10 +23,12 @@ class Kanto
 private:
 	AddOnsDb database;
 	RedBlack backpack;
+	string menu;
 	string banner;
 
 	string getBanner(const char* file); // get banner from text file
-	int selectFromDisplayedMenu();
+	int selectFromMenu();
+	string drawPokemon();
 	void announce(const string = "");  // output an announcement
 	void battle(Pokemon &, Pokemon &); // pokemon battle!
 

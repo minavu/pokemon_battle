@@ -14,6 +14,16 @@ Function information below.
 // get input from text files
 void Kanto::init()
 {
+	menu = 
+		"\t\t\t   Welcome to Kanto!\n\n"
+		"\t\t\t1) Search for wild Pokemons!\n"
+		"\t\t\t2) Search for Items!\n"
+		"\t\t\t3) Train your Pokemon!\n"
+		"\t\t\t4) View your Pokemons!\n"
+		"\t\t\t5) Battle Simulation!\n"
+		"\t\t\t6) Heal your Pokemons!\n"
+		"\t\t\t0) Quit\n"
+		"\n\n";
 	banner = getBanner("specs/arts/pokemon.txt");
 	database.addAttacks("specs/attacks.txt");
 	database.addItems("specs/items.txt");
@@ -35,6 +45,8 @@ string Kanto::getBanner(const char *file)
 		banner += "\n";
 	}
 
+	banner += banner + banner;
+
 	return banner;
 }
 
@@ -45,7 +57,7 @@ void Kanto::start()
 
 	do
 	{
-		select = selectFromDisplayedMenu();
+		select = selectFromMenu();
 		switch (select)
 		{
 		case 0:
@@ -78,21 +90,13 @@ void Kanto::start()
 	} while (select);
 }
 
-int Kanto::selectFromDisplayedMenu() {
+int Kanto::selectFromMenu() {
 	int select {0};
 
 	minalib::clearScreen();
-	cout << banner << banner << banner;
 
-	cout << "\t\t\t   Welcome to Kanto!\n\n";
-	cout << "\t\t\t1) Search for wild Pokemons!\n";
-	cout << "\t\t\t2) Search for Items!\n";
-	cout << "\t\t\t3) Train your Pokemon!\n";
-	cout << "\t\t\t4) View your Pokemons!\n";
-	cout << "\t\t\t5) Battle Simulation!\n";
-	cout << "\t\t\t6) Heal your Pokemons!\n";
-	cout << "\t\t\t0) Quit\n";
-	cout << "\n\n";
+	cout << banner;
+	cout << menu;
 
 	select = minalib::getInt("What would you like to do? ", 0, 6);
 	cout << endl;
@@ -103,57 +107,58 @@ int Kanto::selectFromDisplayedMenu() {
 // user can add to backpack or not, and change name or not
 void Kanto::searchPokemon()
 {
-	char answer;
+	char capture, rename;
 	string type, name;
 	cout << "Searching for wild Pokemons.....\n";
 	int found = rand() % 3;
-	if (found)
-	{
-		int draw = rand() % 4 + 1;
-		if (draw == 1)
-		{
-			type = "Pikachu";
-		}
-		if (draw == 2)
-		{
-			type = "Charmander";
-		}
-		if (draw == 3)
-		{
-			type = "Squirtle";
-		}
-		if (draw == 4)
-		{
-			type = "Bulbasaur";
-		}
-		cout << "\nYou found a wild " << type << "!\n";
-		answer = minalib::getYesNo("Would you like to catch this Pokemon? (y/n) ");
-		cout << endl;
-		if (toupper(answer) == 'Y')
-		{
-			answer = minalib::getYesNo("Do you want to give your new Pokemon a unique name? (y/n) ");
-			if (toupper(answer) == 'Y')
-			{
-				cout << "\nWhat do you want to call your " << type << "? ";
-				cin >> name;
-				cin.ignore(100, '\n');
-				cout << "\nGreat!\n\n";
-				backpack.insert(draw, &database, name);
-			}
-			else
-			{
-				backpack.insert(draw, &database);
-			}
-			cout << type << " captured!\n\n";
-		}
-		else
-		{
-			cout << type << " ran away!\n\n";
-		}
-	}
-	else
+	if (!found)
 	{
 		cout << "\nYou can't find any wild Pokemon.\n\n";
+		return;
+	}
+
+	type = drawPokemon();
+	cout << "\nYou found a wild " << type << "!\n";
+	capture = minalib::getYesNo("Would you like to catch this Pokemon? (y/n) ");
+	cout << endl;
+	if (toupper(capture) == 'N')
+	{
+		cout << type << " ran away!\n\n";
+		return;
+	}
+
+	rename = minalib::getYesNo("Do you want to give your new Pokemon a unique name? (y/n) ");
+	if (toupper(rename) == 'N')
+	{
+		backpack.insert(type, &database);
+		cout << type << " captured!\n\n";
+		return;
+	}
+
+	cout << "\nWhat do you want to call your " << type << "? ";
+	cin >> name;
+	cin.ignore(100, '\n');
+	cout << "\nGreat!\n\n";
+	backpack.insert(type, &database, name);
+}
+
+string Kanto::drawPokemon() {
+	int draw = rand() % 4 + 1;
+	switch (draw) {
+		case 1:
+			return "Pikachu";
+			break;
+		case 2:
+			return "Charmander";
+			break;
+		case 3:
+			return "Squirtle";
+			break;
+		case 4:
+			return "Bulbasaur";
+			break;
+		default:
+			return "";
 	}
 }
 
