@@ -19,6 +19,25 @@ void Kanto::init()
 	database.addItems("specs/items.txt");
 }
 
+// get banner from file
+string Kanto::getBanner(const char *file)
+{
+	string banner, buffer;
+	ifstream myfile(file);
+
+	if (!myfile.is_open())
+		return "\n";
+
+	while (myfile.peek() != EOF)
+	{
+		getline(myfile, buffer);
+		banner += buffer;
+		banner += "\n";
+	}
+
+	return banner;
+}
+
 // game menu
 void Kanto::start()
 {
@@ -30,10 +49,7 @@ void Kanto::start()
 	do
 	{
 		minalib::clearScreen();
-		if (banner != "")
-		{
-			cout << banner << banner << banner;
-		}
+		cout << banner << banner << banner;
 
 		cout << "\t\t\t   Welcome to Kanto!\n\n";
 
@@ -263,27 +279,6 @@ void Kanto::healPokemon()
 {
 	backpack.restore();
 	cout << "\n\nYour Pokemons are all healed!\n\n";
-}
-
-// get file input
-string Kanto::getBanner(const char *file)
-{
-	string string = "";
-	char buffer[100];
-
-	ifstream myfile(file);
-	if (myfile.is_open())
-	{
-		while (myfile.peek() != EOF)
-		{
-			myfile.get(buffer, 100);
-			myfile.ignore(100, '\n');
-			string += buffer;
-			string += "\n";
-		}
-	}
-
-	return string;
 }
 
 // output string
