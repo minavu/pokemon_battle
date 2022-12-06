@@ -224,34 +224,32 @@ void Kanto::battleSim()
 	char answer;
 	Pokemon *pokemon1, *pokemon2;
 	minalib::clearScreen();
-	cout << banner << banner << banner;
+	cout << banner;
 	announce("\n\t\t\t   Welcome to the Pokemon Gym!\n\n");
 	announce("Have your Pokemons battle each other to gain experience and level up!\n");
 	answer = minalib::getYesNo("Are you ready? (y/n) ");
 	cout << endl;
-	if (toupper(answer) == 'Y')
-	{
-		cout << endl;
-		if (backpack.height() > 1)
-		{
-			pokemon1 = backpack.choose("Select your first Pokemon for battle simulation: ");
-			pokemon2 = backpack.choose("Select your second Pokemon for battle simulation: ");
-			while (pokemon1 == pokemon2)
-			{
-				pokemon2 = backpack.choose("A Pokemon can't battle itself.\nSelect a second Pokemon for battle simulation: ");
-			}
-			cout << banner << banner << banner;
-			battle(*pokemon1, *pokemon2);
-		}
-		else
-		{
-			cout << "You do not have enough Pokemons to simulate a battle.\nCome back again when you have at least two Pokemons.\n\n";
-		}
-	}
-	else
+	if (toupper(answer) == 'N')
 	{
 		cout << "Come back when you're ready!\n\n";
+		return;
 	}
+
+	cout << endl;
+	if (backpack.height() < 2)
+	{
+		cout << "You do not have enough Pokemons to simulate a battle.\nCome back again when you have at least two Pokemons.\n\n";
+		return;
+	}
+
+	pokemon1 = backpack.choose("Select your first Pokemon for battle simulation: ");
+	pokemon2 = backpack.choose("Select your second Pokemon for battle simulation: ");
+	while (pokemon1 == pokemon2)
+	{
+		pokemon2 = backpack.choose("A Pokemon can't battle itself.\nSelect a second Pokemon for battle simulation: ");
+	}
+	cout << banner;
+	battle(*pokemon1, *pokemon2);
 }
 
 // display all pokemons
