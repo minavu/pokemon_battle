@@ -169,57 +169,53 @@ void Kanto::searchItem()
 	char answer;
 	cout << "Searching for items.....\n";
 	int found = rand() % 3;
-	if (found)
-	{
-		Items *item = dynamic_cast<Items *>(database.retrieve());
-		cout << "\nYou found a " << *item << endl;
-		answer = minalib::getYesNo("Do you want to give it to a Pokemon? (y/n) ");
-		cout << endl;
-		if (toupper(answer) == 'Y')
-		{
-			Pokemon *chosen = NULL;
-			char ans;
-			do
-			{
-				if (!backpack.isEmpty())
-				{
-					chosen = backpack.choose("Select a Pokemon to hold item: ");
-					cout << endl;
-					if (chosen->holding())
-					{
-						cout << *chosen << " is holding something already.\n";
-						ans = minalib::getChar("Give item to another Pokemon? (y/n) ");
-						cout << endl;
-						if (toupper(ans) == 'N')
-						{
-							cout << "\nYou lost the item!\n\n";
-							delete item;
-						}
-					}
-					else
-					{
-						// chosen->hold(*item);
-						*chosen += *item;
-						cout << *chosen << " is now holding " << *item << endl;
-						ans = 'N';
-					}
-				}
-				else
-				{
-					cout << "You have no Pokemon to hold this item! You lost the item!\n\n";
-					ans = 'N';
-				}
-			} while (toupper(ans) == 'Y');
-		}
-		else
-		{
-			cout << "\nYou lost the item!\n\n";
-		}
-	}
-	else
+	if (!found)
 	{
 		cout << "\nYou can't find any item.\n\n";
+		return;
 	}
+
+	Items *item = dynamic_cast<Items *>(database.retrieve());
+	cout << "\nYou found a " << *item << endl;
+	answer = minalib::getYesNo("Do you want to give it to a Pokemon? (y/n) ");
+	cout << endl;
+	if (toupper(answer) == 'N')
+	{
+		cout << "\nYou lost the item!\n\n";
+		delete item;
+		return;
+	}
+
+	if (backpack.isEmpty())
+	{
+		cout << "You have no Pokemon to hold this item! You lost the item!\n\n";
+		delete item;
+		return;
+	}
+
+	Pokemon *chosen = NULL;
+	char ans;
+	do
+	{
+		chosen = backpack.choose("Select a Pokemon to hold item: ");
+		cout << endl;
+		if (!(chosen->holding()))
+		{
+			*chosen += *item;
+			cout << *chosen << " is now holding " << *item << endl;
+			return;
+		}
+
+		cout << *chosen << " is holding something already.\n";
+		ans = minalib::getChar("Give item to another Pokemon? (y/n) ");
+		cout << endl;
+		if (toupper(ans) == 'N')
+		{
+			cout << "\nYou lost the item!\n\n";
+			delete item;
+			return;
+		}
+	} while (toupper(ans) == 'Y');
 }
 
 // start battle similuation having user select two pokemons
