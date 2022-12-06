@@ -26,6 +26,7 @@ private:
 	string banner;
 
 	string getBanner(const char* file); // get banner from text file
+	int selectFromDisplayedMenu();
 	void announce(const string = "");  // output an announcement
 	void battle(Pokemon &, Pokemon &); // pokemon battle!
 

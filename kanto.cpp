@@ -41,28 +41,11 @@ string Kanto::getBanner(const char *file)
 // game menu
 void Kanto::start()
 {
-	int i = 0;
-	int select = 0, found = 0;
-	char answer;
-	Pokemon *pokemon1, *pokemon2;
+	int select {0};
 
 	do
 	{
-		minalib::clearScreen();
-		cout << banner << banner << banner;
-
-		cout << "\t\t\t   Welcome to Kanto!\n\n";
-
-		cout << "\t\t\t1) Search for wild Pokemons!\n";
-		cout << "\t\t\t2) Search for Items!\n";
-		cout << "\t\t\t3) Train your Pokemon!\n";
-		cout << "\t\t\t4) View your Pokemons!\n";
-		cout << "\t\t\t5) Battle Simulation!\n";
-		cout << "\t\t\t6) Heal your Pokemons!\n";
-		cout << "\t\t\t0) Quit\n";
-		cout << "\n\n";
-		select = minalib::getInt("What would you like to do? ", 0, 6);
-		cout << endl;
+		select = selectFromDisplayedMenu();
 		switch (select)
 		{
 		case 0:
@@ -93,6 +76,27 @@ void Kanto::start()
 		default:;
 		}
 	} while (select);
+}
+
+int Kanto::selectFromDisplayedMenu() {
+	int select {0};
+
+	minalib::clearScreen();
+	cout << banner << banner << banner;
+
+	cout << "\t\t\t   Welcome to Kanto!\n\n";
+	cout << "\t\t\t1) Search for wild Pokemons!\n";
+	cout << "\t\t\t2) Search for Items!\n";
+	cout << "\t\t\t3) Train your Pokemon!\n";
+	cout << "\t\t\t4) View your Pokemons!\n";
+	cout << "\t\t\t5) Battle Simulation!\n";
+	cout << "\t\t\t6) Heal your Pokemons!\n";
+	cout << "\t\t\t0) Quit\n";
+	cout << "\n\n";
+
+	select = minalib::getInt("What would you like to do? ", 0, 6);
+	cout << endl;
+	return select;
 }
 
 // search for pokemon using random number generator
