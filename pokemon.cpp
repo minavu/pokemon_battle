@@ -455,6 +455,18 @@ bool Pokemon::compare(const Pokemon & pokemon, const char* op) const {
 }
 */
 
+string operator+(const string & str, const Pokemon & pokemon) {
+	return str + pokemon.name;
+}
+
+string operator+(const Pokemon & pokemon, const string & str) {
+	return pokemon.name + str;
+}
+
+string operator+(const Pokemon & pokemon1, const Pokemon & pokemon2) {
+	return pokemon1.name + pokemon2.name;
+}
+
 //== operator overload
 bool operator==(const Pokemon &str1, const Pokemon &str2)
 {

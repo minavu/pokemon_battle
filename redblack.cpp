@@ -139,10 +139,10 @@ int RedBlack::insert(Pokemon *pokemon)
 }
 
 // insert pokemon by type indication
-int RedBlack::insert(int draw, AddOnsDb *database, string name)
+int RedBlack::insert(string draw, AddOnsDb *database, string name)
 {
 	Pokemon *toAdd = NULL;
-	if (draw == 1)
+	if (draw == "Pikachu")
 	{
 		if (name != "")
 		{
@@ -153,7 +153,7 @@ int RedBlack::insert(int draw, AddOnsDb *database, string name)
 			toAdd = new Pikachu(database);
 		}
 	}
-	if (draw == 2)
+	if (draw == "Charmander")
 	{
 		if (name != "")
 		{
@@ -164,7 +164,7 @@ int RedBlack::insert(int draw, AddOnsDb *database, string name)
 			toAdd = new Charmander(database);
 		}
 	}
-	if (draw == 3)
+	if (draw == "Squirtle")
 	{
 		if (name != "")
 		{
@@ -175,7 +175,7 @@ int RedBlack::insert(int draw, AddOnsDb *database, string name)
 			toAdd = new Squirtle(database);
 		}
 	}
-	if (draw == 4)
+	if (draw == "Bulbasaur")
 	{
 		if (name != "")
 		{

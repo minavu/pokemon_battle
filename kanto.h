@@ -11,6 +11,11 @@ This is the header file for class Kanto.
 #ifndef KANTO_H
 #define KANTO_H
 
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
 #include "redblack.h"
 
 class Kanto
@@ -18,17 +23,26 @@ class Kanto
 private:
 	AddOnsDb database;
 	RedBlack backpack;
+	string menu;
 	string banner;
 
+	string getBanner(const char* file); // get banner from text file
+	int selectFromMenu();
+	bool winSearchLottery();
+	void foundPokemon();
+	void renamePokemon(Pokemon* &);
+	void foundItem();
+	Pokemon* drawPokemon();
+	void giveItemToPokemon(Items* & item);
 	void announce(const string = "");  // output an announcement
-	void battle(Pokemon &, Pokemon &); // pokemon battle!
+	void choosePokemonsForBattle(Pokemon* & pokemon1, Pokemon* & pokemon2);
+	void battle(Pokemon & pokemon1, Pokemon & pokemon2); // pokemon battle!
+	void attack(Pokemon & attacker, Pokemon & defender);
+	void declareWinner(Pokemon & pokemon1, Pokemon & pokemon2);
 
 public:
 	void init();					// initialize the game
 	void start();					// menu for the whole game
-	string getBanner(const char *); // get banner from text file
-	Pokemon *create(int);			// create a pokemon by type indication
-	string type(Pokemon *);			// return type of pokemon as string
 	void searchPokemon();			// search for pokemon
 	void searchItem();				// search for item
 	void battleSim();				// pokemon battle!

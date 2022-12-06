@@ -48,7 +48,7 @@ public:
 	void displayBreadth();					  // display by breadth helper function
 	int displayInorder();					  // display by inorder helper function
 	void displayPreorder();					  // display by preorder helper functon
-	int insert(int, AddOnsDb *, string = ""); // insert into tree by type indication only
+	int insert(string, AddOnsDb *, string = ""); // insert into tree by type indication only
 	int insert(Pokemon *);					  // insert into tree with created pokemon
 	Pokemon *retrieve(const string &);		  // retrieve pokemon by name
 	Pokemon *choose(const char *);			  // select a pokemon with prompt
