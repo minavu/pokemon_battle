@@ -6,58 +6,50 @@ Class:      CS202
 Term:	    Fall 2020
 
 This file contains the implementations for class AddOnsDb.
-Some functions were created for an idea that never manifested or changed and therefore
-was not used in main program.  Information below for functions.
 */
 
 #include "addonsdb.h"
 
 // default constructor creates a table and initialize everything to 0
 AddOnsDb::AddOnsDb() : table(0), size(5)
-{ // change back to 5 after figure out copy messup in incrSize function
-	table = new Attacks *[size];
-	init(table, table, size);
+{
+	table = new AddOns* [size];
+	for (int i {0}; i < size; ++i)
+		table[i] {nullptr};
 }
 
 // copy constructor
-AddOnsDb::AddOnsDb(const AddOnsDb &source) : table(0), size(source.size)
+AddOnsDb::AddOnsDb(const AddOnsDb & source) : table(0), size(source.size)
 {
-	table = new Attacks *[size];
-	copy(table, table, source.table);
+	table = new AddOns* [size];
+	for (int i {0}; i < size; ++i)
+		copy(table[i], source[i]);
 }
 
 // destructor
 AddOnsDb::~AddOnsDb()
 {
-	destroy(table);
+	for (int i {0}; i < size; ++i)
+		destroy(table[i]);
 	delete[] table;
 	table = NULL;
 }
 
-// recursively initialize each array index to 0, can be used with any table not just this object
-void AddOnsDb::init(Attacks **arr, Attacks **tbl, int s)
-{
-	if (arr != tbl + s)
-	{
-		*arr = NULL;
-		init(++arr, tbl, s);
-	}
-}
-
-// recursively copy all from source pointer
-void AddOnsDb::copy(Attacks *&ptr, Attacks *srcPtr)
+// recursively copy all of list from source pointer
+void AddOnsDb::copy(AddOns* & ptr, AddOns* srcPtr)
 {
 	ptr = NULL;
 	if (srcPtr)
 	{
 		if (typeid(*srcPtr) == typeid(Items))
 		{
-			Items *item = dynamic_cast<Items *>(srcPtr);
+			Items *item = dynamic_cast<Items*>(srcPtr);
 			ptr = new Items(*item);
 		}
 		else
 		{
-			ptr = new Attacks(*srcPtr);
+			Attacks *attack = dynamic_cast<Attacks*>(srcPtr);
+			ptr = new Attacks(*attack);
 		}
 		copy(ptr->nextLink(), srcPtr->nextLink());
 		if (ptr->nextLink())
@@ -67,35 +59,15 @@ void AddOnsDb::copy(Attacks *&ptr, Attacks *srcPtr)
 	}
 }
 
-// recursively copy all from source table
-void AddOnsDb::copy(Attacks **arr, Attacks **dstTbl, Attacks **srcTbl)
-{
-	if (arr != dstTbl + size)
-	{
-		copy(*arr, *srcTbl);
-		copy(++arr, dstTbl, ++srcTbl);
-	}
-}
-
-// recursively destroy all from pointer
-void AddOnsDb::destroy(Attacks *&ptr)
+// recursively destroy all of list from pointer
+void AddOnsDb::destroy(AddOns* & ptr)
 {
 	if (ptr)
 	{
-		Attacks *temp = ptr;
+		AddOns* temp = ptr;
 		ptr = ptr->nextLink();
 		delete temp;
 		destroy(ptr);
-	}
-}
-
-// recursively destroy all from table
-void AddOnsDb::destroy(Attacks **arr)
-{
-	if (arr != table + size)
-	{
-		destroy(*arr);
-		destroy(++arr);
 	}
 }
 

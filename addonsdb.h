@@ -26,14 +26,11 @@ using namespace std;
 class AddOnsDb
 {
 private:
-	Attacks **table;
+	AddOns** table;
 	int size;
 
-	void init(Attacks **, Attacks **, int);				  // initialize table to 0, array recursion
-	void copy(Attacks *&, Attacks *);					  // copy all table, list recursion
-	void copy(Attacks **, Attacks **, Attacks **);		  // copy all table, array recursion
-	void destroy(Attacks *&);							  // destroy everything, list recursion
-	void destroy(Attacks **);							  // destroy everything, array recursion
+	void copy(AddOns* &, AddOns*);					  // copy all table, list recursion
+	void destroy(AddOns* & ptr);							  // destroy everything, list recursion
 	int insert(Attacks *&, Attacks *);					  // insert item, list recursion
 	bool insert(Attacks **, Attacks *);					  // insert item, array recursion
 	void display(Attacks *);							  // display all, list recursion
