@@ -1,22 +1,15 @@
 /*
 Programmer: Mina Vu
 Assignment: Prog3
-File name:  gym.cpp
+File name:  kanto.cpp
 Class:      CS202
 Term:	    Fall 2020
 
-This file contains all the implementations for classes Kanto and Gym.
-Some functions were later not used because better ideas materialized.
+This file contains all the implementations for class Kanto.
 Function information below.
 */
 
-#include "gym.h"
-
-// default constructor
-Kanto::Kanto() : banner("") {}
-
-// destructor
-Kanto::~Kanto() {}
+#include "kanto.h"
 
 // get input from text files
 void Kanto::init()
@@ -86,45 +79,6 @@ void Kanto::start()
 	} while (select);
 }
 
-// create a pokemon by type, not used in the end
-/*
-Pokemon* Kanto::create(int type) {
-	Pokemon* temp;
-	if (type == 1) {
-		temp = new Pikachu(&database);
-	}
-	if (type == 2) {
-		temp = new Charmander(&database);
-	}
-	if (type == 3) {
-		temp = new Squirtle(&database);
-	}
-	if (type == 4) {
-		temp = new Bulbasaur(&database);
-	}
-	temp->initialize();
-	return temp;
-}
-
-//return pokemon type in string, not used in the end
-string Kanto::type(Pokemon* pokemon) {
-	string name;
-	if (typeid(*pokemon) == typeid(Pikachu)) {
-		name = "Pikachu";
-	}
-	if (typeid(*pokemon) == typeid(Charmander)) {
-		name = "Charmander";
-	}
-	if (typeid(*pokemon) == typeid(Squirtle)) {
-		name = "Squirtle";
-	}
-	if (typeid(*pokemon) == typeid(Bulbasaur)) {
-		name = "Bulbasaur";
-	}
-	return name;
-}
-*/
-
 // search for pokemon using random number generator
 // user can add to backpack or not, and change name or not
 void Kanto::searchPokemon()
@@ -152,9 +106,7 @@ void Kanto::searchPokemon()
 		{
 			type = "Bulbasaur";
 		}
-		// Pokemon* wild = create(draw);
 		cout << "\nYou found a wild " << type << "!\n";
-		// wild->battleStats();
 		answer = minalib::getYesNo("Would you like to catch this Pokemon? (y/n) ");
 		cout << endl;
 		if (toupper(answer) == 'Y')
@@ -163,7 +115,6 @@ void Kanto::searchPokemon()
 			if (toupper(answer) == 'Y')
 			{
 				cout << "\nWhat do you want to call your " << type << "? ";
-				// cin >> *wild;
 				cin >> name;
 				cin.ignore(100, '\n');
 				cout << "\nGreat!\n\n";
@@ -178,7 +129,6 @@ void Kanto::searchPokemon()
 		else
 		{
 			cout << type << " ran away!\n\n";
-			// delete wild;
 		}
 	}
 	else
@@ -254,8 +204,8 @@ void Kanto::battleSim()
 	Pokemon *pokemon1, *pokemon2;
 	minalib::clearScreen();
 	cout << banner << banner << banner;
-	gym.announce("\n\t\t\t   Welcome to the Pokemon Gym!\n\n");
-	gym.announce("Have your Pokemons battle each other to gain experience and level up!\n");
+	announce("\n\t\t\t   Welcome to the Pokemon Gym!\n\n");
+	announce("Have your Pokemons battle each other to gain experience and level up!\n");
 	answer = minalib::getYesNo("Are you ready? (y/n) ");
 	cout << endl;
 	if (toupper(answer) == 'Y')
@@ -270,7 +220,7 @@ void Kanto::battleSim()
 				pokemon2 = backpack.choose("A Pokemon can't battle itself.\nSelect a second Pokemon for battle simulation: ");
 			}
 			cout << banner << banner << banner;
-			gym.battle(*pokemon1, *pokemon2);
+			battle(*pokemon1, *pokemon2);
 		}
 		else
 		{
@@ -336,11 +286,8 @@ string Kanto::getBanner(const char *file)
 	return string;
 }
 
-// default constructor
-Gym::Gym() {}
-
 // output string
-void Gym::announce(const string string)
+void Kanto::announce(const string string)
 {
 	if (string != "")
 	{
@@ -349,7 +296,7 @@ void Gym::announce(const string string)
 }
 
 // alternate turns of pokemons attacking each other until one is knocked out
-void Gym::battle(Pokemon &pokemon1, Pokemon &pokemon2)
+void Kanto::battle(Pokemon &pokemon1, Pokemon &pokemon2)
 {
 	announce("\n\t\t\t   Commence Battle Simulation!\n\n");
 

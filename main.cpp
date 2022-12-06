@@ -14,7 +14,7 @@ The text files in the specs folder are needed to have a full experience of this 
 #include <fstream>
 #include <cstring>
 #include <string>
-#include "gym.h"
+#include "kanto.h"
 
 using namespace std;
 
