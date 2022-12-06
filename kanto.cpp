@@ -104,51 +104,49 @@ bool Kanto::winSearchLottery() {
 // user can add to backpack or not, and change name or not
 void Kanto::searchPokemon()
 {
-	char capture;
-	Pokemon* pokemon {nullptr};
-
 	cout << "Searching for wild Pokemons.....\n";
-	if (!winSearchLottery())
-	{
-		cout << "\nYou can't find any wild Pokemon.\n\n";
-		return;
-	}
+	if (winSearchLottery())
+		return foundPokemon();
+	cout << "\nYou can't find any wild Pokemon.\n\n";
+}
 
-	pokemon = foundPokemon();
+void Kanto::foundPokemon() {
+	Pokemon* pokemon = drawPokemon();
 	cout << "\nYou found a wild " << *pokemon << "!\n";
-	capture = minalib::getYesNo("Would you like to catch this Pokemon? (y/n) ");
-	cout << endl;
+
+	char capture = minalib::getYesNo("Would you like to catch this Pokemon? (y/n) "); cout << endl;
 	if (toupper(capture) == 'N')
 	{
 		cout << *pokemon << " ran away!\n\n";
 		delete pokemon;
 		return;
 	}
-
 	renamePokemon(pokemon);
-
 	cout << *pokemon << " captured!\n\n";
 	backpack.insert(pokemon);
+
 }
 
-Pokemon * Kanto::foundPokemon() {
+Pokemon* Kanto::drawPokemon() {
+	Pokemon* new_pokemon {nullptr};
 	int draw = rand() % 4 + 1;
 	switch (draw) {
 		case 1:
-			return new Pikachu(&database);
+			new_pokemon = new Pikachu(&database);
 			break;
 		case 2:
-			return new Charmander(&database);
+			new_pokemon = new Charmander(&database);
 			break;
 		case 3:
-			return new Squirtle(&database);
+			new_pokemon = new Squirtle(&database);
 			break;
 		case 4:
-			return new Bulbasaur(&database);
+			new_pokemon = new Bulbasaur(&database);
 			break;
-		default:
-			return nullptr;
+		default:;
 	}
+	new_pokemon->initialize();
+	return new_pokemon;
 }
 
 void Kanto::renamePokemon(Pokemon* & pokemon) {
@@ -175,10 +173,10 @@ void Kanto::searchItem()
 }
 
 void Kanto::foundItem() {
-	char answer;
 	Items *item = dynamic_cast<Items *>(database.retrieve());
 	cout << "\nYou found a " << *item << endl;
-	answer = minalib::getYesNo("Do you want to give it to a Pokemon? (y/n) ");
+
+	char answer = minalib::getYesNo("Do you want to give it to a Pokemon? (y/n) ");
 	cout << endl;
 	if (toupper(answer) == 'N')
 	{
@@ -186,7 +184,6 @@ void Kanto::foundItem() {
 		delete item;
 		return;
 	}
-
 	if (backpack.isEmpty())
 	{
 		cout << "You have no Pokemon to hold this item! You lost the item!\n\n";
@@ -194,12 +191,14 @@ void Kanto::foundItem() {
 		return;
 	}
 
-	Pokemon *chosen = NULL;
-	char ans;
-	do
-	{
-		chosen = backpack.choose("Select a Pokemon to hold item: ");
-		cout << endl;
+	giveItemToPokemon(item);
+}
+
+void Kanto::giveItemToPokemon(Items* & item) {
+	Pokemon* chosen {nullptr};
+	char ans {'\0'};
+	do {
+		chosen = backpack.choose("Select a Pokemon to hold item: "); cout << endl;
 		if (!(chosen->holding()))
 		{
 			*chosen += *item;
@@ -208,8 +207,7 @@ void Kanto::foundItem() {
 		}
 
 		cout << *chosen << " is holding something already.\n";
-		ans = minalib::getChar("Give item to another Pokemon? (y/n) ");
-		cout << endl;
+		ans = minalib::getChar("Give item to another Pokemon? (y/n) "); cout << endl;
 		if (toupper(ans) == 'N')
 		{
 			cout << "\nYou lost the item!\n\n";
@@ -230,15 +228,11 @@ void Kanto::announce(const string string)
 // start battle similuation having user select two pokemons
 void Kanto::battleSim()
 {
-	char answer;
-	Pokemon *pokemon1, *pokemon2;
-	string announcement =
+	announce(
 		"\n\t\t\t   Welcome to the Pokemon Gym!\n\n"
-		"Have your Pokemons battle each other to gain experience and level up!\n";
-	announce(announcement);
+		"Have your Pokemons battle each other to gain experience and level up!\n");
 
-	answer = minalib::getYesNo("Are you ready? (y/n) ");
-	cout << endl;
+	char answer = minalib::getYesNo("Are you ready? (y/n) "); cout << endl;
 	if (toupper(answer) == 'N')
 	{
 		cout << "Come back when you're ready!\n\n";
@@ -248,26 +242,32 @@ void Kanto::battleSim()
 	cout << endl;
 	if (backpack.height() < 2)
 	{
-		cout << "You do not have enough Pokemons to simulate a battle.\nCome back again when you have at least two Pokemons.\n\n";
+		cout << "You do not have enough Pokemons to simulate a battle."
+			 << "\nCome back again when you have at least two Pokemons.\n\n";
 		return;
 	}
 
+	Pokemon *pokemon1, *pokemon2;
+	choosePokemonsForBattle(pokemon1, pokemon2);
+	battle(*pokemon1, *pokemon2);
+}
+
+void Kanto::choosePokemonsForBattle(Pokemon* & pokemon1, Pokemon* & pokemon2) {
 	pokemon1 = backpack.choose("Select your first Pokemon for battle simulation: ");
 	pokemon2 = backpack.choose("Select your second Pokemon for battle simulation: ");
 	while (pokemon1 == pokemon2)
 	{
-		pokemon2 = backpack.choose("A Pokemon can't battle itself.\nSelect a second Pokemon for battle simulation: ");
+		pokemon2 = backpack.choose("A Pokemon can't battle itself."
+									"\nSelect a second Pokemon for battle simulation: ");
 	}
-	battle(*pokemon1, *pokemon2);
 }
 
 // alternate turns of pokemons attacking each other until one is knocked out
 void Kanto::battle(Pokemon &pokemon1, Pokemon &pokemon2)
 {
-	string announcement = 
+	announce(
 		"\n\t\t\t   Commence Battle Simulation!\n\n"
-		"\t\t\t     " + pokemon1 + " vs " + pokemon2 + "\n\n\n\n\n\n\n";
-	announce(announcement);
+		"\t\t\t     " + pokemon1 + " vs " + pokemon2 + "\n\n\n\n\n\n\n");
 
 	int turn = rand() % 2;
 	while (pokemon1.state() && pokemon2.state())
