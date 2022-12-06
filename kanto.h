@@ -28,7 +28,10 @@ private:
 
 	string getBanner(const char* file); // get banner from text file
 	int selectFromMenu();
-	string drawPokemon();
+	bool winSearchLottery();
+	Pokemon * foundPokemon();
+	void renamePokemon(Pokemon* &);
+	void foundItem();
 	void announce(const string = "");  // output an announcement
 	void battle(Pokemon & pokemon1, Pokemon & pokemon2); // pokemon battle!
 	void attack(Pokemon & attacker, Pokemon & defender);

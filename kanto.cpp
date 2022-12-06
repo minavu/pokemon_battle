@@ -45,16 +45,13 @@ string Kanto::getBanner(const char *file)
 		banner += "\n";
 	}
 
-	banner += banner + banner;
-
-	return banner;
+	return banner + banner + banner;
 }
 
 // game menu
 void Kanto::start()
 {
 	int select {0};
-
 	do
 	{
 		select = selectFromMenu();
@@ -93,72 +90,77 @@ void Kanto::start()
 int Kanto::selectFromMenu() {
 	int select {0};
 
-	minalib::clearScreen();
-
-	cout << banner;
-	cout << menu;
-
+	announce(menu);
 	select = minalib::getInt("What would you like to do? ", 0, 6);
 	cout << endl;
 	return select;
+}
+
+bool Kanto::winSearchLottery() {
+	return rand() % 3;
 }
 
 // search for pokemon using random number generator
 // user can add to backpack or not, and change name or not
 void Kanto::searchPokemon()
 {
-	char capture, rename;
-	string type, name;
+	char capture;
+	Pokemon* pokemon {nullptr};
+
 	cout << "Searching for wild Pokemons.....\n";
-	int found = rand() % 3;
-	if (!found)
+	if (!winSearchLottery())
 	{
 		cout << "\nYou can't find any wild Pokemon.\n\n";
 		return;
 	}
 
-	type = drawPokemon();
-	cout << "\nYou found a wild " << type << "!\n";
+	pokemon = foundPokemon();
+	cout << "\nYou found a wild " << *pokemon << "!\n";
 	capture = minalib::getYesNo("Would you like to catch this Pokemon? (y/n) ");
 	cout << endl;
 	if (toupper(capture) == 'N')
 	{
-		cout << type << " ran away!\n\n";
+		cout << *pokemon << " ran away!\n\n";
+		delete pokemon;
 		return;
 	}
 
-	rename = minalib::getYesNo("Do you want to give your new Pokemon a unique name? (y/n) ");
-	if (toupper(rename) == 'N')
-	{
-		backpack.insert(type, &database);
-		cout << type << " captured!\n\n";
-		return;
-	}
+	renamePokemon(pokemon);
 
-	cout << "\nWhat do you want to call your " << type << "? ";
-	cin >> name;
-	cin.ignore(100, '\n');
-	cout << "\nGreat!\n\n";
-	backpack.insert(type, &database, name);
+	cout << *pokemon << " captured!\n\n";
+	backpack.insert(pokemon);
 }
 
-string Kanto::drawPokemon() {
+Pokemon * Kanto::foundPokemon() {
 	int draw = rand() % 4 + 1;
 	switch (draw) {
 		case 1:
-			return "Pikachu";
+			return new Pikachu(&database);
 			break;
 		case 2:
-			return "Charmander";
+			return new Charmander(&database);
 			break;
 		case 3:
-			return "Squirtle";
+			return new Squirtle(&database);
 			break;
 		case 4:
-			return "Bulbasaur";
+			return new Bulbasaur(&database);
 			break;
 		default:
-			return "";
+			return nullptr;
+	}
+}
+
+void Kanto::renamePokemon(Pokemon* & pokemon) {
+	string name;
+	char rename = minalib::getYesNo("Do you want to give your new Pokemon a unique name? (y/n) ");
+	if (toupper(rename) == 'Y')
+	{
+		cout << "\nWhat do you want to call your " << *pokemon << "? ";
+		cin >> name;
+		cin.ignore(100, '\n');
+		cout << "\nGreat!\n\n";
+		pokemon->changeName(name);
 	}
 }
 
@@ -166,15 +168,14 @@ string Kanto::drawPokemon() {
 // give to pokemon to hold or lose
 void Kanto::searchItem()
 {
-	char answer;
 	cout << "Searching for items.....\n";
-	int found = rand() % 3;
-	if (!found)
-	{
-		cout << "\nYou can't find any item.\n\n";
-		return;
-	}
+	if (winSearchLottery())
+		return foundItem();
+	cout << "\nYou can't find any item.\n\n";
+}
 
+void Kanto::foundItem() {
+	char answer;
 	Items *item = dynamic_cast<Items *>(database.retrieve());
 	cout << "\nYou found a " << *item << endl;
 	answer = minalib::getYesNo("Do you want to give it to a Pokemon? (y/n) ");
@@ -218,15 +219,24 @@ void Kanto::searchItem()
 	} while (toupper(ans) == 'Y');
 }
 
+// output string
+void Kanto::announce(const string string)
+{
+	minalib::clearScreen();
+	cout << banner;
+	cout << string << endl;
+}
+
 // start battle similuation having user select two pokemons
 void Kanto::battleSim()
 {
 	char answer;
 	Pokemon *pokemon1, *pokemon2;
-	minalib::clearScreen();
-	cout << banner;
-	announce("\n\t\t\t   Welcome to the Pokemon Gym!\n\n");
-	announce("Have your Pokemons battle each other to gain experience and level up!\n");
+	string announcement =
+		"\n\t\t\t   Welcome to the Pokemon Gym!\n\n"
+		"Have your Pokemons battle each other to gain experience and level up!\n";
+	announce(announcement);
+
 	answer = minalib::getYesNo("Are you ready? (y/n) ");
 	cout << endl;
 	if (toupper(answer) == 'N')
@@ -251,23 +261,12 @@ void Kanto::battleSim()
 	battle(*pokemon1, *pokemon2);
 }
 
-// output string
-void Kanto::announce(const string string)
-{
-	if (string != "")
-	{
-		cout << string << endl;
-	}
-}
-
 // alternate turns of pokemons attacking each other until one is knocked out
 void Kanto::battle(Pokemon &pokemon1, Pokemon &pokemon2)
 {
-	minalib::clearScreen();
-	cout << banner;
-
-	string announcement = "\n\t\t\t   Commence Battle Simulation!\n\n"
-	"\t\t\t     " + pokemon1 + " vs " + pokemon2 + "\n\n\n\n\n\n\n";
+	string announcement = 
+		"\n\t\t\t   Commence Battle Simulation!\n\n"
+		"\t\t\t     " + pokemon1 + " vs " + pokemon2 + "\n\n\n\n\n\n\n";
 	announce(announcement);
 
 	int turn = rand() % 2;
