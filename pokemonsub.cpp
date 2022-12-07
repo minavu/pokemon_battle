@@ -16,13 +16,7 @@ Pikachu::Pikachu()
 {
 	factor = new float[TYPES]{1.0, 2.0, 2.0, 1.0, 1.0};
 	type = electric;
-}
-
-// arg constructor
-Pikachu::Pikachu(AddOnsDb *db, string aName) : Pokemon(db, aName)
-{
-	factor = new float[TYPES]{1.0, 2.0, 2.0, 1.0, 1.0};
-	type = electric;
+	name = "Pikachu";
 }
 
 // copy constructor
@@ -108,13 +102,7 @@ Charmander::Charmander()
 {
 	factor = new float[TYPES]{2.0, 1.0, 0.5, 2.5, 1.0};
 	type = fire;
-}
-
-// arg constructor
-Charmander::Charmander(AddOnsDb *db, string aName) : Pokemon(db, aName)
-{
-	factor = new float[TYPES]{2.0, 1.0, 0.5, 2.5, 1.0};
-	type = fire;
+	name = "Charmander";
 }
 
 // copy constructor
@@ -199,13 +187,7 @@ Squirtle::Squirtle()
 {
 	factor = new float[TYPES]{2.0, 2.5, 1.0, 0.5, 1.0};
 	type = water;
-}
-
-// arg constructor
-Squirtle::Squirtle(AddOnsDb *db, string aName) : Pokemon(db, aName)
-{
-	factor = new float[TYPES]{2.0, 2.5, 1.0, 0.5, 1.0};
-	type = water;
+	name = "Squirtle";
 }
 
 // copy constructor
@@ -290,13 +272,7 @@ Bulbasaur::Bulbasaur()
 {
 	factor = new float[TYPES]{1.0, 0.5, 2.5, 1.0, 1.0};
 	type = grass;
-}
-
-// arg constructor
-Bulbasaur::Bulbasaur(AddOnsDb *db, string aName) : Pokemon(db, aName)
-{
-	factor = new float[TYPES]{1.0, 0.5, 2.5, 1.0, 1.0};
-	type = grass;
+	name = "Bulbasaur";
 }
 
 // copy construcotr

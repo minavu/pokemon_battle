@@ -29,6 +29,10 @@ Pokemon::Pokemon(AddOnsDb *db, string aName) : type(normal), status(alive), grow
 // copy constructor
 Pokemon::Pokemon(const Pokemon &source) : type(source.type), status(source.status), grown(source.grown), level(source.level), exp(source.exp), hp(source.hp), maxHP(source.maxHP), factor(0), name(source.name), database(source.database), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
+	factor = new float[TYPES];
+	for (int i = 0; i < TYPES; ++i)
+		factor[i] = source.factor[i];
+
 	moves = new AddOns *[MAX_MOVES];
 	for (int i{0}; i < MAX_MOVES; ++i)
 		moves[i] = nullptr;
@@ -169,14 +173,9 @@ bool Pokemon::switchAttacks(AddOns *attack)
 }
 
 // initializes pokemon with level, hp, and starting move
-bool Pokemon::initialize()
+bool Pokemon::initialize(AddOnsDb* db)
 {
-	if (!database)
-	{
-		cout << "Must add database\n";
-		return false;
-	}
-
+	database = db;
 	moves[1] = new Attacks(*(dynamic_cast<Attacks *>(database->retrieveAttack("normal"))));
 	++level;
 	hp += 500;

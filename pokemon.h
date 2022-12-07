@@ -52,8 +52,8 @@ protected:
 	int hp;
 	int maxHP;
 	string name;
-	float *factor;
 	AddOnsDb *database;
+	float *factor;
 	AddOns **moves;
 
 	enum
@@ -76,7 +76,7 @@ public:
 	virtual void display(ostream &) const = 0; // display Pokemon
 	virtual void displayFullInfo() const;	   // display all info
 
-	bool initialize();				 // create the baby pokemon
+	bool initialize(AddOnsDb* db);				 // create the baby pokemon
 	int displayMoves() const;		 // display move set
 	bool learnNewAttack();			 // helper function because each pokemon knows their type
 	bool hold(const Items &);		 // have pokemon hold item
@@ -129,7 +129,6 @@ class Pikachu : public Pokemon
 {
 public:
 	Pikachu();										  // default constructor
-	explicit Pikachu(AddOnsDb *, string = "Pikachu"); // arg constructor
 	Pikachu(const Pikachu &);						  // copy constructor
 	~Pikachu();										  // destructor
 
@@ -144,7 +143,6 @@ class Charmander : public Pokemon
 {
 public:
 	Charmander();											// default constructor
-	explicit Charmander(AddOnsDb *, string = "Charmander"); // arg constructor
 	Charmander(const Charmander &);							// copy constructor
 	~Charmander();											// destructor
 
@@ -159,7 +157,6 @@ class Squirtle : public Pokemon
 {
 public:
 	Squirtle();											// default constructor
-	explicit Squirtle(AddOnsDb *, string = "Squirtle"); // arg constructor
 	Squirtle(const Squirtle &);							// copy constructor
 	~Squirtle();										// destructor
 
@@ -174,7 +171,6 @@ class Bulbasaur : public Pokemon
 {
 public:
 	Bulbasaur();										  // default constructor
-	explicit Bulbasaur(AddOnsDb *, string = "Bulbasaur"); // arg constructor
 	Bulbasaur(const Bulbasaur &);						  // copy constructor
 	~Bulbasaur();										  // destructor
 
