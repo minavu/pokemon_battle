@@ -13,42 +13,42 @@ This file contains the implementations for class AddOnsDb.
 // default constructor creates a table and initialize everything to 0
 AddOnsDb::AddOnsDb() : table(0), size(5)
 {
-	table = new AddOns* [size];
-	for (int i {0}; i < size; ++i)
+	table = new AddOns *[size];
+	for (int i{0}; i < size; ++i)
 		table[i] = nullptr;
 }
 
 // copy constructor
-AddOnsDb::AddOnsDb(const AddOnsDb & source) : table(0), size(source.size)
+AddOnsDb::AddOnsDb(const AddOnsDb &source) : table(0), size(source.size)
 {
-	table = new AddOns* [size];
-	for (int i {0}; i < size; ++i)
+	table = new AddOns *[size];
+	for (int i{0}; i < size; ++i)
 		copy(table[i], source.table[i]);
 }
 
 // destructor
 AddOnsDb::~AddOnsDb()
 {
-	for (int i {0}; i < size; ++i)
+	for (int i{0}; i < size; ++i)
 		destroy(table[i]);
 	delete[] table;
 	table = NULL;
 }
 
 // recursively copy all of list from source pointer
-void AddOnsDb::copy(AddOns* & ptr, AddOns* srcPtr)
+void AddOnsDb::copy(AddOns *&ptr, AddOns *srcPtr)
 {
 	ptr = NULL;
 	if (srcPtr)
 	{
 		if (typeid(*srcPtr) == typeid(Items))
 		{
-			Items *item = dynamic_cast<Items*>(srcPtr);
+			Items *item = dynamic_cast<Items *>(srcPtr);
 			ptr = new Items(*item);
 		}
 		else
 		{
-			Attacks *attack = dynamic_cast<Attacks*>(srcPtr);
+			Attacks *attack = dynamic_cast<Attacks *>(srcPtr);
 			ptr = new Attacks(*attack);
 		}
 		copy(ptr->nextLink(), srcPtr->nextLink());
@@ -60,26 +60,26 @@ void AddOnsDb::copy(AddOns* & ptr, AddOns* srcPtr)
 }
 
 // recursively destroy all of list from pointer
-void AddOnsDb::destroy(AddOns* & ptr)
+void AddOnsDb::destroy(AddOns *&ptr)
 {
 	if (ptr)
 	{
-		AddOns* temp = ptr;
+		AddOns *temp = ptr;
 		ptr = ptr->nextLink();
 		delete temp;
 		destroy(ptr);
 	}
 }
 
-bool AddOnsDb::insert(AddOns* addon) {
-	for (int i {0}; i < size; ++i) {
-		if (!table[i]) {
+bool AddOnsDb::insert(AddOns *addon)
+{
+	for (int i{0}; i < size; ++i)
+	{
+		if (!table[i])
 			return insert(table[i], addon);
-		}
 
-		if (table[i]->idType() == addon->idType()) {
+		if (table[i]->idType() == addon->idType())
 			return insert(table[i], addon);
-		}
 	}
 
 	int oldSize = size;
@@ -88,7 +88,7 @@ bool AddOnsDb::insert(AddOns* addon) {
 }
 
 // recursively insert at end of pointer list
-int AddOnsDb::insert(AddOns* & ptr, AddOns* attack)
+int AddOnsDb::insert(AddOns *&ptr, AddOns *attack)
 {
 	int done = false;
 	if (ptr)
@@ -111,7 +111,8 @@ int AddOnsDb::insert(AddOns* & ptr, AddOns* attack)
 // display helper function
 void AddOnsDb::display()
 {
-	for (int i {0}; i < size; ++i) {
+	for (int i{0}; i < size; ++i)
+	{
 		cout << "List: " << i + 1 << endl;
 		display(table[i]);
 		cout << endl;
@@ -119,7 +120,7 @@ void AddOnsDb::display()
 }
 
 // recursively display all from pointer
-void AddOnsDb::display(AddOns* ptr)
+void AddOnsDb::display(AddOns *ptr)
 {
 	if (ptr)
 	{
@@ -132,28 +133,29 @@ void AddOnsDb::display(AddOns* ptr)
 int AddOnsDb::incrSize()
 {
 	int newSize = size + 5;
-	AddOns** newTable = new AddOns* [newSize];
-	for (int i {0}; i < newSize; ++i)
+	AddOns **newTable = new AddOns *[newSize];
+	for (int i{0}; i < newSize; ++i)
 		newTable[i] = nullptr;
 
-	for (int i {0}; i < size; ++i)
+	for (int i{0}; i < size; ++i)
 		copy(newTable[i], table[i]);
 
-	for (int i {0}; i < size; ++i)
+	for (int i{0}; i < size; ++i)
 		destroy(table[i]);
 	delete[] table;
-	
+
 	table = newTable;
 	return newSize;
 }
 
 // retrieve an item and return a pointer
 // idea is so user retrieving will make copy to add to their table
-AddOns* AddOnsDb::retrieve()
+AddOns *AddOnsDb::retrieveItem()
 {
 	int selection = 0;
 	bool selected = false;
-	for (int i {0}; i < size; ++i) {
+	for (int i{0}; i < size; ++i)
+	{
 		if (table[i]->idType() == "item")
 			return retrieve(table[i], selection, selected);
 	}
@@ -162,7 +164,7 @@ AddOns* AddOnsDb::retrieve()
 
 // retrieve an attack and return a pointer
 // random number generator decides what type of attack is chosen
-AddOns* AddOnsDb::retrieve(const string & type1, const string type2)
+AddOns *AddOnsDb::retrieveAttack(const string &type1, const string type2)
 {
 	srand(time(NULL));
 	int draw = rand() % 3 + 1;
@@ -170,8 +172,9 @@ AddOns* AddOnsDb::retrieve(const string & type1, const string type2)
 
 	int selection = 0;
 	bool selected = false;
-	for (int i {0}; i < size; ++i) {
-		if (table[i]->idType() == type) 
+	for (int i{0}; i < size; ++i)
+	{
+		if (table[i]->idType() == type)
 			return retrieve(table[i], selection, selected);
 	}
 	return nullptr;
@@ -179,9 +182,9 @@ AddOns* AddOnsDb::retrieve(const string & type1, const string type2)
 
 // retrieve an attack and return pointer recursion
 // rand num gen decides what attack
-AddOns* AddOnsDb::retrieve(AddOns* ptr, int &selection, bool &selected, int count)
+AddOns *AddOnsDb::retrieve(AddOns *ptr, int &selection, bool &selected, int count)
 {
-	AddOns* draw = NULL;
+	AddOns *draw = NULL;
 	if (ptr)
 	{
 		draw = retrieve(ptr->nextLink(), selection, selected, ++count);
@@ -237,7 +240,7 @@ bool AddOnsDb::addAttacks(const char *file)
 
 		myfile.ignore(100, '\n');
 
-		Attacks* attack = new Attacks();
+		Attacks *attack = new Attacks();
 		attack->setData(string1, string2, a, b, c);
 		insert(attack);
 	}
@@ -246,7 +249,7 @@ bool AddOnsDb::addAttacks(const char *file)
 }
 
 // add items from text file to populate database
-bool AddOnsDb::addItems(const char* file)
+bool AddOnsDb::addItems(const char *file)
 {
 	string string1;
 	int a;
@@ -271,7 +274,7 @@ bool AddOnsDb::addItems(const char* file)
 
 		myfile.ignore(100, '\n');
 
-		Items* item = new Items();
+		Items *item = new Items();
 		item->setData(string1, a);
 		insert(item);
 	}

@@ -1,4 +1,4 @@
-a.out: main.o minalib.o addons.o addonsdb.o pokemon.o redblack.o kanto.o
+a.out: main.o minalib.o addons.o addonsdb.o pokemon.o redblacktree.o kanto.o
 	g++ -g *.o
 
 main.o: main.cpp
@@ -7,11 +7,11 @@ main.o: main.cpp
 kanto.o: kanto.h kanto.cpp
 	g++ -g -c kanto.cpp
 
-redblack.o: redblack.h redblack.cpp
-	g++ -g -c redblack.cpp
+redblacktree.o: redblacktree.h redblacktree.cpp
+	g++ -g -c redblacktree.cpp
 
-pokemon.o: pokemon.h pokemon.cpp
-	g++ -g -c pokemon.cpp
+pokemon.o: pokemon.h pokemonabc.cpp pokemonsub.cpp
+	g++ -g -c pokemonabc.cpp pokemonsub.cpp
 
 addonsdb.o: addonsdb.h addonsdb.cpp
 	g++ -g -c addonsdb.cpp

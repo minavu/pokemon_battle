@@ -1,20 +1,20 @@
 /*
 Programmer: Mina Vu
 Assignment: Prog3
-File name:  redblack.h
+File name:  redblacktree.h
 Class:      CS202
 Term:	    Fall 2020
 
-This is the header file for class RedBlack.
-RedBlack class is the data structure for the assignment.
+This is the header file for class RedBlackTree.
+RedBlackTree class is the data structure for the assignment.
 */
 
-#ifndef REDBLACK_H
-#define REDBLACK_H
+#ifndef REDBLACKTREE_H
+#define REDBLACKTREE_H
 
 #include "pokemon.h"
 
-class RedBlack
+class RedBlackTree
 {
 private:
 	enum
@@ -39,23 +39,23 @@ private:
 	void restore(Pokemon *);						// restore all pokemons
 
 public:
-	RedBlack();					// default constructor
-	RedBlack(const RedBlack &); // copy constructor
-	~RedBlack();				// destructor
+	RedBlackTree();						// default constructor
+	RedBlackTree(const RedBlackTree &); // copy constructor
+	~RedBlackTree();					// destructor
 
-	bool isEmpty() const;					  // indicate if tree is empty or not
-	int height();							  // find height helper function
-	void displayBreadth();					  // display by breadth helper function
-	int displayInorder();					  // display by inorder helper function
-	void displayPreorder();					  // display by preorder helper functon
+	bool isEmpty() const;						 // indicate if tree is empty or not
+	int height();								 // find height helper function
+	void displayBreadth();						 // display by breadth helper function
+	int displayInorder();						 // display by inorder helper function
+	void displayPreorder();						 // display by preorder helper functon
 	int insert(string, AddOnsDb *, string = ""); // insert into tree by type indication only
-	int insert(Pokemon *);					  // insert into tree with created pokemon
-	Pokemon *retrieve(const string &);		  // retrieve pokemon by name
-	Pokemon *choose(const char *);			  // select a pokemon with prompt
-	int showGrown();						  // show grown helper function
-	void restore();							  // restore helper function
+	int insert(Pokemon *);						 // insert into tree with created pokemon
+	Pokemon *retrieve(const string &);			 // retrieve pokemon by name
+	Pokemon *choose(const char *);				 // select a pokemon with prompt
+	int showGrown();							 // show grown helper function
+	void restore();								 // restore helper function
 
-	RedBlack &operator=(const RedBlack &); //= operator overload
+	RedBlackTree &operator=(const RedBlackTree &); //= operator overload
 };
 
 #endif
