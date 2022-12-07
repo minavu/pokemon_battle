@@ -22,13 +22,6 @@ Pikachu::Pikachu()
 // copy constructor
 Pikachu::Pikachu(const Pikachu &source) : Pokemon(source) {}
 
-// display pikachu name
-// had more to this before ideas changed
-void Pikachu::display(ostream &os) const
-{
-	os << name;
-}
-
 // display pikachu's full information
 void Pikachu::displayFullInfo() const
 {
@@ -82,12 +75,6 @@ Charmander::Charmander()
 
 // copy constructor
 Charmander::Charmander(const Charmander &source) : Pokemon(source) {}
-
-// display charmander's name
-void Charmander::display(ostream &os) const
-{
-	os << name;
-}
 
 // display charmander's full info
 void Charmander::displayFullInfo() const
@@ -143,12 +130,6 @@ Squirtle::Squirtle()
 // copy constructor
 Squirtle::Squirtle(const Squirtle &source) : Pokemon(source) {}
 
-// display squirtle's name
-void Squirtle::display(ostream &os) const
-{
-	os << name;
-}
-
 // display full info
 void Squirtle::displayFullInfo() const
 {
@@ -202,12 +183,6 @@ Bulbasaur::Bulbasaur()
 
 // copy construcotr
 Bulbasaur::Bulbasaur(const Bulbasaur &source) : Pokemon(source) {}
-
-// display Bulbasaur's name
-void Bulbasaur::display(ostream &os) const
-{
-	os << name;
-}
 
 // display full information
 void Bulbasaur::displayFullInfo() const

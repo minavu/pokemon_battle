@@ -306,7 +306,7 @@ Pokemon &Pokemon::operator=(Pokemon &source)
 //<< operator overloading
 ostream &operator<<(ostream &os, const Pokemon &pokemon)
 {
-	pokemon.display(os);
+	os << pokemon.name;
 	return os;
 }
 

@@ -72,7 +72,6 @@ public:
 	virtual ~Pokemon();			 // destructor
 
 	virtual bool hit(const Attacks &) = 0;	   // take a hit from the opponent
-	virtual void display(ostream &) const = 0; // display Pokemon
 	virtual void displayFullInfo() const;	   // display all info
 
 	bool initialize(AddOnsDb* db);				 // create the baby pokemon
@@ -131,7 +130,6 @@ public:
 	Pikachu(const Pikachu &);						  // copy constructor
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
-	void display(ostream &) const; // display Pikachu
 	void displayFullInfo() const;  // display all info
 
 	Pikachu &operator=(Pikachu &); // overload = operator
@@ -144,7 +142,6 @@ public:
 	Charmander(const Charmander &);							// copy constructor
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
-	void display(ostream &) const; // display Charmander
 	void displayFullInfo() const;  // display all info
 
 	Charmander &operator=(Charmander &); // overload = operator
@@ -157,7 +154,6 @@ public:
 	Squirtle(const Squirtle &);							// copy constructor
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
-	void display(ostream &) const; // display Squirtle
 	void displayFullInfo() const;  // display all info
 
 	Squirtle &operator=(Squirtle &); // overload = operator
@@ -170,7 +166,6 @@ public:
 	Bulbasaur(const Bulbasaur &);						  // copy constructor
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
-	void display(ostream &) const; // display Bulbasaur
 	void displayFullInfo() const;  // display all info
 
 	Bulbasaur &operator=(Bulbasaur &); // overload = operator
