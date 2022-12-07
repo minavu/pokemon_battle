@@ -26,25 +26,25 @@ using namespace std;
 class AddOnsDb
 {
 private:
-	AddOns** table;
+	AddOns **table;
 	int size;
 
-	void copy(AddOns* &, AddOns*);					  // copy all table, list recursion
-	void destroy(AddOns* & ptr);							  // destroy everything, list recursion
-	bool insert(AddOns* addon);
-	int insert(AddOns* &, AddOns* addon);					  // insert item, list recursion
-	void display(AddOns* );							  // display all, list recursion
-	AddOns* retrieve(AddOns* , int &, bool &, int = 0); // retrieve an attack, list recursion
-	int incrSize();										  // increase size of table array
+	void copy(AddOns *&, AddOns *); // copy all table, list recursion
+	void destroy(AddOns *&ptr);		// destroy everything, list recursion
+	bool insert(AddOns *addon);
+	int insert(AddOns *&, AddOns *addon);				// insert item, list recursion
+	void display(AddOns *);								// display all, list recursion
+	AddOns *retrieve(AddOns *, int &, bool &, int = 0); // retrieve an attack, list recursion
+	int incrSize();										// increase size of table array
 
 public:
 	AddOnsDb();					// default constructor
 	AddOnsDb(const AddOnsDb &); // copy constructor
 	~AddOnsDb();				// destructor
 
-	void display();												// display all, helper function
-	AddOns* retrieve(const string &, const string = "normal"); // retrieve an attack by type
-	AddOns* retrieve();										// retrieve an item
+	void display();											   // display all, helper function
+	AddOns *retrieve(const string &, const string = "normal"); // retrieve an attack by type
+	AddOns *retrieve();										   // retrieve an item
 
 	bool addAttacks(const char *); // populate database with file of attacks
 	bool addItems(const char *);   // popluate database with file of items

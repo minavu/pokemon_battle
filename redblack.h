@@ -43,17 +43,17 @@ public:
 	RedBlack(const RedBlack &); // copy constructor
 	~RedBlack();				// destructor
 
-	bool isEmpty() const;					  // indicate if tree is empty or not
-	int height();							  // find height helper function
-	void displayBreadth();					  // display by breadth helper function
-	int displayInorder();					  // display by inorder helper function
-	void displayPreorder();					  // display by preorder helper functon
+	bool isEmpty() const;						 // indicate if tree is empty or not
+	int height();								 // find height helper function
+	void displayBreadth();						 // display by breadth helper function
+	int displayInorder();						 // display by inorder helper function
+	void displayPreorder();						 // display by preorder helper functon
 	int insert(string, AddOnsDb *, string = ""); // insert into tree by type indication only
-	int insert(Pokemon *);					  // insert into tree with created pokemon
-	Pokemon *retrieve(const string &);		  // retrieve pokemon by name
-	Pokemon *choose(const char *);			  // select a pokemon with prompt
-	int showGrown();						  // show grown helper function
-	void restore();							  // restore helper function
+	int insert(Pokemon *);						 // insert into tree with created pokemon
+	Pokemon *retrieve(const string &);			 // retrieve pokemon by name
+	Pokemon *choose(const char *);				 // select a pokemon with prompt
+	int showGrown();							 // show grown helper function
+	void restore();								 // restore helper function
 
 	RedBlack &operator=(const RedBlack &); //= operator overload
 };

@@ -71,22 +71,23 @@ public:
 	Pokemon(const Pokemon &);	 // copy constructor
 	virtual ~Pokemon();			 // destructor
 
-	bool initialize();					   // create the baby pokemon
-	int displayMoves() const;			   // display move set
-	bool learn();						   // helper function because each pokemon knows their type
-	bool hold(const Items &);			   // have pokemon hold item
-	bool holding() const;				   // return true if moves[ITEM] contains item
-	bool attack(Pokemon &);				   // attack the pokemon
-	void restore();						   // restore hp and attacks pp
-	virtual bool hit(const Attacks &) = 0; // take a hit from the opponent
-	bool levelUp();						   // increase experience then in turn level/maxHP
-	bool hasGrown();					   // indicate growth since last learn
-	void changeName(const string &);	   // set new name
-	bool state();						   // return status for battle
-
+	virtual bool hit(const Attacks &) = 0;	   // take a hit from the opponent
 	virtual void display(ostream &) const = 0; // display Pokemon
 	virtual void fullInfo() const;			   // display all info
-	void battleStats() const;				   // display only name, level, hp
+
+	bool initialize();				 // create the baby pokemon
+	int displayMoves() const;		 // display move set
+	bool learn();					 // helper function because each pokemon knows their type
+	bool hold(const Items &);		 // have pokemon hold item
+	bool holding() const;			 // return true if moves[ITEM] contains item
+	bool attack(Pokemon &);			 // attack the pokemon
+	void restore();					 // restore hp and attacks pp
+	bool levelUp();					 // increase experience then in turn level/maxHP
+	bool hasGrown();				 // indicate growth since last learn
+	void changeName(const string &); // set new name
+	bool state();					 // return status for battle
+
+	void battleStats() const; // display only name, level, hp
 
 	Pokemon *&leftLink();  // return left pointer
 	Pokemon *&rightLink(); // return right pointer

@@ -31,26 +31,6 @@ int minalib::getInt(const char *prompt, int min, int max)
 	return num;
 }
 
-// get and validate user input for char
-char minalib::getChar(const char *prompt, char min, char max)
-{
-	char ch = '\0';
-	while (toupper(ch) < min || toupper(ch) > max)
-	{
-		cout << prompt;
-		cin >> ch;
-		while (!cin)
-		{
-			cin.clear();
-			cin.ignore(100, '\n');
-			cout << prompt;
-			cin >> ch;
-		}
-	}
-	cin.ignore(100, '\n');
-	return ch;
-}
-
 // get and validate user input for yes/no answers
 char minalib::getYesNo(const char *prompt)
 {
@@ -81,6 +61,6 @@ void minalib::enterContinue()
 // clear the screen using newline characters
 void minalib::clearScreen()
 {
-	for (int i {0}; i < 4; ++i)
+	for (int i{0}; i < 4; ++i)
 		cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }
