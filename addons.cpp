@@ -1,7 +1,7 @@
 /*
 Programmer: Mina Vu
 Assignment: Prog3
-File name:  attacks.cpp
+File name:  addons.cpp
 Class:      CS202
 Term:	    Fall 2020
 
@@ -10,7 +10,7 @@ Some functions were created for an idea that never manifested or changed and the
 was not used in main program.  Information below for functions.
 */
 
-#include "attacks.h"
+#include "addons.h"
 
 AddOns::AddOns() : next(0), prev(0) {}
 

@@ -173,11 +173,10 @@ void Kanto::searchItem()
 }
 
 void Kanto::foundItem() {
-	Items *item = dynamic_cast<Items *>(database.retrieve());
+	Items* item = new Items(*(dynamic_cast<Items*>(database.retrieve())));
 	cout << "\nYou found a " << *item << endl;
 
-	char answer = minalib::getYesNo("Do you want to give it to a Pokemon? (y/n) ");
-	cout << endl;
+	char answer = minalib::getYesNo("Do you want to give it to a Pokemon? (y/n) "); cout << endl;
 	if (toupper(answer) == 'N')
 	{
 		cout << "\nYou lost the item!\n\n";

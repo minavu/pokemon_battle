@@ -1,7 +1,7 @@
 /*
 Programmer: Mina Vu
 Assignment: Prog3
-File name:  attacks.h
+File name:  addons.h
 Class:      CS202
 Term:	    Fall 2020
 
@@ -9,8 +9,8 @@ This is the header file for the classes Attacks and Items.
 Items class is derived from Attacks class simply for dynamic binding in AddOnsDb.
 */
 
-#ifndef ATTACKS_H
-#define ATTACKS_H
+#ifndef ADDONS_H
+#define ADDONS_H
 
 #include <iostream>
 #include <fstream>
