@@ -137,20 +137,20 @@ Pokemon *Kanto::drawPokemonType()
 	switch (randomDraw)
 	{
 	case 1:
-		newPokemon = new Pikachu(&database);
+		newPokemon = new Pikachu();
 		break;
 	case 2:
-		newPokemon = new Charmander(&database);
+		newPokemon = new Charmander();
 		break;
 	case 3:
-		newPokemon = new Squirtle(&database);
+		newPokemon = new Squirtle();
 		break;
 	case 4:
-		newPokemon = new Bulbasaur(&database);
+		newPokemon = new Bulbasaur();
 		break;
 	default:;
 	}
-	newPokemon->initialize();
+	newPokemon->initialize(&database);
 	return newPokemon;
 }
 

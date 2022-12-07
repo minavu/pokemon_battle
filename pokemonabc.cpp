@@ -11,15 +11,7 @@ This file contains the implementations for class Pokemon.  Pokemon is an ABC.
 #include "pokemon.h"
 
 // default constructor
-Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), database(0), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
-{
-	moves = new AddOns *[MAX_MOVES];
-	for (int i{0}; i < MAX_MOVES; ++i)
-		moves[i] = nullptr;
-}
-
-// arg constructor takes a name and database pointer
-Pokemon::Pokemon(AddOnsDb *db, string aName) : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), name(aName), database(db), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
+Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), factor(0), database(0), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
 	moves = new AddOns *[MAX_MOVES];
 	for (int i{0}; i < MAX_MOVES; ++i)
@@ -27,8 +19,12 @@ Pokemon::Pokemon(AddOnsDb *db, string aName) : type(normal), status(alive), grow
 }
 
 // copy constructor
-Pokemon::Pokemon(const Pokemon &source) : type(source.type), status(source.status), grown(source.grown), level(source.level), exp(source.exp), hp(source.hp), maxHP(source.maxHP), name(source.name), database(source.database), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
+Pokemon::Pokemon(const Pokemon &source) : type(source.type), status(source.status), grown(source.grown), level(source.level), exp(source.exp), hp(source.hp), maxHP(source.maxHP), factor(0), name(source.name), database(source.database), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
+	factor = new float[TYPES];
+	for (int i = 0; i < TYPES; ++i)
+		factor[i] = source.factor[i];
+
 	moves = new AddOns *[MAX_MOVES];
 	for (int i{0}; i < MAX_MOVES; ++i)
 		moves[i] = nullptr;
@@ -39,6 +35,8 @@ Pokemon::Pokemon(const Pokemon &source) : type(source.type), status(source.statu
 Pokemon::~Pokemon()
 {
 	database = NULL;
+	delete[] factor;
+	factor = nullptr;
 	destroyMovesList();
 	delete[] moves;
 	moves = NULL;
@@ -169,14 +167,9 @@ bool Pokemon::switchAttacks(AddOns *attack)
 }
 
 // initializes pokemon with level, hp, and starting move
-bool Pokemon::initialize()
+bool Pokemon::initialize(AddOnsDb* db)
 {
-	if (!database)
-	{
-		cout << "Must add database\n";
-		return false;
-	}
-
+	database = db;
 	moves[1] = new Attacks(*(dynamic_cast<Attacks *>(database->retrieveAttack("normal"))));
 	++level;
 	hp += 500;
@@ -233,6 +226,35 @@ bool Pokemon::attack(Pokemon &opponent)
 		cout << name << " gained enough experiece to increase to level " << level << "!\n";
 	}
 	return opponent.hit(*(dynamic_cast<Attacks *>(moves[select])));
+}
+
+// takes damage an attack, use item if holding item, and change status if hp reaches 0
+bool Pokemon::hit(const Attacks &attack)
+{
+	bool hurt = false;
+	int damage = attack.calcDamage(factor, type);
+	if (damage)
+	{
+		hp -= damage;
+		hurt = true;
+	}
+	else
+	{
+		cout << "Hooray! " << name << " dodged the attack!\n";
+	}
+	if (hp < 100 && hp > 0 && isHoldingItem())
+	{
+		hp += moves[ITEM]->use();
+		cout << name << " used " << *moves[ITEM] << " to increase its hp by a little!\n";
+		delete moves[ITEM];
+		moves[ITEM] = NULL;
+	}
+	if (hp <= 0)
+	{
+		hp = 0;
+		status = ko;
+	}
+	return hurt;
 }
 
 // return pokemon state for battle use
@@ -297,6 +319,11 @@ Pokemon &Pokemon::operator=(Pokemon &source)
 	name = source.name;
 	database = source.database;
 
+	delete[] factor;
+	factor = new float[TYPES];
+	for (int i = 0; i < TYPES; ++i)
+		factor[i] = source.factor[i];
+
 	destroyMovesList();
 	delete[] moves;
 	moves = new AddOns *[MAX_MOVES];
@@ -308,7 +335,7 @@ Pokemon &Pokemon::operator=(Pokemon &source)
 //<< operator overloading
 ostream &operator<<(ostream &os, const Pokemon &pokemon)
 {
-	pokemon.display(os);
+	os << pokemon.name;
 	return os;
 }
 

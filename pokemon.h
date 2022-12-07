@@ -53,6 +53,7 @@ protected:
 	int maxHP;
 	string name;
 	AddOnsDb *database;
+	float *factor;
 	AddOns **moves;
 
 	enum
@@ -67,15 +68,12 @@ protected:
 
 public:
 	Pokemon();					 // default constructor
-	Pokemon(AddOnsDb *, string); // arg constructor takes pointer to database
 	Pokemon(const Pokemon &);	 // copy constructor
-	virtual ~Pokemon();			 // destructor
+	virtual ~Pokemon() = 0;			 // destructor
 
-	virtual bool hit(const Attacks &) = 0;	   // take a hit from the opponent
-	virtual void display(ostream &) const = 0; // display Pokemon
 	virtual void displayFullInfo() const;	   // display all info
-
-	bool initialize();				 // create the baby pokemon
+	bool hit(const Attacks &);	   // take a hit from the opponent
+	bool initialize(AddOnsDb* db);				 // create the baby pokemon
 	int displayMoves() const;		 // display move set
 	bool learnNewAttack();			 // helper function because each pokemon knows their type
 	bool hold(const Items &);		 // have pokemon hold item
@@ -126,74 +124,42 @@ public:
 
 class Pikachu : public Pokemon
 {
-private:
-	float *factor;
-
 public:
 	Pikachu();										  // default constructor
-	explicit Pikachu(AddOnsDb *, string = "Pikachu"); // arg constructor
 	Pikachu(const Pikachu &);						  // copy constructor
-	~Pikachu();										  // destructor
-
-	bool hit(const Attacks &);	   // take a hit from the opponent
-	void display(ostream &) const; // display Pikachu
-	void displayFullInfo() const;  // display all info
-
 	Pikachu &operator=(Pikachu &); // overload = operator
+
+	void displayFullInfo() const;  // display all info
 };
 
 class Charmander : public Pokemon
 {
-private:
-	float *factor;
-
 public:
 	Charmander();											// default constructor
-	explicit Charmander(AddOnsDb *, string = "Charmander"); // arg constructor
 	Charmander(const Charmander &);							// copy constructor
-	~Charmander();											// destructor
-
-	bool hit(const Attacks &);	   // take a hit from the opponent
-	void display(ostream &) const; // display Charmander
-	void displayFullInfo() const;  // display all info
-
 	Charmander &operator=(Charmander &); // overload = operator
+
+	void displayFullInfo() const;  // display all info
 };
 
 class Squirtle : public Pokemon
 {
-private:
-	float *factor;
-
 public:
 	Squirtle();											// default constructor
-	explicit Squirtle(AddOnsDb *, string = "Squirtle"); // arg constructor
 	Squirtle(const Squirtle &);							// copy constructor
-	~Squirtle();										// destructor
-
-	bool hit(const Attacks &);	   // take a hit from the opponent
-	void display(ostream &) const; // display Squirtle
-	void displayFullInfo() const;  // display all info
-
 	Squirtle &operator=(Squirtle &); // overload = operator
+
+	void displayFullInfo() const;  // display all info
 };
 
 class Bulbasaur : public Pokemon
 {
-private:
-	float *factor;
-
 public:
 	Bulbasaur();										  // default constructor
-	explicit Bulbasaur(AddOnsDb *, string = "Bulbasaur"); // arg constructor
 	Bulbasaur(const Bulbasaur &);						  // copy constructor
-	~Bulbasaur();										  // destructor
-
-	bool hit(const Attacks &);	   // take a hit from the opponent
-	void display(ostream &) const; // display Bulbasaur
-	void displayFullInfo() const;  // display all info
-
 	Bulbasaur &operator=(Bulbasaur &); // overload = operator
+
+	void displayFullInfo() const;  // display all info
 };
 
 #endif
