@@ -52,6 +52,7 @@ protected:
 	int hp;
 	int maxHP;
 	string name;
+	float *factor;
 	AddOnsDb *database;
 	AddOns **moves;
 
@@ -126,9 +127,6 @@ public:
 
 class Pikachu : public Pokemon
 {
-private:
-	float *factor;
-
 public:
 	Pikachu();										  // default constructor
 	explicit Pikachu(AddOnsDb *, string = "Pikachu"); // arg constructor
@@ -144,9 +142,6 @@ public:
 
 class Charmander : public Pokemon
 {
-private:
-	float *factor;
-
 public:
 	Charmander();											// default constructor
 	explicit Charmander(AddOnsDb *, string = "Charmander"); // arg constructor
@@ -162,9 +157,6 @@ public:
 
 class Squirtle : public Pokemon
 {
-private:
-	float *factor;
-
 public:
 	Squirtle();											// default constructor
 	explicit Squirtle(AddOnsDb *, string = "Squirtle"); // arg constructor
@@ -180,9 +172,6 @@ public:
 
 class Bulbasaur : public Pokemon
 {
-private:
-	float *factor;
-
 public:
 	Bulbasaur();										  // default constructor
 	explicit Bulbasaur(AddOnsDb *, string = "Bulbasaur"); // arg constructor

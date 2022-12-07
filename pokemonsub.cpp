@@ -12,21 +12,21 @@ Squirtle, and Bulbasaur.
 #include "pokemon.h"
 
 // default constructor
-Pikachu::Pikachu() : factor(0)
+Pikachu::Pikachu()
 {
 	factor = new float[TYPES]{1.0, 2.0, 2.0, 1.0, 1.0};
 	type = electric;
 }
 
 // arg constructor
-Pikachu::Pikachu(AddOnsDb *db, string aName) : Pokemon(db, aName), factor(0)
+Pikachu::Pikachu(AddOnsDb *db, string aName) : Pokemon(db, aName)
 {
 	factor = new float[TYPES]{1.0, 2.0, 2.0, 1.0, 1.0};
 	type = electric;
 }
 
 // copy constructor
-Pikachu::Pikachu(const Pikachu &source) : Pokemon(source), factor(0)
+Pikachu::Pikachu(const Pikachu &source) : Pokemon(source)
 {
 	factor = new float[source.TYPES];
 	for (int i = 0; i < source.TYPES; ++i)
@@ -104,21 +104,21 @@ Pikachu &Pikachu::operator=(Pikachu &source)
 }
 
 // default constructor
-Charmander::Charmander() : factor(0)
+Charmander::Charmander()
 {
 	factor = new float[TYPES]{2.0, 1.0, 0.5, 2.5, 1.0};
 	type = fire;
 }
 
 // arg constructor
-Charmander::Charmander(AddOnsDb *db, string aName) : Pokemon(db, aName), factor(0)
+Charmander::Charmander(AddOnsDb *db, string aName) : Pokemon(db, aName)
 {
 	factor = new float[TYPES]{2.0, 1.0, 0.5, 2.5, 1.0};
 	type = fire;
 }
 
 // copy constructor
-Charmander::Charmander(const Charmander &source) : Pokemon(source), factor(0)
+Charmander::Charmander(const Charmander &source) : Pokemon(source)
 {
 	factor = new float[source.TYPES];
 	for (int i = 0; i < source.TYPES; ++i)
@@ -195,21 +195,21 @@ Charmander &Charmander::operator=(Charmander &source)
 }
 
 // default constructor
-Squirtle::Squirtle() : factor(0)
+Squirtle::Squirtle()
 {
 	factor = new float[TYPES]{2.0, 2.5, 1.0, 0.5, 1.0};
 	type = water;
 }
 
 // arg constructor
-Squirtle::Squirtle(AddOnsDb *db, string aName) : Pokemon(db, aName), factor(0)
+Squirtle::Squirtle(AddOnsDb *db, string aName) : Pokemon(db, aName)
 {
 	factor = new float[TYPES]{2.0, 2.5, 1.0, 0.5, 1.0};
 	type = water;
 }
 
 // copy constructor
-Squirtle::Squirtle(const Squirtle &source) : Pokemon(source), factor(0)
+Squirtle::Squirtle(const Squirtle &source) : Pokemon(source)
 {
 	factor = new float[source.TYPES];
 	for (int i = 0; i < source.TYPES; ++i)
@@ -286,21 +286,21 @@ Squirtle &Squirtle::operator=(Squirtle &source)
 }
 
 // default constructor
-Bulbasaur::Bulbasaur() : factor(0)
+Bulbasaur::Bulbasaur()
 {
 	factor = new float[TYPES]{1.0, 0.5, 2.5, 1.0, 1.0};
 	type = grass;
 }
 
 // arg constructor
-Bulbasaur::Bulbasaur(AddOnsDb *db, string aName) : Pokemon(db, aName), factor(0)
+Bulbasaur::Bulbasaur(AddOnsDb *db, string aName) : Pokemon(db, aName)
 {
 	factor = new float[TYPES]{1.0, 0.5, 2.5, 1.0, 1.0};
 	type = grass;
 }
 
 // copy construcotr
-Bulbasaur::Bulbasaur(const Bulbasaur &source) : Pokemon(source), factor(0)
+Bulbasaur::Bulbasaur(const Bulbasaur &source) : Pokemon(source)
 {
 	factor = new float[source.TYPES];
 	for (int i = 0; i < source.TYPES; ++i)
