@@ -12,7 +12,7 @@ Implementations are for namespace minalib.
 #include "minalib.h"
 
 // get and validate user input for int
-int minalib::getInt(const char *prompt, int min, int max)
+int minalib::getValidateInt(const char *prompt, int min, int max)
 {
 	int num = -1;
 	while (num < min || num > max)
@@ -52,7 +52,7 @@ char minalib::getYesNo(const char *prompt)
 }
 
 // user must hit 'Enter' to continue, halts program
-void minalib::enterContinue()
+void minalib::enterToContinue()
 {
 	cout << "\nPress Enter to continue ";
 	cin.ignore(100, '\n');

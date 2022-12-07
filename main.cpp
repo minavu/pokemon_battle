@@ -21,7 +21,7 @@ using namespace std;
 int main() {
 	Kanto kanto;
 	kanto.init();
-	kanto.start();
+	kanto.startMenuOptions();
 
 
 	return 0;

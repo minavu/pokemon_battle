@@ -85,7 +85,7 @@ public:
 	bool levelUp();					 // increase experience then in turn level/maxHP
 	bool hasGrown();				 // indicate growth since last learn
 	void changeName(const string &); // set new name
-	bool state();					 // return status for battle
+	bool isAlive();					 // return status for battle
 
 	void battleStats() const; // display only name, level, hp
 

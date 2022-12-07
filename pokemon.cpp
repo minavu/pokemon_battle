@@ -165,7 +165,7 @@ bool Pokemon::switchAttacks(AddOns *attack)
 	bool done = false;
 	cout << "0) go back\n";
 	displayMoves();
-	int select = minalib::getInt("Select a move to replace: ", 0, MOVES);
+	int select = minalib::getValidateInt("Select a move to replace: ", 0, MOVES);
 	cout << "You selected " << select << endl;
 	if (select > 0)
 	{
@@ -230,11 +230,11 @@ bool Pokemon::holding() const
 bool Pokemon::attack(Pokemon &opponent)
 {
 	int count = displayMoves();
-	int select = minalib::getInt("Select a move from above to attack: ", 1, count);
+	int select = minalib::getValidateInt("Select a move from above to attack: ", 1, count);
 	bool usable = moves[select]->use();
 	while (!usable)
 	{
-		select = minalib::getInt("No more PP left. Select another move to attack: ", 1, count);
+		select = minalib::getValidateInt("No more PP left. Select another move to attack: ", 1, count);
 		usable = moves[select]->use();
 	}
 	cout << "You attack with " << *moves[select] << endl;
@@ -246,7 +246,7 @@ bool Pokemon::attack(Pokemon &opponent)
 }
 
 // return pokemon state for battle use
-bool Pokemon::state()
+bool Pokemon::isAlive()
 {
 	return status == alive ? true : false;
 }

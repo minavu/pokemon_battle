@@ -19,10 +19,10 @@ using namespace std;
 
 namespace minalib
 {
-	int getInt(const char *prompt, int min = 0, int max = 1000); // get and validate user int input between min and max
-	char getYesNo(const char *prompt);							 // get and validate user input limit to yes and no answers
-	void enterContinue();										 // user press enter to continue
-	void clearScreen();											 // clear screen using newline
+	int getValidateInt(const char *prompt, int min = 0, int max = 1000); // get and validate user int input between min and max
+	char getYesNo(const char *prompt);									 // get and validate user input limit to yes and no answers
+	void enterToContinue();												 // user press enter to continue
+	void clearScreen();													 // clear screen using newline
 };
 
 #endif

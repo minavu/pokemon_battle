@@ -1,22 +1,22 @@
 /*
 Programmer: Mina Vu
 Assignment: Prog3
-File name:  redblack.cpp
+File name:  redblacktree.cpp
 Class:      CS202
 Term:	    Fall 2020
 
-This file contains all the implementations for class RedBlack.
+This file contains all the implementations for class RedBlackTree.
 Some functions were later not used because better ideas materialized.
 Function information below.
 */
 
-#include "redblack.h"
+#include "redblacktree.h"
 
 // default constructor
-RedBlack::RedBlack() : root(0) {}
+RedBlackTree::RedBlackTree() : root(0) {}
 
 // copy constructor
-RedBlack::RedBlack(const RedBlack &source) : root(0)
+RedBlackTree::RedBlackTree(const RedBlackTree &source) : root(0)
 {
 	if (source.root)
 	{
@@ -26,7 +26,7 @@ RedBlack::RedBlack(const RedBlack &source) : root(0)
 
 // copy function copy from source root to destination root recursively
 // assuming that destination root is null before processing
-void RedBlack::copy(Pokemon *&dstPtr, Pokemon *srcPtr)
+void RedBlackTree::copy(Pokemon *&dstPtr, Pokemon *srcPtr)
 {
 	if (srcPtr)
 	{
@@ -52,7 +52,7 @@ void RedBlack::copy(Pokemon *&dstPtr, Pokemon *srcPtr)
 }
 
 //= operator overload
-RedBlack &RedBlack::operator=(const RedBlack &source)
+RedBlackTree &RedBlackTree::operator=(const RedBlackTree &source)
 {
 	if (&source != this)
 	{
@@ -66,25 +66,25 @@ RedBlack &RedBlack::operator=(const RedBlack &source)
 }
 
 // destructor
-RedBlack::~RedBlack()
+RedBlackTree::~RedBlackTree()
 {
 	destroy(root);
 }
 
 // indicate if tree is empty or not
-bool RedBlack::isEmpty() const
+bool RedBlackTree::isEmpty() const
 {
 	return (!root) ? true : false;
 }
 
 // height function helper
-int RedBlack::height()
+int RedBlackTree::height()
 {
 	return height(root);
 }
 
 // recursively find height of tree
-int RedBlack::height(Pokemon *ptr)
+int RedBlackTree::height(Pokemon *ptr)
 {
 	int level = 0;
 	if (ptr)
@@ -104,7 +104,7 @@ int RedBlack::height(Pokemon *ptr)
 }
 
 // display tree by breadth
-void RedBlack::displayBreadth()
+void RedBlackTree::displayBreadth()
 {
 	int h = height(root);
 	for (int i = 1; i <= h; ++i)
@@ -116,7 +116,7 @@ void RedBlack::displayBreadth()
 }
 
 // recursively display tree by breadth
-void RedBlack::displayBreadth(Pokemon *ptr, int level)
+void RedBlackTree::displayBreadth(Pokemon *ptr, int level)
 {
 	if (ptr)
 	{
@@ -133,13 +133,13 @@ void RedBlack::displayBreadth(Pokemon *ptr, int level)
 }
 
 // insert pokemon pointer
-int RedBlack::insert(Pokemon *pokemon)
+int RedBlackTree::insert(Pokemon *pokemon)
 {
 	return insert(root, pokemon);
 }
 
 // insert pokemon by type indication
-int RedBlack::insert(string draw, AddOnsDb *database, string name)
+int RedBlackTree::insert(string draw, AddOnsDb *database, string name)
 {
 	Pokemon *toAdd = NULL;
 	if (draw == "Pikachu")
@@ -192,7 +192,7 @@ int RedBlack::insert(string draw, AddOnsDb *database, string name)
 
 // insert pokemon recursively and maintain properties of a redblack tree
 // this is the bulk of the work!
-int RedBlack::insert(Pokemon *&ptr, Pokemon *pokemon)
+int RedBlackTree::insert(Pokemon *&ptr, Pokemon *pokemon)
 {
 	int lineage = 0;
 	if (!ptr)
@@ -284,7 +284,7 @@ int RedBlack::insert(Pokemon *&ptr, Pokemon *pokemon)
 }
 
 // rotate right to rebalance tree, switch colors
-Pokemon *RedBlack::rightRotate(Pokemon *&parent, Pokemon *&grandparent)
+Pokemon *RedBlackTree::rightRotate(Pokemon *&parent, Pokemon *&grandparent)
 {
 	bool sib = parent->rightColor();
 	bool par = grandparent->leftColor();
@@ -299,7 +299,7 @@ Pokemon *RedBlack::rightRotate(Pokemon *&parent, Pokemon *&grandparent)
 }
 
 // rotate left to rebalance tree, switch colors
-Pokemon *RedBlack::leftRotate(Pokemon *&parent, Pokemon *&grandparent)
+Pokemon *RedBlackTree::leftRotate(Pokemon *&parent, Pokemon *&grandparent)
 {
 	bool sib = parent->leftColor();
 	bool par = grandparent->rightColor();
@@ -314,7 +314,7 @@ Pokemon *RedBlack::leftRotate(Pokemon *&parent, Pokemon *&grandparent)
 }
 
 // display inorder
-int RedBlack::displayInorder()
+int RedBlackTree::displayInorder()
 {
 	int count = 0;
 	displayInorder(root, count);
@@ -323,7 +323,7 @@ int RedBlack::displayInorder()
 }
 
 // dispaly inorder
-void RedBlack::displayInorder(Pokemon *ptr, int &count)
+void RedBlackTree::displayInorder(Pokemon *ptr, int &count)
 {
 	if (ptr)
 	{
@@ -336,14 +336,14 @@ void RedBlack::displayInorder(Pokemon *ptr, int &count)
 }
 
 // display preorder
-void RedBlack::displayPreorder()
+void RedBlackTree::displayPreorder()
 {
 	displayPreorder(root);
 	cout << endl;
 }
 
 // display preorder
-void RedBlack::displayPreorder(Pokemon *ptr)
+void RedBlackTree::displayPreorder(Pokemon *ptr)
 {
 	if (ptr)
 	{
@@ -355,7 +355,7 @@ void RedBlack::displayPreorder(Pokemon *ptr)
 }
 
 // destroy tree
-void RedBlack::destroy(Pokemon *&ptr)
+void RedBlackTree::destroy(Pokemon *&ptr)
 {
 	if (ptr)
 	{
@@ -367,13 +367,13 @@ void RedBlack::destroy(Pokemon *&ptr)
 }
 
 // retrieve pokemon by name helper function
-Pokemon *RedBlack::retrieve(const string &name)
+Pokemon *RedBlackTree::retrieve(const string &name)
 {
 	return retrieve(root, name);
 }
 
 // recursively retrieve pokemon by name
-Pokemon *RedBlack::retrieve(Pokemon *ptr, const string &name)
+Pokemon *RedBlackTree::retrieve(Pokemon *ptr, const string &name)
 {
 	Pokemon *temp = NULL;
 	if (ptr)
@@ -395,18 +395,18 @@ Pokemon *RedBlack::retrieve(Pokemon *ptr, const string &name)
 }
 
 // choose by pokemon by number
-Pokemon *RedBlack::choose(const char *prompt)
+Pokemon *RedBlackTree::choose(const char *prompt)
 {
 	Pokemon *chosen = NULL;
 	int count = displayInorder();
-	int select = minalib::getInt(prompt, 1, count);
+	int select = minalib::getValidateInt(prompt, 1, count);
 	count = 0;
 	choose(root, chosen, select, count);
 	return chosen;
 }
 
 // recursively choose a pokemon by number
-void RedBlack::choose(Pokemon *ptr, Pokemon *&chosen, int selection, int &count)
+void RedBlackTree::choose(Pokemon *ptr, Pokemon *&chosen, int selection, int &count)
 {
 	if (ptr)
 	{
@@ -421,13 +421,13 @@ void RedBlack::choose(Pokemon *ptr, Pokemon *&chosen, int selection, int &count)
 }
 
 // helper function to showgrown
-int RedBlack::showGrown()
+int RedBlackTree::showGrown()
 {
 	return showGrown(root);
 }
 
 // recursively call pokemon to learn new move if it has leveled up
-int RedBlack::showGrown(Pokemon *ptr)
+int RedBlackTree::showGrown(Pokemon *ptr)
 {
 	int count = 0;
 	if (ptr)
@@ -444,13 +444,13 @@ int RedBlack::showGrown(Pokemon *ptr)
 }
 
 // restore helper function
-void RedBlack::restore()
+void RedBlackTree::restore()
 {
 	restore(root);
 }
 
 // recursively restore all pokemons
-void RedBlack::restore(Pokemon *ptr)
+void RedBlackTree::restore(Pokemon *ptr)
 {
 	if (ptr)
 	{
