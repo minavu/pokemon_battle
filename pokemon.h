@@ -68,7 +68,6 @@ protected:
 
 public:
 	Pokemon();					 // default constructor
-	Pokemon(AddOnsDb *, string); // arg constructor takes pointer to database
 	Pokemon(const Pokemon &);	 // copy constructor
 	virtual ~Pokemon();			 // destructor
 
@@ -130,7 +129,6 @@ class Pikachu : public Pokemon
 public:
 	Pikachu();										  // default constructor
 	Pikachu(const Pikachu &);						  // copy constructor
-	~Pikachu();										  // destructor
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
 	void display(ostream &) const; // display Pikachu
@@ -144,7 +142,6 @@ class Charmander : public Pokemon
 public:
 	Charmander();											// default constructor
 	Charmander(const Charmander &);							// copy constructor
-	~Charmander();											// destructor
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
 	void display(ostream &) const; // display Charmander
@@ -158,7 +155,6 @@ class Squirtle : public Pokemon
 public:
 	Squirtle();											// default constructor
 	Squirtle(const Squirtle &);							// copy constructor
-	~Squirtle();										// destructor
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
 	void display(ostream &) const; // display Squirtle
@@ -172,7 +168,6 @@ class Bulbasaur : public Pokemon
 public:
 	Bulbasaur();										  // default constructor
 	Bulbasaur(const Bulbasaur &);						  // copy constructor
-	~Bulbasaur();										  // destructor
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
 	void display(ostream &) const; // display Bulbasaur

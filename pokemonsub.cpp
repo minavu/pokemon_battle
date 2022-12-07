@@ -30,13 +30,6 @@ Pikachu::Pikachu(const Pikachu &source) : Pokemon(source)
 	type = source.type;
 }
 
-// destructor
-Pikachu::~Pikachu()
-{
-	delete[] factor;
-	factor = NULL;
-}
-
 // display pikachu name
 // had more to this before ideas changed
 void Pikachu::display(ostream &os) const
@@ -114,13 +107,6 @@ Charmander::Charmander(const Charmander &source) : Pokemon(source)
 		factor[i] = source.factor[i];
 	}
 	type = source.type;
-}
-
-// destructor
-Charmander::~Charmander()
-{
-	delete[] factor;
-	factor = NULL;
 }
 
 // display charmander's name
@@ -201,13 +187,6 @@ Squirtle::Squirtle(const Squirtle &source) : Pokemon(source)
 	type = source.type;
 }
 
-// destructor
-Squirtle::~Squirtle()
-{
-	delete[] factor;
-	factor = NULL;
-}
-
 // display squirtle's name
 void Squirtle::display(ostream &os) const
 {
@@ -284,13 +263,6 @@ Bulbasaur::Bulbasaur(const Bulbasaur &source) : Pokemon(source)
 		factor[i] = source.factor[i];
 	}
 	type = source.type;
-}
-
-// destructor
-Bulbasaur::~Bulbasaur()
-{
-	delete[] factor;
-	factor = NULL;
 }
 
 // display Bulbasaur's name

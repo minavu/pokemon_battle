@@ -18,14 +18,6 @@ Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp
 		moves[i] = nullptr;
 }
 
-// arg constructor takes a name and database pointer
-Pokemon::Pokemon(AddOnsDb *db, string aName) : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), factor(0), name(aName), database(db), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
-{
-	moves = new AddOns *[MAX_MOVES];
-	for (int i{0}; i < MAX_MOVES; ++i)
-		moves[i] = nullptr;
-}
-
 // copy constructor
 Pokemon::Pokemon(const Pokemon &source) : type(source.type), status(source.status), grown(source.grown), level(source.level), exp(source.exp), hp(source.hp), maxHP(source.maxHP), factor(0), name(source.name), database(source.database), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
@@ -43,6 +35,8 @@ Pokemon::Pokemon(const Pokemon &source) : type(source.type), status(source.statu
 Pokemon::~Pokemon()
 {
 	database = NULL;
+	delete[] factor;
+	factor = nullptr;
 	destroyMovesList();
 	delete[] moves;
 	moves = NULL;
