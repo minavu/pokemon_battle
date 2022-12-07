@@ -20,15 +20,7 @@ Pikachu::Pikachu()
 }
 
 // copy constructor
-Pikachu::Pikachu(const Pikachu &source) : Pokemon(source)
-{
-	factor = new float[source.TYPES];
-	for (int i = 0; i < source.TYPES; ++i)
-	{
-		factor[i] = source.factor[i];
-	}
-	type = source.type;
-}
+Pikachu::Pikachu(const Pikachu &source) : Pokemon(source) {}
 
 // display pikachu name
 // had more to this before ideas changed
@@ -76,17 +68,7 @@ bool Pikachu::hit(const Attacks &attack)
 //= operator overload
 Pikachu &Pikachu::operator=(Pikachu &source)
 {
-	if (&source != this)
-	{
-		Pokemon::operator=(source);
-		delete[] factor;
-		factor = new float[source.TYPES];
-		for (int i = 0; i < source.TYPES; ++i)
-		{
-			factor[i] = source.factor[i];
-		}
-		type = source.type;
-	}
+	Pokemon::operator=(source);
 	return *this;
 }
 
@@ -99,15 +81,7 @@ Charmander::Charmander()
 }
 
 // copy constructor
-Charmander::Charmander(const Charmander &source) : Pokemon(source)
-{
-	factor = new float[source.TYPES];
-	for (int i = 0; i < source.TYPES; ++i)
-	{
-		factor[i] = source.factor[i];
-	}
-	type = source.type;
-}
+Charmander::Charmander(const Charmander &source) : Pokemon(source) {}
 
 // display charmander's name
 void Charmander::display(ostream &os) const
@@ -154,17 +128,7 @@ bool Charmander::hit(const Attacks &attack)
 //= operator overload
 Charmander &Charmander::operator=(Charmander &source)
 {
-	if (&source != this)
-	{
-		Pokemon::operator=(source);
-		delete[] factor;
-		factor = new float[source.TYPES];
-		for (int i = 0; i < source.TYPES; ++i)
-		{
-			factor[i] = source.factor[i];
-		}
-		type = source.type;
-	}
+	Pokemon::operator=(source);
 	return *this;
 }
 
@@ -177,15 +141,7 @@ Squirtle::Squirtle()
 }
 
 // copy constructor
-Squirtle::Squirtle(const Squirtle &source) : Pokemon(source)
-{
-	factor = new float[source.TYPES];
-	for (int i = 0; i < source.TYPES; ++i)
-	{
-		factor[i] = source.factor[i];
-	}
-	type = source.type;
-}
+Squirtle::Squirtle(const Squirtle &source) : Pokemon(source) {}
 
 // display squirtle's name
 void Squirtle::display(ostream &os) const
@@ -232,17 +188,7 @@ bool Squirtle::hit(const Attacks &attack)
 //= operator overload
 Squirtle &Squirtle::operator=(Squirtle &source)
 {
-	if (&source != this)
-	{
-		Pokemon::operator=(source);
-		delete[] factor;
-		factor = new float[source.TYPES];
-		for (int i = 0; i < source.TYPES; ++i)
-		{
-			factor[i] = source.factor[i];
-		}
-		type = source.type;
-	}
+	Pokemon::operator=(source);
 	return *this;
 }
 
@@ -255,15 +201,7 @@ Bulbasaur::Bulbasaur()
 }
 
 // copy construcotr
-Bulbasaur::Bulbasaur(const Bulbasaur &source) : Pokemon(source)
-{
-	factor = new float[source.TYPES];
-	for (int i = 0; i < source.TYPES; ++i)
-	{
-		factor[i] = source.factor[i];
-	}
-	type = source.type;
-}
+Bulbasaur::Bulbasaur(const Bulbasaur &source) : Pokemon(source) {}
 
 // display Bulbasaur's name
 void Bulbasaur::display(ostream &os) const
@@ -311,16 +249,6 @@ bool Bulbasaur::hit(const Attacks &attack)
 //= operator overload
 Bulbasaur &Bulbasaur::operator=(Bulbasaur &source)
 {
-	if (&source != this)
-	{
-		Pokemon::operator=(source);
-		delete[] factor;
-		factor = new float[source.TYPES];
-		for (int i = 0; i < source.TYPES; ++i)
-		{
-			factor[i] = source.factor[i];
-		}
-		type = source.type;
-	}
+	Pokemon::operator=(source);
 	return *this;
 }

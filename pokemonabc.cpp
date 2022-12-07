@@ -290,6 +290,11 @@ Pokemon &Pokemon::operator=(Pokemon &source)
 	name = source.name;
 	database = source.database;
 
+	delete[] factor;
+	factor = new float[TYPES];
+	for (int i = 0; i < TYPES; ++i)
+		factor[i] = source.factor[i];
+
 	destroyMovesList();
 	delete[] moves;
 	moves = new AddOns *[MAX_MOVES];

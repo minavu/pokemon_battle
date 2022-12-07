@@ -19,7 +19,7 @@ int minalib::getValidateInt(const char *prompt, int min, int max)
 	{
 		cout << prompt;
 		cin >> num;
-		while (!cin)
+		while (!cin || num < min || num > max)
 		{
 			cin.clear();
 			cin.ignore(100, '\n');
@@ -39,7 +39,7 @@ char minalib::getYesNo(const char *prompt)
 	{
 		cout << prompt;
 		cin >> ch;
-		while (!cin)
+		while (!cin || (toupper(ch) != 'Y' && toupper(ch) != 'N'))
 		{
 			cin.clear();
 			cin.ignore(100, '\n');
