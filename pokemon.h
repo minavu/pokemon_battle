@@ -5,7 +5,7 @@ File name:  pokemon.h
 Class:      CS202
 Term:	    Fall 2020
 
-this is the header file for abstract base class Pokemon and its derived classes
+This is the header file for abstract base class Pokemon and its derived classes
 Pikachu, Charmander, Squirtle, and Bulbasaur.  Each Pokemon derived classes takes
 a pointer to the attacks/items database to populate their moves set.
 */
@@ -21,12 +21,9 @@ using namespace std;
 class Pokemon
 {
 private:
-	void init(Attacks **);						 // initialize array recursion for moves array
-	void copy(Attacks **, Attacks **);			 // copy array recursion for moves array
-	void destroy(Attacks **);					 // destroy array recursion for moves array
-	int displayMoves(Attacks **, int = 1) const; // display array recursion for moves array
-	bool learn(Attacks **, Attacks *);			 // add attack recursion for moves array
-	bool switchAttacks(Attacks **, Attacks *);	 // switch out a current move for a new move
+	void copy(AddOns** source);			 // copy array recursion for moves array
+	void destroy();					 // destroy array recursion for moves array
+	bool switchAttacks(AddOns* attack);	 // switch out a current move for a new move
 
 protected:
 	enum
@@ -55,8 +52,8 @@ protected:
 	int hp;
 	int maxHP;
 	string name;
-	AddOnsDb *database;
-	Attacks **moves;
+	AddOnsDb* database;
+	AddOns** moves;
 
 	enum
 	{
@@ -77,7 +74,6 @@ public:
 	bool initialize();					   // create the baby pokemon
 	int displayMoves() const;			   // display move set
 	bool learn();						   // helper function because each pokemon knows their type
-	bool learn(const string &);			   // helper function takes a string indicating type
 	bool hold(const Items &);			   // have pokemon hold item
 	bool holding() const;				   // return true if moves[ITEM] contains item
 	bool attack(Pokemon &);				   // attack the pokemon
@@ -102,9 +98,6 @@ public:
 	bool compare(const Pokemon &, const char *) const; // compare member function
 	Pokemon &operator=(Pokemon &);					   //= operator overload
 	Pokemon &operator+=(const Items &);				   //+= operator overload to hold item
-
-	// string & operator+=(const char *);
-	// string & operator+=(const string &);
 
 	friend string operator+(const string &, const Pokemon &);
 	friend string operator+(const Pokemon &, const string &);
