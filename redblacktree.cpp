@@ -94,91 +94,10 @@ int RedBlackTree::height(Pokemon *ptr)
 		return rheight + 1;
 }
 
-// display tree by breadth
-void RedBlackTree::displayBreadth()
-{
-	int h = height(root);
-	for (int i = 1; i <= h; ++i)
-	{
-		cout << "Level " << i << ":  ";
-		displayBreadth(root, i);
-		cout << endl;
-	}
-}
-
-// recursively display tree by breadth
-void RedBlackTree::displayBreadth(Pokemon *ptr, int level)
-{
-	if (!ptr)
-		return;
-
-	if (level == 1)
-	{
-		cout << *ptr << ", colors are: " << ptr->leftColor() << "/" << ptr->rightColor() << "\t";
-	}
-	else
-	{
-		displayBreadth(ptr->leftLink(), level - 1);
-		displayBreadth(ptr->rightLink(), level - 1);
-	}
-}
-
 // insert pokemon pointer
 int RedBlackTree::insert(Pokemon *pokemon)
 {
 	return insert(root, pokemon);
-}
-
-// insert pokemon by type indication
-int RedBlackTree::insert(string type, AddOnsDb *database, string name)
-{
-	Pokemon *toAdd = NULL;
-	if (type == "Pikachu")
-	{
-		if (name != "")
-		{
-			toAdd = new Pikachu(database, name);
-		}
-		else
-		{
-			toAdd = new Pikachu(database);
-		}
-	}
-	if (type == "Charmander")
-	{
-		if (name != "")
-		{
-			toAdd = new Charmander(database, name);
-		}
-		else
-		{
-			toAdd = new Charmander(database);
-		}
-	}
-	if (type == "Squirtle")
-	{
-		if (name != "")
-		{
-			toAdd = new Squirtle(database, name);
-		}
-		else
-		{
-			toAdd = new Squirtle(database);
-		}
-	}
-	if (type == "Bulbasaur")
-	{
-		if (name != "")
-		{
-			toAdd = new Bulbasaur(database, name);
-		}
-		else
-		{
-			toAdd = new Bulbasaur(database);
-		}
-	}
-	toAdd->initialize();
-	return insert(root, toAdd);
 }
 
 // insert pokemon recursively and maintain properties of a redblack tree
@@ -324,25 +243,6 @@ void RedBlackTree::displayInorder(Pokemon *ptr, int &count)
 	ptr->displayFullInfo();
 	cout << endl;
 	displayInorder(ptr->rightLink(), count);
-}
-
-// display preorder
-void RedBlackTree::displayPreorder()
-{
-	displayPreorder(root);
-	cout << endl;
-}
-
-// display preorder
-void RedBlackTree::displayPreorder(Pokemon *ptr)
-{
-	if (!ptr)
-		return;
-
-	ptr->displayFullInfo();
-	cout << endl;
-	displayPreorder(ptr->leftLink());
-	displayPreorder(ptr->rightLink());
 }
 
 // destroy tree

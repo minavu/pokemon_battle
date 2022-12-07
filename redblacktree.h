@@ -26,9 +26,7 @@ private:
 
 	void copy(Pokemon *&, Pokemon *);				// copy from one tree to another
 	int height(Pokemon *);							// find height of the tree
-	void displayBreadth(Pokemon *, int);			// display by breadth of the tree
 	void displayInorder(Pokemon *, int &);			// display by inorder
-	void displayPreorder(Pokemon *);				// display by preorder
 	int insert(Pokemon *&, Pokemon *);				// recursively insert a new pokemon
 	Pokemon *rightRotate(Pokemon *&, Pokemon *&);	// rotate right for rebalance
 	Pokemon *leftRotate(Pokemon *&, Pokemon *&);	// rotate left for rebalace
@@ -43,17 +41,14 @@ public:
 	RedBlackTree(const RedBlackTree &); // copy constructor
 	~RedBlackTree();					// destructor
 
-	bool isEmpty() const;						 // indicate if tree is empty or not
-	int height();								 // find height helper function
-	void displayBreadth();						 // display by breadth helper function
-	int displayInorder();						 // display by inorder helper function
-	void displayPreorder();						 // display by preorder helper functon
-	int insert(string, AddOnsDb *, string = ""); // insert into tree by type indication only
-	int insert(Pokemon *);						 // insert into tree with created pokemon
-	Pokemon *retrieve(const string &);			 // retrieve pokemon by name
-	Pokemon *choose(const char *);				 // select a pokemon with prompt
-	int showGrown();							 // show grown helper function
-	void restore();								 // restore helper function
+	bool isEmpty() const;			   // indicate if tree is empty or not
+	int height();					   // find height helper function
+	int displayInorder();			   // display by inorder helper function
+	int insert(Pokemon *);			   // insert into tree with created pokemon
+	Pokemon *retrieve(const string &); // retrieve pokemon by name
+	Pokemon *choose(const char *);	   // select a pokemon with prompt
+	int showGrown();				   // show grown helper function
+	void restore();					   // restore helper function
 
 	RedBlackTree &operator=(const RedBlackTree &); //= operator overload
 };
