@@ -31,8 +31,10 @@ class AddOns {
 		AddOns();
 		virtual void display(ostream &) const = 0;
 		virtual int use() = 0;
+		virtual string idType() = 0;
 		AddOns* & nextLink();	// get next pointer
 		AddOns* & prevLink();	// get prev pointer
+		friend ostream &operator<<(ostream &, const AddOns &); // overload << operator
 };
 
 class Attacks : public AddOns
@@ -48,6 +50,9 @@ private:
 public:
 	void display(ostream &) const;					// display data members
 	int use();										// decrement pp by one to use, return false if pp is 0 for attack
+	string idType();
+	void setData(string move, string type, int pow, int acc, int maxPP);
+
 	bool compareType(const Attacks &) const;				// compare the type with another object's type
 	bool compareType(string) const;							// compare the type with input
 	int calcDamage(const float *, const int) const;			// calculate damage
@@ -56,7 +61,6 @@ public:
 	int pow() const;										// return power for damage calculation
 	int acc() const;										// return accuracy for damage calculation
 	bool restore();											// restore pp to maxPP
-	friend ostream &operator<<(ostream &, const Attacks &); // overload << operator
 };
 
 class Items : public AddOns
@@ -68,6 +72,8 @@ private:
 public:
 	void display(ostream &) const; // display data members
 	int use();		   // return hp of item for usage
+	string idType();
+	void setData(string name, int hp);
 };
 
 #endif

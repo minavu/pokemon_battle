@@ -27,6 +27,28 @@ AddOns* & AddOns::prevLink()
 	return prev;
 }
 
+//<< operator overloading
+ostream &operator<<(ostream & os, const AddOns & addon)
+{
+	addon.display(os);
+	return os;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // display function to output the attack info
 void Attacks::display(ostream & os) const
 {
@@ -41,6 +63,10 @@ int Attacks::use()
 
 	--pp;
 	return 1;
+}
+
+string Attacks::idType() {
+	return type;
 }
 
 // compare type of two attacks, return bool
@@ -103,12 +129,28 @@ bool Attacks::restore()
 	return pp = maxPP;
 }
 
-//<< operator overloading
-ostream &operator<<(ostream & os, const Attacks & attack)
-{
-	attack.display(os);
-	return os;
+void Attacks::setData(string amove, string atype, int apower, int acc, int amaxPP) {
+	move = amove;
+	type = atype;
+	power = apower;
+	accuracy = acc;
+	pp = amaxPP;
+	maxPP = amaxPP;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // display function to output the item info
@@ -121,4 +163,13 @@ void Items::display(ostream & os) const
 int Items::use()
 {
 	return hp;
+}
+
+string Items::idType() {
+	return "item";
+}
+
+void Items::setData(string a_name, int an_hp) {
+	name = a_name;
+	hp = an_hp;
 }
