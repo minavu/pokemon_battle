@@ -1,12 +1,11 @@
 /*
 Programmer: Mina Vu
 Assignment: Prog3
-File name:  pokemon.cpp
+File name:  pokemonabc.cpp
 Class:      CS202
 Term:	    Fall 2020
 
-This file contains the implementations for classes Pokemon, Pikachu, Charmander,
-Squirtle, and Bulbasaur.  Pokemon is an ABC class.
+This file contains the implementations for class Pokemon.  Pokemon is an ABC.
 */
 
 #include "pokemon.h"
@@ -117,7 +116,7 @@ bool Pokemon::learnNewAttack()
 		return false;
 	}
 
-	AddOns *temp = new Attacks(*(dynamic_cast<Attacks *>(database->retrieve(mtype))));
+	AddOns *temp = new Attacks(*(dynamic_cast<Attacks *>(database->retrieveAttack(mtype))));
 	cout << name << " wants to learn a new attack! --> " << *temp << endl;
 	char answer = minalib::getYesNo("Do you want to teach your pokemon the above attack (y/n)? ");
 	if (toupper(answer) == 'N')
@@ -178,7 +177,7 @@ bool Pokemon::initialize()
 		return false;
 	}
 
-	moves[1] = new Attacks(*(dynamic_cast<Attacks *>(database->retrieve("normal"))));
+	moves[1] = new Attacks(*(dynamic_cast<Attacks *>(database->retrieveAttack("normal"))));
 	++level;
 	hp += 500;
 	maxHP += 500;

@@ -179,7 +179,7 @@ void Kanto::searchItem()
 
 void Kanto::foundItem()
 {
-	Items *newItem = new Items(*(dynamic_cast<Items *>(database.retrieve())));
+	Items *newItem = new Items(*(dynamic_cast<Items *>(database.retrieveItem())));
 	cout << "\nYou found a " << *newItem << endl;
 
 	char answer = minalib::getYesNo("Do you want to give it to a Pokemon? (y/n) ");

@@ -1,12 +1,12 @@
 /*
 Programmer: Mina Vu
 Assignment: Prog3
-File name:  pokemon.cpp
+File name:  pokemonsub.cpp
 Class:      CS202
 Term:	    Fall 2020
 
-This file contains the implementations for classes Pokemon, Pikachu, Charmander,
-Squirtle, and Bulbasaur.  Pokemon is an ABC class.
+This file contains the implementations for classes Pikachu, Charmander,
+Squirtle, and Bulbasaur.
 */
 
 #include "pokemon.h"
