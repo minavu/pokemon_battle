@@ -133,6 +133,8 @@ int AddOnsDb::incrSize()
 {
 	int newSize = size + 5;
 	AddOns** newTable = new AddOns* [newSize];
+	for (int i {0}; i < newSize; ++i)
+		newTable[i] = nullptr;
 
 	for (int i {0}; i < size; ++i)
 		copy(newTable[i], table[i]);

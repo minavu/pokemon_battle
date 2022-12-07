@@ -134,6 +134,7 @@ bool Pokemon::learn()
 		if (!moves[i]) {
 			moves[i] = temp;
 			added = true;
+			break;
 		}
 	}
 	if (!added)

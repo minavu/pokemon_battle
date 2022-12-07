@@ -94,8 +94,6 @@ public:
 	bool &leftColor();	   // return left color for redblack tree
 	bool &rightColor();	   // return right color for redblack tree
 
-	int whatOp(const char *) const;					   // determine what operator for comparison
-	bool compare(const Pokemon &, const char *) const; // compare member function
 	Pokemon &operator=(Pokemon &);					   //= operator overload
 	Pokemon &operator+=(const Items &);				   //+= operator overload to hold item
 
