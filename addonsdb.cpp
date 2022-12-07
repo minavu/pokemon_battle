@@ -6,58 +6,50 @@ Class:      CS202
 Term:	    Fall 2020
 
 This file contains the implementations for class AddOnsDb.
-Some functions were created for an idea that never manifested or changed and therefore
-was not used in main program.  Information below for functions.
 */
 
 #include "addonsdb.h"
 
 // default constructor creates a table and initialize everything to 0
 AddOnsDb::AddOnsDb() : table(0), size(5)
-{ // change back to 5 after figure out copy messup in incrSize function
-	table = new Attacks *[size];
-	init(table, table, size);
+{
+	table = new AddOns* [size];
+	for (int i {0}; i < size; ++i)
+		table[i] = nullptr;
 }
 
 // copy constructor
-AddOnsDb::AddOnsDb(const AddOnsDb &source) : table(0), size(source.size)
+AddOnsDb::AddOnsDb(const AddOnsDb & source) : table(0), size(source.size)
 {
-	table = new Attacks *[size];
-	copy(table, table, source.table);
+	table = new AddOns* [size];
+	for (int i {0}; i < size; ++i)
+		copy(table[i], source.table[i]);
 }
 
 // destructor
 AddOnsDb::~AddOnsDb()
 {
-	destroy(table);
+	for (int i {0}; i < size; ++i)
+		destroy(table[i]);
 	delete[] table;
 	table = NULL;
 }
 
-// recursively initialize each array index to 0, can be used with any table not just this object
-void AddOnsDb::init(Attacks **arr, Attacks **tbl, int s)
-{
-	if (arr != tbl + s)
-	{
-		*arr = NULL;
-		init(++arr, tbl, s);
-	}
-}
-
-// recursively copy all from source pointer
-void AddOnsDb::copy(Attacks *&ptr, Attacks *srcPtr)
+// recursively copy all of list from source pointer
+void AddOnsDb::copy(AddOns* & ptr, AddOns* srcPtr)
 {
 	ptr = NULL;
 	if (srcPtr)
 	{
 		if (typeid(*srcPtr) == typeid(Items))
 		{
-			Items *item = dynamic_cast<Items *>(srcPtr);
+			Items *item = dynamic_cast<Items*>(srcPtr);
 			ptr = new Items(*item);
 		}
 		else
 		{
-			ptr = new Attacks(*srcPtr);
+			Attacks *attack = dynamic_cast<Attacks*>(srcPtr);
+			ptr = new Attacks(*attack);
 		}
 		copy(ptr->nextLink(), srcPtr->nextLink());
 		if (ptr->nextLink())
@@ -67,66 +59,36 @@ void AddOnsDb::copy(Attacks *&ptr, Attacks *srcPtr)
 	}
 }
 
-// recursively copy all from source table
-void AddOnsDb::copy(Attacks **arr, Attacks **dstTbl, Attacks **srcTbl)
-{
-	if (arr != dstTbl + size)
-	{
-		copy(*arr, *srcTbl);
-		copy(++arr, dstTbl, ++srcTbl);
-	}
-}
-
-// recursively destroy all from pointer
-void AddOnsDb::destroy(Attacks *&ptr)
+// recursively destroy all of list from pointer
+void AddOnsDb::destroy(AddOns* & ptr)
 {
 	if (ptr)
 	{
-		Attacks *temp = ptr;
+		AddOns* temp = ptr;
 		ptr = ptr->nextLink();
 		delete temp;
 		destroy(ptr);
 	}
 }
 
-// recursively destroy all from table
-void AddOnsDb::destroy(Attacks **arr)
-{
-	if (arr != table + size)
-	{
-		destroy(*arr);
-		destroy(++arr);
+bool AddOnsDb::insert(AddOns* addon) {
+	for (int i {0}; i < size; ++i) {
+		if (!table[i]) {
+			return insert(table[i], addon);
+		}
+
+		if (table[i]->idType() == addon->idType()) {
+			return insert(table[i], addon);
+		}
 	}
+
+	int oldSize = size;
+	size = incrSize();
+	return insert(table[oldSize], addon);
 }
 
-// insert helper function for an attack
-bool AddOnsDb::insert(const Attacks &attack)
-{
-	Attacks *add = new Attacks(attack);
-	bool done = insert(table, add);
-	if (!done)
-	{
-		size = incrSize();
-		done = insert(table, add);
-	}
-	return done;
-}
-
-// insert helper function for an item
-bool AddOnsDb::insert(const Items &item)
-{
-	Attacks *add = new Items(item);
-	bool done = insert(table, add);
-	if (!done)
-	{
-		size = incrSize();
-		done = insert(table, add);
-	}
-	return done;
-}
-
-// recursively insert at end of pointer
-int AddOnsDb::insert(Attacks *&ptr, Attacks *attack)
+// recursively insert at end of pointer list
+int AddOnsDb::insert(AddOns* & ptr, AddOns* attack)
 {
 	int done = false;
 	if (ptr)
@@ -146,39 +108,18 @@ int AddOnsDb::insert(Attacks *&ptr, Attacks *attack)
 	return done;
 }
 
-// recursively insert into table were type matches
-bool AddOnsDb::insert(Attacks **arr, Attacks *attack)
-{
-	bool done = false;
-	if (arr != table + size)
-	{
-		if (*arr == NULL)
-		{
-			done = insert(*arr, attack);
-		}
-		else
-		{
-			if ((*arr)->compareType(*attack))
-			{
-				done = insert(*arr, attack);
-			}
-			else
-			{
-				done = insert(++arr, attack);
-			}
-		}
-	}
-	return done;
-}
-
 // display helper function
 void AddOnsDb::display()
 {
-	display(table);
+	for (int i {0}; i < size; ++i) {
+		cout << "List: " << i + 1 << endl;
+		display(table[i]);
+		cout << endl;
+	}
 }
 
 // recursively display all from pointer
-void AddOnsDb::display(Attacks *ptr)
+void AddOnsDb::display(AddOns* ptr)
 {
 	if (ptr)
 	{
@@ -187,61 +128,60 @@ void AddOnsDb::display(Attacks *ptr)
 	}
 }
 
-// recursively display all from table
-void AddOnsDb::display(Attacks **arr, int count)
-{
-	if (arr != table + size)
-	{
-		cout << "List: " << count << endl;
-		display(*arr);
-		cout << endl;
-		display(++arr, ++count);
-	}
-}
-
 // increase size of table when more items of different types are added than original table size allowed
 int AddOnsDb::incrSize()
 {
 	int newSize = size + 5;
-	Attacks **newTable = new Attacks *[newSize];
-	init(newTable, newTable, newSize);
-	copy(newTable, newTable, table);
-	destroy(table);
+	AddOns** newTable = new AddOns* [newSize];
+	for (int i {0}; i < newSize; ++i)
+		newTable[i] = nullptr;
+
+	for (int i {0}; i < size; ++i)
+		copy(newTable[i], table[i]);
+
+	for (int i {0}; i < size; ++i)
+		destroy(table[i]);
 	delete[] table;
+	
 	table = newTable;
 	return newSize;
 }
 
 // retrieve an item and return a pointer
 // idea is so user retrieving will make copy to add to their table
-Attacks *AddOnsDb::retrieve()
+AddOns* AddOnsDb::retrieve()
 {
-	return retrieve(table, "");
+	int selection = 0;
+	bool selected = false;
+	for (int i {0}; i < size; ++i) {
+		if (table[i]->idType() == "item")
+			return retrieve(table[i], selection, selected);
+	}
+	return nullptr;
 }
 
 // retrieve an attack and return a pointer
 // random number generator decides what type of attack is chosen
-Attacks *AddOnsDb::retrieve(const string &type1, const string type2)
+AddOns* AddOnsDb::retrieve(const string & type1, const string type2)
 {
 	srand(time(NULL));
 	int draw = rand() % 3 + 1;
-	Attacks *temp = NULL;
-	if (draw > 1)
-	{
-		temp = retrieve(table, type1);
+	string type = draw > 1 ? type1 : type2;
+
+	int selection = 0;
+	bool selected = false;
+	for (int i {0}; i < size; ++i) {
+		if (table[i]->idType() == type) 
+			return retrieve(table[i], selection, selected);
 	}
-	else
-	{
-		temp = retrieve(table, type2);
-	}
-	return temp;
+	return nullptr;
 }
 
 // retrieve an attack and return pointer recursion
 // rand num gen decides what attack
-Attacks *AddOnsDb::retrieve(Attacks *ptr, int &selection, bool &selected, int count)
+AddOns* AddOnsDb::retrieve(AddOns* ptr, int &selection, bool &selected, int count)
 {
-	Attacks *draw = NULL;
+	AddOns* draw = NULL;
 	if (ptr)
 	{
 		draw = retrieve(ptr->nextLink(), selection, selected, ++count);
@@ -259,122 +199,82 @@ Attacks *AddOnsDb::retrieve(Attacks *ptr, int &selection, bool &selected, int co
 	return draw;
 }
 
-// retrieve an attack and return pointer array recursion
-Attacks *AddOnsDb::retrieve(Attacks **arr, const string &type)
-{
-	int selection = 0;
-	bool selected = false;
-	Attacks *draw = NULL;
-	if (arr != table + size)
-	{
-		if (*arr && (*arr)->compareType(type))
-		{
-			draw = retrieve(*arr, selection, selected);
-		}
-		else
-		{
-			draw = retrieve(++arr, type);
-		}
-	}
-	return draw;
-}
-
 // add attacks from text file to populate the database
 bool AddOnsDb::addAttacks(const char *file)
 {
-	bool done = true;
 	string string1, string2;
 	int a, b, c;
 	char buffer[100];
 
 	ifstream myfile(file);
-	if (myfile.is_open())
-	{
-		while (myfile.peek() != EOF)
-		{
-			myfile.get(buffer, 100, ',');
-			myfile.get();
-			string1 = buffer;
-
-			myfile.get(buffer, 100, ',');
-			myfile.get();
-			string2 = buffer;
-
-			myfile.get(buffer, 100, ',');
-			myfile.get();
-			a = atoi(buffer);
-
-			myfile.get(buffer, 100, ',');
-			myfile.get();
-			b = atoi(buffer);
-
-			myfile.get(buffer, 100, ',');
-			myfile.get();
-			c = atoi(buffer);
-
-			myfile.ignore(100, '\n');
-
-			Attacks attack(string1, string2, a, b, c);
-			*this += attack;
-			// insert(attack);
-		}
-	}
-	else
+	if (!myfile.is_open())
 	{
 		cout << "file can't open\n";
-		done = false;
+		return false;
+	}
+
+	while (myfile.peek() != EOF)
+	{
+		myfile.get(buffer, 100, ',');
+		myfile.get();
+		string1 = buffer;
+
+		myfile.get(buffer, 100, ',');
+		myfile.get();
+		string2 = buffer;
+
+		myfile.get(buffer, 100, ',');
+		myfile.get();
+		a = atoi(buffer);
+
+		myfile.get(buffer, 100, ',');
+		myfile.get();
+		b = atoi(buffer);
+
+		myfile.get(buffer, 100, ',');
+		myfile.get();
+		c = atoi(buffer);
+
+		myfile.ignore(100, '\n');
+
+		Attacks* attack = new Attacks();
+		attack->setData(string1, string2, a, b, c);
+		insert(attack);
 	}
 	myfile.close();
-	return done;
+	return true;
 }
 
 // add items from text file to populate database
-bool AddOnsDb::addItems(const char *file)
+bool AddOnsDb::addItems(const char* file)
 {
-	bool done = true;
 	string string1;
 	int a;
 	char buffer[100];
 
 	ifstream myfile(file);
-	if (myfile.is_open())
-	{
-		while (myfile.peek() != EOF)
-		{
-			myfile.get(buffer, 100, ',');
-			myfile.get();
-			string1 = buffer;
-
-			myfile.get(buffer, 100, ',');
-			myfile.get();
-			a = atoi(buffer);
-
-			myfile.ignore(100, '\n');
-
-			Items item(string1, a);
-			*this += item;
-			// insert(item);
-		}
-	}
-	else
+	if (!myfile.is_open())
 	{
 		cout << "file can't open\n";
-		done = false;
+		return false;
+	}
+
+	while (myfile.peek() != EOF)
+	{
+		myfile.get(buffer, 100, ',');
+		myfile.get();
+		string1 = buffer;
+
+		myfile.get(buffer, 100, ',');
+		myfile.get();
+		a = atoi(buffer);
+
+		myfile.ignore(100, '\n');
+
+		Items* item = new Items();
+		item->setData(string1, a);
+		insert(item);
 	}
 	myfile.close();
-	return done;
-}
-
-//+= operator overload
-AddOnsDb &AddOnsDb::operator+=(const Attacks &attack)
-{
-	insert(attack);
-	return *this;
-}
-
-//+= operator overload
-AddOnsDb &AddOnsDb::operator+=(const Items &item)
-{
-	insert(item);
-	return *this;
+	return true;
 }

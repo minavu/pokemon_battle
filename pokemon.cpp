@@ -15,103 +15,68 @@ Function information below.
 // default constructor
 Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), database(0), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
-	moves = new Attacks *[MAX_MOVES];
-	init(moves);
+	moves = new AddOns* [MAX_MOVES];
+	for (int i {0}; i < MAX_MOVES; ++i)
+		moves[i] = nullptr;
 }
 
 // arg constructor takes a name and database pointer
 Pokemon::Pokemon(AddOnsDb *db, string aName) : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), name(aName), database(db), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
-	moves = new Attacks *[MAX_MOVES];
-	init(moves);
+	moves = new AddOns* [MAX_MOVES];
+	for (int i {0}; i < MAX_MOVES; ++i)
+		moves[i] = nullptr;
 }
 
 // copy constructor
 Pokemon::Pokemon(const Pokemon &source) : type(source.type), status(source.status), grown(source.grown), level(source.level), exp(source.exp), hp(source.hp), maxHP(source.maxHP), name(source.name), database(0), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
 	database = source.database;
-	moves = new Attacks *[source.MAX_MOVES];
-	copy(moves, source.moves);
+	moves = new AddOns* [MAX_MOVES];
+	for (int i {0}; i < MAX_MOVES; ++i)
+		moves[i] = nullptr;
+	copy(source.moves);
 }
 
 // destructor only sets database pointer to null and not delete
 Pokemon::~Pokemon()
 {
 	database = NULL;
-	destroy(moves);
+	destroy();
 	delete[] moves;
 	moves = NULL;
 }
 
-// recursively initialize each array index to 0
-void Pokemon::init(Attacks **arr)
+// copy all from source table
+void Pokemon::copy(AddOns** source)
 {
-	if (arr != moves + MAX_MOVES)
-	{
-		*arr = NULL;
-		init(++arr);
+	if (source[ITEM])
+		moves[ITEM] = new Items(*(dynamic_cast<Items*>(source[ITEM])));
+
+	for (int i {1}; i < MAX_MOVES; ++i) {
+		if (source[i]) {
+			moves[i] = new Attacks(*(dynamic_cast<Attacks*>(source[i])));
+		}
 	}
 }
 
-// recursively copy all from source table
-void Pokemon::copy(Attacks **arr, Attacks **srcTbl)
+// destroy table
+void Pokemon::destroy()
 {
-	*arr = NULL;
-	if (arr != moves + MAX_MOVES)
-	{
-		if (*srcTbl)
-		{
-			if (typeid(*(*srcTbl)) == typeid(Items))
-			{
-				Items *item = dynamic_cast<Items *>(*srcTbl);
-				*arr = new Items(*item);
-			}
-			else
-			{
-				*arr = new Attacks(*(*srcTbl));
-			}
-		}
-		copy(++arr, ++srcTbl);
-	}
-}
-
-// recursively destroy table
-void Pokemon::destroy(Attacks **arr)
-{
-	if (arr != moves + MAX_MOVES)
-	{
-		if (*arr)
-		{
-			delete *arr;
-			*arr = NULL;
-		}
-		destroy(++arr);
-	}
-}
-
-// recursively display moves set with number count in front
-int Pokemon::displayMoves(Attacks **arr, int count) const
-{
-	int has = 0;
-	if (arr != moves + MAX_MOVES)
-	{
-		if (*arr)
-		{
-			cout << count << ". " << *(*arr) << endl;
-			has = displayMoves(++arr, ++count) + 1;
-		}
-		else
-		{
-			has = displayMoves(++arr, ++count);
-		}
-	}
-	return has;
+	for (int i {0}; i < MAX_MOVES; ++i)
+		delete moves[i];
 }
 
 // display moves set helper function
 int Pokemon::displayMoves() const
 {
-	return displayMoves(moves + 1);
+	int has {0};
+	for (int i {1}; i < MAX_MOVES; ++i)
+		if (moves[i]) {
+			++has;
+			cout << has << ". " << *moves[i] << endl;
+		}
+	return has;
 }
 
 // display pokemon full information
@@ -132,7 +97,7 @@ void Pokemon::fullInfo() const
 		cout << name << " is not holding any item\n";
 	}
 	cout << name << "'s moves set\n";
-	displayMoves(moves + 1);
+	displayMoves();
 }
 
 // display only pokemon battle stats
@@ -140,11 +105,6 @@ void Pokemon::battleStats() const
 {
 	char state[][10] = {"alive", "knock-out"};
 	cout << name << "'s current stats-->level: " << level << ", status: " << state[status] << ", hp: " << hp;
-	/*
-		if (holding()) {
-			cout << ", holding a " << *moves[ITEM];
-		}
-	*/
 	cout << endl;
 }
 
@@ -152,72 +112,49 @@ void Pokemon::battleStats() const
 bool Pokemon::learn()
 {
 	char translate[][10] = {"electric", "fire", "water", "grass", "normal"};
-	return learn(translate[type]);
-}
+	string mtype = translate[type];
 
-// learn a new attack by type of pokemon
-// if moves set is full, will prompt for replacement selection
-bool Pokemon::learn(const string &mtype)
-{
-	bool added = false;
-	if (database)
+	if (!database) {
+		cout << "Must add address of AddOnsDb database to initialize pokemon.\n";
+		return false;
+	}
+
+	AddOns* temp = new Attacks(*(dynamic_cast<Attacks*>(database->retrieve(mtype))));
+	cout << name << " wants to learn a new attack! --> " << *temp << endl;
+	char answer = minalib::getYesNo("Do you want to teach your pokemon the above attack (y/n)? ");
+	if (toupper(answer) == 'N')
 	{
-		Attacks *temp = new Attacks(*(database->retrieve(mtype)));
-		cout << name << " wants to learn a new attack! --> " << *temp << endl;
-		char answer = minalib::getYesNo("Do you want to teach your pokemon the above attack (y/n)? ");
-		if (toupper(answer) == 'Y')
-		{
-			added = learn(moves + 1, temp);
-			if (!added)
-			{
-				cout << name << " is full of moves\n";
-				added = switchAttacks(moves + 1, temp);
-				if (!added)
-				{
-					cout << name << " did not learn " << *temp << endl;
-					delete temp;
-				}
-			}
+		cout << name << " did not learn " << *temp << endl;
+		delete temp;
+		return false;
+	}
+
+	bool added {false};
+	for (int i {1}; i < MAX_MOVES; ++i) {
+		if (!moves[i]) {
+			moves[i] = temp;
+			added = true;
+			break;
 		}
-		else
+	}
+	if (!added)
+	{
+		cout << name << " is full of moves\n";
+		added = switchAttacks(temp);
+		if (!added)
 		{
 			cout << name << " did not learn " << *temp << endl;
 			delete temp;
 		}
 	}
-	else
-	{
-		cout << "Must add address of AddOnsDb database to initialize pokemon.\n";
-	}
 	if (added)
-	{
 		grown = false;
-	}
 	return added;
-}
-
-// add a new attack into move set and return false is moves set is full
-bool Pokemon::learn(Attacks **arr, Attacks *attack)
-{
-	bool done = false;
-	if (arr != moves + MAX_MOVES)
-	{
-		if (*arr)
-		{
-			done = learn(++arr, attack);
-		}
-		else
-		{
-			*arr = attack;
-			done = true;
-		}
-	}
-	return done;
 }
 
 // prompt user to select a move from moves set to switch out for new move
 // return false if user decides not to switch
-bool Pokemon::switchAttacks(Attacks **arr, Attacks *attack)
+bool Pokemon::switchAttacks(AddOns* attack)
 {
 	bool done = false;
 	cout << "0) go back\n";
@@ -239,7 +176,7 @@ bool Pokemon::initialize()
 	bool done = false;
 	if (database)
 	{
-		moves[1] = new Attacks(*(database->retrieve("normal")));
+		moves[1] = new Attacks(*(dynamic_cast<Attacks*>(database->retrieve("normal"))));
 		++level;
 		hp += 500;
 		maxHP += 500;
@@ -253,7 +190,6 @@ bool Pokemon::initialize()
 }
 
 // add new item to moves set else indicate pokemon is holding an item already
-// bool Pokemon::hold(Attacks & item) {
 bool Pokemon::hold(const Items &item)
 {
 	bool take = false;
@@ -270,7 +206,6 @@ bool Pokemon::hold(const Items &item)
 }
 
 //+= operator overload
-// Pokemon & Pokemon::operator+= (Attacks & item) {
 Pokemon &Pokemon::operator+=(const Items &item)
 {
 	hold(item);
@@ -290,18 +225,18 @@ bool Pokemon::attack(Pokemon &opponent)
 {
 	int count = displayMoves();
 	int select = minalib::getInt("Select a move from above to attack: ", 1, count);
-	bool usable = moves[select]->useAttack();
+	bool usable = moves[select]->use();
 	while (!usable)
 	{
 		select = minalib::getInt("No more PP left. Select another move to attack: ", 1, count);
-		usable = moves[select]->useAttack();
+		usable = moves[select]->use();
 	}
-	cout << "You attack with " << moves[select]->mov() << endl;
+	cout << "You attack with " << *moves[select] << endl;
 	if (levelUp())
 	{
 		cout << name << " gained enough experiece to increase to level " << level << "!\n";
 	}
-	return opponent.hit(*moves[select]);
+	return opponent.hit(*(dynamic_cast<Attacks*>(moves[select])));
 }
 
 // return pokemon state for battle use
@@ -329,14 +264,11 @@ void Pokemon::restore()
 {
 	status = alive;
 	hp = maxHP;
-	if (moves[1])
-		moves[1]->restore();
-	if (moves[2])
-		moves[2]->restore();
-	if (moves[3])
-		moves[3]->restore();
-	if (moves[4])
-		moves[4]->restore();
+	for (int i {1}; i < MAX_MOVES; ++i)
+		if (moves[i]) {
+			Attacks* attack = dynamic_cast<Attacks*>(moves[i]);
+			attack->restore();
+		}
 }
 
 // increase a pokemon's level by increasing its experience
@@ -381,10 +313,10 @@ Pokemon &Pokemon::operator=(Pokemon &source)
 		name = source.name;
 		database = source.database;
 
-		destroy(moves);
+		destroy();
 		delete[] moves;
-		moves = new Attacks *[source.MAX_MOVES];
-		copy(moves, source.moves);
+		moves = new AddOns* [MAX_MOVES];
+		copy(source.moves);
 	}
 	return *this;
 }
@@ -402,58 +334,6 @@ istream &operator>>(istream &is, Pokemon &pokemon)
 	is >> pokemon.name;
 	return is;
 }
-
-// return int for char* op,  didn't end up using
-/*
-int Pokemon::whatOp(const char* op) const {
-	char ops[][3] = {"==", "!=", "<=", ">=", "<", ">"};
-	int i = 0;
-	while (strcmp(op, ops[i]) != 0) {
-		++i;
-	}
-	return i;
-}
-
-//compare pokemons by name, didn't end up using
-bool Pokemon::compare(const Pokemon & pokemon, const char* op) const {
-	bool answer = false;
-	int what = whatOp(op);
-	switch (what) {
-		case 0:
-			if (name == pokemon.name) {
-				answer = true;
-			}
-			break;
-		case 1:
-			if (name != pokemon.name) {
-				answer = true;
-			}
-			break;
-		case 2:
-			if (name <= pokemon.name) {
-				answer = true;
-			}
-			break;
-		case 3:
-			if (name >= pokemon.name) {
-				answer = true;
-			}
-			break;
-		case 4:
-			if (name < pokemon.name) {
-				answer = true;
-			}
-			break;
-		case 5:
-			if (name > pokemon.name) {
-				answer = true;
-			}
-			break;
-		default:;
-	}
-	return answer;
-}
-*/
 
 string operator+(const string & str, const Pokemon & pokemon) {
 	return str + pokemon.name;
@@ -599,6 +479,27 @@ bool &Pokemon::rightColor()
 	return rcolor;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // default constructor
 Pikachu::Pikachu() : factor(0)
 {
@@ -661,7 +562,7 @@ bool Pikachu::hit(const Attacks &attack)
 	}
 	if (hp < 100 && hp > 0 && holding())
 	{
-		hp += moves[ITEM]->useItem();
+		hp += moves[ITEM]->use();
 		cout << name << " used " << *moves[ITEM] << " to increase its hp by a little!\n";
 		delete moves[ITEM];
 		moves[ITEM] = NULL;
@@ -752,7 +653,7 @@ bool Charmander::hit(const Attacks &attack)
 	}
 	if (hp < 100 && hp > 0 && holding())
 	{
-		hp += moves[ITEM]->useItem();
+		hp += moves[ITEM]->use();
 		cout << name << " used " << *moves[ITEM] << " to increase its hp by a little!\n";
 		delete moves[ITEM];
 		moves[ITEM] = NULL;
@@ -843,7 +744,7 @@ bool Squirtle::hit(const Attacks &attack)
 	}
 	if (hp < 100 && hp > 0 && holding())
 	{
-		hp += moves[ITEM]->useItem();
+		hp += moves[ITEM]->use();
 		cout << name << " used " << *moves[ITEM] << " to increase its hp by a little!\n";
 		delete moves[ITEM];
 		moves[ITEM] = NULL;
@@ -935,7 +836,7 @@ bool Bulbasaur::hit(const Attacks &attack)
 	}
 	if (hp < 100 && hp > 0 && holding())
 	{
-		hp += moves[ITEM]->useItem();
+		hp += moves[ITEM]->use();
 		cout << name << " used " << *moves[ITEM] << " to increase its hp by a little!\n";
 		delete moves[ITEM];
 		moves[ITEM] = NULL;

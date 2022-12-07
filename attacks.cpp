@@ -12,26 +12,65 @@ was not used in main program.  Information below for functions.
 
 #include "attacks.h"
 
-// default constructor
-Attacks::Attacks() : move(""), type(""), power(0), accuracy(0), pp(0), maxPP(0), next(0), prev(0) {}
+AddOns::AddOns() : next(0), prev(0) {}
 
-// arg constructor using const char* inputs
-Attacks::Attacks(const char *aMove, const char *aType, int pow, int acc, int pp) : move(aMove), type(aType), power(pow), accuracy(acc), pp(pp), maxPP(pp), next(0), prev(0) {}
 
-// arg constructor using string inputs
-Attacks::Attacks(string aMove, string aType, int pow, int acc, int pp) : move(aMove), type(aType), power(pow), accuracy(acc), pp(pp), maxPP(pp), next(0), prev(0) {}
+// connection to next addon
+AddOns* & AddOns::nextLink()
+{
+	return next;
+}
 
-// destructor
-Attacks::~Attacks() {}
+// connection to previous addon
+AddOns* & AddOns::prevLink()
+{
+	return prev;
+}
+
+//<< operator overloading
+ostream &operator<<(ostream & os, const AddOns & addon)
+{
+	addon.display(os);
+	return os;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // display function to output the attack info
-void Attacks::display(ostream &os) const
+void Attacks::display(ostream & os) const
 {
 	os << move << ": " << type << ", " << power << " power, " << accuracy << " accuracy, " << pp << " pp";
 }
 
+// decrease pp, return pp used
+int Attacks::use()
+{
+	if (pp == 0)
+		return 0;
+
+	--pp;
+	return 1;
+}
+
+string Attacks::idType() {
+	return type;
+}
+
 // compare type of two attacks, return bool
-bool Attacks::compareType(const Attacks &that) const
+bool Attacks::compareType(const Attacks & that) const
 {
 	return type == that.type;
 }
@@ -83,17 +122,6 @@ int Attacks::acc() const
 	return accuracy;
 }
 
-// decrease pp or return false if pp is 0
-bool Attacks::useAttack()
-{
-	bool used = false;
-	if (pp > 0)
-	{
-		--pp;
-		used = true;
-	}
-	return used;
-}
 
 // restore pp to max pp
 bool Attacks::restore()
@@ -101,54 +129,47 @@ bool Attacks::restore()
 	return pp = maxPP;
 }
 
-// required for the hierarchy, no actual body needed for this class
-int Attacks::useItem() const
-{
-	return 0;
+void Attacks::setData(string amove, string atype, int apower, int acc, int amaxPP) {
+	move = amove;
+	type = atype;
+	power = apower;
+	accuracy = acc;
+	pp = amaxPP;
+	maxPP = amaxPP;
 }
 
-//<< operator overloading
-ostream &operator<<(ostream &os, const Attacks &attack)
-{
-	attack.display(os);
-	return os;
-}
 
-// connection to next attack
-Attacks *&Attacks::nextLink()
-{
-	return next;
-}
 
-// connection to previous attack
-Attacks *&Attacks::prevLink()
-{
-	return prev;
-}
 
-// default constructor
-Items::Items() : hp(0) {}
 
-// arg constructor using const char* for input
-Items::Items(const char *aName, int hp) : name(aName), hp(hp) {}
 
-// arg constructor using string for input
-Items::Items(string aName, int hp) : name(aName), hp(hp) {}
 
-// copy constructor
-Items::Items(const Items &source) : Attacks(source), name(source.name), hp(source.hp) {}
 
-// destructor
-Items::~Items() {}
+
+
+
+
+
+
+
 
 // display function to output the item info
-void Items::display(ostream &os) const
+void Items::display(ostream & os) const
 {
 	os << name << ": +" << hp << "hp";
 }
 
 // return hp for calculation
-int Items::useItem() const
+int Items::use()
 {
 	return hp;
+}
+
+string Items::idType() {
+	return "item";
+}
+
+void Items::setData(string a_name, int an_hp) {
+	name = a_name;
+	hp = an_hp;
 }

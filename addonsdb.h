@@ -26,20 +26,15 @@ using namespace std;
 class AddOnsDb
 {
 private:
-	Attacks **table;
+	AddOns** table;
 	int size;
 
-	void init(Attacks **, Attacks **, int);				  // initialize table to 0, array recursion
-	void copy(Attacks *&, Attacks *);					  // copy all table, list recursion
-	void copy(Attacks **, Attacks **, Attacks **);		  // copy all table, array recursion
-	void destroy(Attacks *&);							  // destroy everything, list recursion
-	void destroy(Attacks **);							  // destroy everything, array recursion
-	int insert(Attacks *&, Attacks *);					  // insert item, list recursion
-	bool insert(Attacks **, Attacks *);					  // insert item, array recursion
-	void display(Attacks *);							  // display all, list recursion
-	void display(Attacks **, int = 1);					  // display all, array recursion
-	Attacks *retrieve(Attacks *, int &, bool &, int = 0); // retrieve an attack, list recursion
-	Attacks *retrieve(Attacks **, const string &);		  // retrieve an attack, array recursion
+	void copy(AddOns* &, AddOns*);					  // copy all table, list recursion
+	void destroy(AddOns* & ptr);							  // destroy everything, list recursion
+	bool insert(AddOns* addon);
+	int insert(AddOns* &, AddOns* addon);					  // insert item, list recursion
+	void display(AddOns* );							  // display all, list recursion
+	AddOns* retrieve(AddOns* , int &, bool &, int = 0); // retrieve an attack, list recursion
 	int incrSize();										  // increase size of table array
 
 public:
@@ -47,17 +42,12 @@ public:
 	AddOnsDb(const AddOnsDb &); // copy constructor
 	~AddOnsDb();				// destructor
 
-	bool insert(const Attacks &);								// insert attack, helper function
-	bool insert(const Items &);									// insert item, helper function
 	void display();												// display all, helper function
-	Attacks *retrieve(const string &, const string = "normal"); // retrieve an attack by type
-	Attacks *retrieve();										// retrieve an item
+	AddOns* retrieve(const string &, const string = "normal"); // retrieve an attack by type
+	AddOns* retrieve();										// retrieve an item
 
 	bool addAttacks(const char *); // populate database with file of attacks
 	bool addItems(const char *);   // popluate database with file of items
-
-	AddOnsDb &operator+=(const Attacks &); //+= operator overload to add an attack
-	AddOnsDb &operator+=(const Items &);   //+= operator overload to add an item
 };
 
 #endif
