@@ -22,7 +22,7 @@ class Pokemon
 {
 private:
 	void copy(AddOns **source);			// copy array recursion for moves array
-	void destroy();						// destroy array recursion for moves array
+	void destroyMovesList();			// destroy array recursion for moves array
 	bool switchAttacks(AddOns *attack); // switch out a current move for a new move
 
 protected:
@@ -73,13 +73,13 @@ public:
 
 	virtual bool hit(const Attacks &) = 0;	   // take a hit from the opponent
 	virtual void display(ostream &) const = 0; // display Pokemon
-	virtual void fullInfo() const;			   // display all info
+	virtual void displayFullInfo() const;	   // display all info
 
 	bool initialize();				 // create the baby pokemon
 	int displayMoves() const;		 // display move set
-	bool learn();					 // helper function because each pokemon knows their type
+	bool learnNewAttack();			 // helper function because each pokemon knows their type
 	bool hold(const Items &);		 // have pokemon hold item
-	bool holding() const;			 // return true if moves[ITEM] contains item
+	bool isHoldingItem() const;		 // return true if moves[ITEM] contains item
 	bool attack(Pokemon &);			 // attack the pokemon
 	void restore();					 // restore hp and attacks pp
 	bool levelUp();					 // increase experience then in turn level/maxHP
@@ -87,7 +87,7 @@ public:
 	void changeName(const string &); // set new name
 	bool isAlive();					 // return status for battle
 
-	void battleStats() const; // display only name, level, hp
+	void displayBattleStats() const; // display only name, level, hp
 
 	Pokemon *&leftLink();  // return left pointer
 	Pokemon *&rightLink(); // return right pointer
@@ -137,7 +137,7 @@ public:
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
 	void display(ostream &) const; // display Pikachu
-	void fullInfo() const;		   // display all info
+	void displayFullInfo() const;  // display all info
 
 	Pikachu &operator=(Pikachu &); // overload = operator
 };
@@ -155,7 +155,7 @@ public:
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
 	void display(ostream &) const; // display Charmander
-	void fullInfo() const;		   // display all info
+	void displayFullInfo() const;  // display all info
 
 	Charmander &operator=(Charmander &); // overload = operator
 };
@@ -173,7 +173,7 @@ public:
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
 	void display(ostream &) const; // display Squirtle
-	void fullInfo() const;		   // display all info
+	void displayFullInfo() const;  // display all info
 
 	Squirtle &operator=(Squirtle &); // overload = operator
 };
@@ -191,7 +191,7 @@ public:
 
 	bool hit(const Attacks &);	   // take a hit from the opponent
 	void display(ostream &) const; // display Bulbasaur
-	void fullInfo() const;		   // display all info
+	void displayFullInfo() const;  // display all info
 
 	Bulbasaur &operator=(Bulbasaur &); // overload = operator
 };

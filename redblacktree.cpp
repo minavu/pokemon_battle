@@ -321,7 +321,7 @@ void RedBlackTree::displayInorder(Pokemon *ptr, int &count)
 
 	displayInorder(ptr->leftLink(), count);
 	cout << ++count << ")\n";
-	ptr->fullInfo();
+	ptr->displayFullInfo();
 	cout << endl;
 	displayInorder(ptr->rightLink(), count);
 }
@@ -339,7 +339,7 @@ void RedBlackTree::displayPreorder(Pokemon *ptr)
 	if (!ptr)
 		return;
 
-	ptr->fullInfo();
+	ptr->displayFullInfo();
 	cout << endl;
 	displayPreorder(ptr->leftLink());
 	displayPreorder(ptr->rightLink());
@@ -428,7 +428,7 @@ int RedBlackTree::showGrown(Pokemon *ptr)
 	count = showGrown(ptr->leftLink());
 	if (ptr->hasGrown())
 	{
-		ptr->learn();
+		ptr->learnNewAttack();
 		++count;
 	}
 	count = count + showGrown(ptr->rightLink());

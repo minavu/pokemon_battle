@@ -208,7 +208,7 @@ void Kanto::giveItemToPokemon(Items *&newItem)
 	{
 		chosen = backpack.choose("Select a Pokemon to hold item: ");
 		cout << endl;
-		if (!(chosen->holding()))
+		if (!(chosen->isHoldingItem()))
 		{
 			*chosen += *newItem;
 			cout << *chosen << " is now holding " << *newItem << endl;
@@ -303,10 +303,10 @@ void Kanto::battle(Pokemon &pokemon1, Pokemon &pokemon2)
 void Kanto::attack(Pokemon &attacker, Pokemon &defender)
 {
 	cout << attacker << " attack!\n";
-	attacker.battleStats();
+	attacker.displayBattleStats();
 	attacker.attack(defender);
 	cout << "Opponent ";
-	defender.battleStats();
+	defender.displayBattleStats();
 	cout << "\n\n";
 }
 
