@@ -22,19 +22,22 @@ Items class is derived from Attacks class simply for dynamic binding in AddOnsDb
 
 using namespace std;
 
-class AddOns {
-	protected:
-		AddOns* next;
-		AddOns* prev;
+class AddOns
+{
+protected:
+	AddOns *next;
+	AddOns *prev;
 
-	public:
-		AddOns();
-		virtual void display(ostream &) const = 0;
-		virtual int use() = 0;
-		virtual string idType() = 0;
-		AddOns* & nextLink();	// get next pointer
-		AddOns* & prevLink();	// get prev pointer
-		friend ostream &operator<<(ostream &, const AddOns &); // overload << operator
+public:
+	AddOns();
+
+	virtual void display(ostream &) const = 0;
+	virtual int use() = 0;
+	virtual string idType() = 0;
+
+	AddOns *&nextLink();								   // get next pointer
+	AddOns *&prevLink();								   // get prev pointer
+	friend ostream &operator<<(ostream &, const AddOns &); // overload << operator
 };
 
 class Attacks : public AddOns
@@ -48,19 +51,13 @@ private:
 	int maxPP;
 
 public:
-	void display(ostream &) const;					// display data members
-	int use();										// decrement pp by one to use, return false if pp is 0 for attack
+	void display(ostream &) const; // display data members
+	int use();					   // decrement pp by one to use, return false if pp is 0 for attack
 	string idType();
-	void setData(string move, string type, int pow, int acc, int maxPP);
 
-	bool compareType(const Attacks &) const;				// compare the type with another object's type
-	bool compareType(string) const;							// compare the type with input
-	int calcDamage(const float *, const int) const;			// calculate damage
-	string mov() const;										// return name for attack
-	string typ() const;										// return type for damage calculation
-	int pow() const;										// return power for damage calculation
-	int acc() const;										// return accuracy for damage calculation
-	bool restore();											// restore pp to maxPP
+	void setData(string move, string type, int pow, int acc, int maxPP);
+	int calcDamage(const float *, const int) const; // calculate damage
+	bool restore();									// restore pp to maxPP
 };
 
 class Items : public AddOns
@@ -71,8 +68,9 @@ private:
 
 public:
 	void display(ostream &) const; // display data members
-	int use();		   // return hp of item for usage
+	int use();					   // return hp of item for usage
 	string idType();
+
 	void setData(string name, int hp);
 };
 

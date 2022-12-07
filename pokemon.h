@@ -21,9 +21,9 @@ using namespace std;
 class Pokemon
 {
 private:
-	void copy(AddOns** source);			 // copy array recursion for moves array
-	void destroy();					 // destroy array recursion for moves array
-	bool switchAttacks(AddOns* attack);	 // switch out a current move for a new move
+	void copy(AddOns **source);			// copy array recursion for moves array
+	void destroy();						// destroy array recursion for moves array
+	bool switchAttacks(AddOns *attack); // switch out a current move for a new move
 
 protected:
 	enum
@@ -52,8 +52,8 @@ protected:
 	int hp;
 	int maxHP;
 	string name;
-	AddOnsDb* database;
-	AddOns** moves;
+	AddOnsDb *database;
+	AddOns **moves;
 
 	enum
 	{
@@ -77,7 +77,6 @@ public:
 	bool hold(const Items &);			   // have pokemon hold item
 	bool holding() const;				   // return true if moves[ITEM] contains item
 	bool attack(Pokemon &);				   // attack the pokemon
-	int translate(const Attacks &) const;  // translate into types int
 	void restore();						   // restore hp and attacks pp
 	virtual bool hit(const Attacks &) = 0; // take a hit from the opponent
 	bool levelUp();						   // increase experience then in turn level/maxHP
@@ -94,8 +93,8 @@ public:
 	bool &leftColor();	   // return left color for redblack tree
 	bool &rightColor();	   // return right color for redblack tree
 
-	Pokemon &operator=(Pokemon &);					   //= operator overload
-	Pokemon &operator+=(const Items &);				   //+= operator overload to hold item
+	Pokemon &operator=(Pokemon &);		//= operator overload
+	Pokemon &operator+=(const Items &); //+= operator overload to hold item
 
 	friend string operator+(const string &, const Pokemon &);
 	friend string operator+(const Pokemon &, const string &);

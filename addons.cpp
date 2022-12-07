@@ -14,43 +14,27 @@ was not used in main program.  Information below for functions.
 
 AddOns::AddOns() : next(0), prev(0) {}
 
-
 // connection to next addon
-AddOns* & AddOns::nextLink()
+AddOns *&AddOns::nextLink()
 {
 	return next;
 }
 
 // connection to previous addon
-AddOns* & AddOns::prevLink()
+AddOns *&AddOns::prevLink()
 {
 	return prev;
 }
 
 //<< operator overloading
-ostream &operator<<(ostream & os, const AddOns & addon)
+ostream &operator<<(ostream &os, const AddOns &addon)
 {
 	addon.display(os);
 	return os;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // display function to output the attack info
-void Attacks::display(ostream & os) const
+void Attacks::display(ostream &os) const
 {
 	os << move << ": " << type << ", " << power << " power, " << accuracy << " accuracy, " << pp << " pp";
 }
@@ -65,20 +49,9 @@ int Attacks::use()
 	return 1;
 }
 
-string Attacks::idType() {
+string Attacks::idType()
+{
 	return type;
-}
-
-// compare type of two attacks, return bool
-bool Attacks::compareType(const Attacks & that) const
-{
-	return type == that.type;
-}
-
-// compare type to input string, return bool
-bool Attacks::compareType(string aType) const
-{
-	return type == aType;
 }
 
 // calculate damage an attack deals to the pokemon, requires pokemon damage factor and type
@@ -98,38 +71,14 @@ int Attacks::calcDamage(const float *factor, const int index) const
 	return damage;
 }
 
-// return name for attack
-string Attacks::mov() const
-{
-	return move;
-}
-
-// return type for damage calculation
-string Attacks::typ() const
-{
-	return type;
-}
-
-// return power for damage calculation
-int Attacks::pow() const
-{
-	return power;
-}
-
-// return accuracy for damage calculation
-int Attacks::acc() const
-{
-	return accuracy;
-}
-
-
 // restore pp to max pp
 bool Attacks::restore()
 {
 	return pp = maxPP;
 }
 
-void Attacks::setData(string amove, string atype, int apower, int acc, int amaxPP) {
+void Attacks::setData(string amove, string atype, int apower, int acc, int amaxPP)
+{
 	move = amove;
 	type = atype;
 	power = apower;
@@ -138,23 +87,8 @@ void Attacks::setData(string amove, string atype, int apower, int acc, int amaxP
 	maxPP = amaxPP;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // display function to output the item info
-void Items::display(ostream & os) const
+void Items::display(ostream &os) const
 {
 	os << name << ": +" << hp << "hp";
 }
@@ -165,11 +99,13 @@ int Items::use()
 	return hp;
 }
 
-string Items::idType() {
+string Items::idType()
+{
 	return "item";
 }
 
-void Items::setData(string a_name, int an_hp) {
+void Items::setData(string a_name, int an_hp)
+{
 	name = a_name;
 	hp = an_hp;
 }

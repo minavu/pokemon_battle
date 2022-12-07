@@ -15,16 +15,16 @@ Function information below.
 // default constructor
 Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), database(0), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
-	moves = new AddOns* [MAX_MOVES];
-	for (int i {0}; i < MAX_MOVES; ++i)
+	moves = new AddOns *[MAX_MOVES];
+	for (int i{0}; i < MAX_MOVES; ++i)
 		moves[i] = nullptr;
 }
 
 // arg constructor takes a name and database pointer
 Pokemon::Pokemon(AddOnsDb *db, string aName) : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), name(aName), database(db), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
-	moves = new AddOns* [MAX_MOVES];
-	for (int i {0}; i < MAX_MOVES; ++i)
+	moves = new AddOns *[MAX_MOVES];
+	for (int i{0}; i < MAX_MOVES; ++i)
 		moves[i] = nullptr;
 }
 
@@ -32,8 +32,8 @@ Pokemon::Pokemon(AddOnsDb *db, string aName) : type(normal), status(alive), grow
 Pokemon::Pokemon(const Pokemon &source) : type(source.type), status(source.status), grown(source.grown), level(source.level), exp(source.exp), hp(source.hp), maxHP(source.maxHP), name(source.name), database(0), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
 {
 	database = source.database;
-	moves = new AddOns* [MAX_MOVES];
-	for (int i {0}; i < MAX_MOVES; ++i)
+	moves = new AddOns *[MAX_MOVES];
+	for (int i{0}; i < MAX_MOVES; ++i)
 		moves[i] = nullptr;
 	copy(source.moves);
 }
@@ -48,14 +48,16 @@ Pokemon::~Pokemon()
 }
 
 // copy all from source table
-void Pokemon::copy(AddOns** source)
+void Pokemon::copy(AddOns **source)
 {
 	if (source[ITEM])
-		moves[ITEM] = new Items(*(dynamic_cast<Items*>(source[ITEM])));
+		moves[ITEM] = new Items(*(dynamic_cast<Items *>(source[ITEM])));
 
-	for (int i {1}; i < MAX_MOVES; ++i) {
-		if (source[i]) {
-			moves[i] = new Attacks(*(dynamic_cast<Attacks*>(source[i])));
+	for (int i{1}; i < MAX_MOVES; ++i)
+	{
+		if (source[i])
+		{
+			moves[i] = new Attacks(*(dynamic_cast<Attacks *>(source[i])));
 		}
 	}
 }
@@ -63,16 +65,17 @@ void Pokemon::copy(AddOns** source)
 // destroy table
 void Pokemon::destroy()
 {
-	for (int i {0}; i < MAX_MOVES; ++i)
+	for (int i{0}; i < MAX_MOVES; ++i)
 		delete moves[i];
 }
 
 // display moves set helper function
 int Pokemon::displayMoves() const
 {
-	int has {0};
-	for (int i {1}; i < MAX_MOVES; ++i)
-		if (moves[i]) {
+	int has{0};
+	for (int i{1}; i < MAX_MOVES; ++i)
+		if (moves[i])
+		{
 			++has;
 			cout << has << ". " << *moves[i] << endl;
 		}
@@ -114,12 +117,13 @@ bool Pokemon::learn()
 	char translate[][10] = {"electric", "fire", "water", "grass", "normal"};
 	string mtype = translate[type];
 
-	if (!database) {
+	if (!database)
+	{
 		cout << "Must add address of AddOnsDb database to initialize pokemon.\n";
 		return false;
 	}
 
-	AddOns* temp = new Attacks(*(dynamic_cast<Attacks*>(database->retrieve(mtype))));
+	AddOns *temp = new Attacks(*(dynamic_cast<Attacks *>(database->retrieve(mtype))));
 	cout << name << " wants to learn a new attack! --> " << *temp << endl;
 	char answer = minalib::getYesNo("Do you want to teach your pokemon the above attack (y/n)? ");
 	if (toupper(answer) == 'N')
@@ -129,9 +133,11 @@ bool Pokemon::learn()
 		return false;
 	}
 
-	bool added {false};
-	for (int i {1}; i < MAX_MOVES; ++i) {
-		if (!moves[i]) {
+	bool added{false};
+	for (int i{1}; i < MAX_MOVES; ++i)
+	{
+		if (!moves[i])
+		{
 			moves[i] = temp;
 			added = true;
 			break;
@@ -154,7 +160,7 @@ bool Pokemon::learn()
 
 // prompt user to select a move from moves set to switch out for new move
 // return false if user decides not to switch
-bool Pokemon::switchAttacks(AddOns* attack)
+bool Pokemon::switchAttacks(AddOns *attack)
 {
 	bool done = false;
 	cout << "0) go back\n";
@@ -176,7 +182,7 @@ bool Pokemon::initialize()
 	bool done = false;
 	if (database)
 	{
-		moves[1] = new Attacks(*(dynamic_cast<Attacks*>(database->retrieve("normal"))));
+		moves[1] = new Attacks(*(dynamic_cast<Attacks *>(database->retrieve("normal"))));
 		++level;
 		hp += 500;
 		maxHP += 500;
@@ -236,7 +242,7 @@ bool Pokemon::attack(Pokemon &opponent)
 	{
 		cout << name << " gained enough experiece to increase to level " << level << "!\n";
 	}
-	return opponent.hit(*(dynamic_cast<Attacks*>(moves[select])));
+	return opponent.hit(*(dynamic_cast<Attacks *>(moves[select])));
 }
 
 // return pokemon state for battle use
@@ -245,28 +251,15 @@ bool Pokemon::state()
 	return status == alive ? true : false;
 }
 
-// translate an attack type into integral value
-// not used later on
-int Pokemon::translate(const Attacks &attack) const
-{
-	char translate[][10] = {"electric", "fire", "water", "grass", "normal"};
-	string aType = attack.typ();
-	int i = 0;
-	while (aType != translate[i])
-	{
-		++i;
-	}
-	return i;
-}
-
 // restore pokemon to healthy level
 void Pokemon::restore()
 {
 	status = alive;
 	hp = maxHP;
-	for (int i {1}; i < MAX_MOVES; ++i)
-		if (moves[i]) {
-			Attacks* attack = dynamic_cast<Attacks*>(moves[i]);
+	for (int i{1}; i < MAX_MOVES; ++i)
+		if (moves[i])
+		{
+			Attacks *attack = dynamic_cast<Attacks *>(moves[i]);
 			attack->restore();
 		}
 }
@@ -315,7 +308,7 @@ Pokemon &Pokemon::operator=(Pokemon &source)
 
 		destroy();
 		delete[] moves;
-		moves = new AddOns* [MAX_MOVES];
+		moves = new AddOns *[MAX_MOVES];
 		copy(source.moves);
 	}
 	return *this;
@@ -335,15 +328,18 @@ istream &operator>>(istream &is, Pokemon &pokemon)
 	return is;
 }
 
-string operator+(const string & str, const Pokemon & pokemon) {
+string operator+(const string &str, const Pokemon &pokemon)
+{
 	return str + pokemon.name;
 }
 
-string operator+(const Pokemon & pokemon, const string & str) {
+string operator+(const Pokemon &pokemon, const string &str)
+{
 	return pokemon.name + str;
 }
 
-string operator+(const Pokemon & pokemon1, const Pokemon & pokemon2) {
+string operator+(const Pokemon &pokemon1, const Pokemon &pokemon2)
+{
 	return pokemon1.name + pokemon2.name;
 }
 
@@ -478,27 +474,6 @@ bool &Pokemon::rightColor()
 {
 	return rcolor;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // default constructor
 Pikachu::Pikachu() : factor(0)
