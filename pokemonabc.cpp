@@ -228,6 +228,35 @@ bool Pokemon::attack(Pokemon &opponent)
 	return opponent.hit(*(dynamic_cast<Attacks *>(moves[select])));
 }
 
+// takes damage an attack, use item if holding item, and change status if hp reaches 0
+bool Pokemon::hit(const Attacks &attack)
+{
+	bool hurt = false;
+	int damage = attack.calcDamage(factor, type);
+	if (damage)
+	{
+		hp -= damage;
+		hurt = true;
+	}
+	else
+	{
+		cout << "Hooray! " << name << " dodged the attack!\n";
+	}
+	if (hp < 100 && hp > 0 && isHoldingItem())
+	{
+		hp += moves[ITEM]->use();
+		cout << name << " used " << *moves[ITEM] << " to increase its hp by a little!\n";
+		delete moves[ITEM];
+		moves[ITEM] = NULL;
+	}
+	if (hp <= 0)
+	{
+		hp = 0;
+		status = ko;
+	}
+	return hurt;
+}
+
 // return pokemon state for battle use
 bool Pokemon::isAlive()
 {

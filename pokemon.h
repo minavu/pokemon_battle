@@ -69,11 +69,10 @@ protected:
 public:
 	Pokemon();					 // default constructor
 	Pokemon(const Pokemon &);	 // copy constructor
-	virtual ~Pokemon();			 // destructor
+	virtual ~Pokemon() = 0;			 // destructor
 
-	virtual bool hit(const Attacks &) = 0;	   // take a hit from the opponent
 	virtual void displayFullInfo() const;	   // display all info
-
+	bool hit(const Attacks &);	   // take a hit from the opponent
 	bool initialize(AddOnsDb* db);				 // create the baby pokemon
 	int displayMoves() const;		 // display move set
 	bool learnNewAttack();			 // helper function because each pokemon knows their type
@@ -128,11 +127,9 @@ class Pikachu : public Pokemon
 public:
 	Pikachu();										  // default constructor
 	Pikachu(const Pikachu &);						  // copy constructor
-
-	bool hit(const Attacks &);	   // take a hit from the opponent
-	void displayFullInfo() const;  // display all info
-
 	Pikachu &operator=(Pikachu &); // overload = operator
+
+	void displayFullInfo() const;  // display all info
 };
 
 class Charmander : public Pokemon
@@ -140,11 +137,9 @@ class Charmander : public Pokemon
 public:
 	Charmander();											// default constructor
 	Charmander(const Charmander &);							// copy constructor
-
-	bool hit(const Attacks &);	   // take a hit from the opponent
-	void displayFullInfo() const;  // display all info
-
 	Charmander &operator=(Charmander &); // overload = operator
+
+	void displayFullInfo() const;  // display all info
 };
 
 class Squirtle : public Pokemon
@@ -152,11 +147,9 @@ class Squirtle : public Pokemon
 public:
 	Squirtle();											// default constructor
 	Squirtle(const Squirtle &);							// copy constructor
-
-	bool hit(const Attacks &);	   // take a hit from the opponent
-	void displayFullInfo() const;  // display all info
-
 	Squirtle &operator=(Squirtle &); // overload = operator
+
+	void displayFullInfo() const;  // display all info
 };
 
 class Bulbasaur : public Pokemon
@@ -164,11 +157,9 @@ class Bulbasaur : public Pokemon
 public:
 	Bulbasaur();										  // default constructor
 	Bulbasaur(const Bulbasaur &);						  // copy constructor
-
-	bool hit(const Attacks &);	   // take a hit from the opponent
-	void displayFullInfo() const;  // display all info
-
 	Bulbasaur &operator=(Bulbasaur &); // overload = operator
+
+	void displayFullInfo() const;  // display all info
 };
 
 #endif
