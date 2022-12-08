@@ -85,7 +85,9 @@ void Pokemon::copy(AddOns **source)
 void Pokemon::destroyMovesList()
 {
 	for (int i{0}; i < MAX_MOVES; ++i)
-		delete moves[i];
+		if (moves[i]) {
+			delete moves[i];
+		}
 }
 
 // display moves set helper function

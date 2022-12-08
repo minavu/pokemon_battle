@@ -179,7 +179,7 @@ void Kanto::searchItem()
 
 void Kanto::foundItem()
 {
-	Items *newItem = new Items(*(dynamic_cast<Items *>(database.retrieveItem())));
+	Items *newItem = dynamic_cast<Items *>(database.retrieveItem());
 	cout << "\nYou found a " << *newItem << endl;
 
 	char answer = minalib::getYesNo("Do you want to give it to a Pokemon? (y/n) ");
@@ -187,20 +187,18 @@ void Kanto::foundItem()
 	if (toupper(answer) == 'N')
 	{
 		cout << "\nYou lost the item!\n\n";
-		delete newItem;
 		return;
 	}
 	if (backpack.isEmpty())
 	{
 		cout << "You have no Pokemon to hold this item! You lost the item!\n\n";
-		delete newItem;
 		return;
 	}
 
 	giveItemToPokemon(newItem);
 }
 
-void Kanto::giveItemToPokemon(Items *&newItem)
+void Kanto::giveItemToPokemon(Items *newItem)
 {
 	RedBlackTreeNode* node {nullptr};
 	Pokemon *chosen{nullptr};
@@ -223,7 +221,6 @@ void Kanto::giveItemToPokemon(Items *&newItem)
 		if (toupper(userInput) == 'N')
 		{
 			cout << "\nYou lost the item!\n\n";
-			delete newItem;
 			return;
 		}
 	} while (toupper(userInput) == 'Y');

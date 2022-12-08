@@ -30,6 +30,7 @@ protected:
 
 public:
 	AddOns();
+	// ~AddOns();
 
 	virtual void display(ostream &) const = 0;
 	virtual int use() = 0;
