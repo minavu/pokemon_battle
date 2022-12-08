@@ -202,11 +202,13 @@ void Kanto::foundItem()
 
 void Kanto::giveItemToPokemon(Items *&newItem)
 {
+	RedBlackTreeNode* node {nullptr};
 	Pokemon *chosen{nullptr};
 	char userInput{'\0'};
 	do
 	{
-		chosen = backpack.choose("Select a Pokemon to hold item: ");
+		node = backpack.choose("Select a Pokemon to hold item: ");
+		chosen = dynamic_cast<Pokemon *>(node);
 		cout << endl;
 		if (!(chosen->isHoldingItem()))
 		{
@@ -265,12 +267,16 @@ void Kanto::battleSimulation()
 
 void Kanto::choosePokemonsForBattle(Pokemon *&pokemon1, Pokemon *&pokemon2)
 {
-	pokemon1 = backpack.choose("Select your 1st Pokemon for battle simulation: ");
-	pokemon2 = backpack.choose("Select your 2nd Pokemon for battle simulation: ");
+	RedBlackTreeNode* node1, *node2;
+	node1 = backpack.choose("Select your 1st Pokemon for battle simulation: ");
+	node2 = backpack.choose("Select your 2nd Pokemon for battle simulation: ");
+	pokemon1 = dynamic_cast<Pokemon *>(node1);
+	pokemon2 = dynamic_cast<Pokemon *>(node2);
 	while (pokemon1 == pokemon2)
 	{
-		pokemon2 = backpack.choose("A Pokemon can't battle itself."
+		node2 = backpack.choose("A Pokemon can't battle itself."
 								   "\nSelect a 2nd Pokemon for battle simulation: ");
+		pokemon2 = dynamic_cast<Pokemon *>(node2);
 	}
 }
 

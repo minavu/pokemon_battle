@@ -24,26 +24,27 @@ RedBlackTree::RedBlackTree(const RedBlackTree &source) : root(0)
 
 // copy function copy from source root to destination root recursively
 // assuming that destination root is null before processing
-void RedBlackTree::copy(Pokemon *&dstPtr, Pokemon *srcPtr)
+void RedBlackTree::copy(RedBlackTreeNode *&dstPtr, RedBlackTreeNode *srcPtr)
 {
 	if (!srcPtr)
 		return;
 
-	if (typeid(*srcPtr) == typeid(Pikachu))
+	Pokemon* ptr = dynamic_cast<Pokemon *>(srcPtr);
+	if (typeid(*ptr) == typeid(Pikachu))
 	{
-		dstPtr = new Pikachu(*(dynamic_cast<Pikachu *>(srcPtr)));
+		dstPtr = new Pikachu(*(dynamic_cast<Pikachu *>(ptr)));
 	}
-	else if (typeid(*srcPtr) == typeid(Charmander))
+	else if (typeid(*ptr) == typeid(Charmander))
 	{
-		dstPtr = new Charmander(*(dynamic_cast<Charmander *>(srcPtr)));
+		dstPtr = new Charmander(*(dynamic_cast<Charmander *>(ptr)));
 	}
-	else if (typeid(*srcPtr) == typeid(Squirtle))
+	else if (typeid(*ptr) == typeid(Squirtle))
 	{
-		dstPtr = new Squirtle(*(dynamic_cast<Squirtle *>(srcPtr)));
+		dstPtr = new Squirtle(*(dynamic_cast<Squirtle *>(ptr)));
 	}
-	else if (typeid(*srcPtr) == typeid(Bulbasaur))
+	else if (typeid(*ptr) == typeid(Bulbasaur))
 	{
-		dstPtr = new Bulbasaur(*(dynamic_cast<Bulbasaur *>(srcPtr)));
+		dstPtr = new Bulbasaur(*(dynamic_cast<Bulbasaur *>(ptr)));
 	}
 	copy(dstPtr->leftLink(), srcPtr->leftLink());
 	copy(dstPtr->rightLink(), srcPtr->rightLink());
@@ -81,7 +82,7 @@ int RedBlackTree::height()
 }
 
 // recursively find height of tree
-int RedBlackTree::height(Pokemon *ptr)
+int RedBlackTree::height(RedBlackTreeNode *ptr)
 {
 	if (!ptr)
 		return 0;
@@ -95,98 +96,99 @@ int RedBlackTree::height(Pokemon *ptr)
 }
 
 // insert pokemon pointer
-int RedBlackTree::insert(Pokemon *pokemon)
+int RedBlackTree::insert(RedBlackTreeNode *pokemon)
 {
 	return insert(root, pokemon);
 }
 
 // insert pokemon recursively and maintain properties of a redblack tree
 // this is the bulk of the work!
-int RedBlackTree::insert(Pokemon *&ptr, Pokemon *pokemon)
+int RedBlackTree::insert(RedBlackTreeNode *&ptr, RedBlackTreeNode *pokemon)
 {
-	int lineage = 0;
 	if (!ptr)
 	{
 		ptr = pokemon;
+		return 0;
+	}
+
+	int lineage = 0;
+	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
+	Pokemon* pokemonPtr = dynamic_cast<Pokemon *>(pokemon);
+	if (*pokemonPtr < *pPtr)
+	{
+		lineage = 1 + insert(ptr->leftLink(), pokemon);
+		if (lineage == 1)
+		{ // found parent
+			if (ptr->leftLink()->leftColor() != RED)
+			{
+				ptr->leftColor() = RED; // new child is always red, unless it has children
+			}
+		}
+		if (lineage == 2)
+		{ // found grandparent
+			// if new child's parent and aunt are both red
+			if (ptr->leftColor() == RED && ptr->rightColor() == RED)
+			{
+				ptr->leftColor() = ptr->rightColor() = BLACK;
+				lineage = 0;
+				// if new child's parent is red but aunt is black
+			}
+			else if (ptr->leftColor() == RED && ptr->leftLink()->leftColor() == RED)
+			{ // this is when ptr is not grandparent to val but needs to rotate
+				// left-left case, where child is left of parent and parent is left of granny
+				ptr = rightRotate(ptr->leftLink(), ptr);
+				lineage = 0;
+			}
+			else if (ptr->leftColor() == RED && ptr->leftLink()->rightColor() == RED)
+			{ // this is when ptr is not grandparent to val but needs to rotate
+				// left-right case, where child is right of parent and parent is left of granny
+				RedBlackTreeNode *parent = ptr->leftLink();
+				RedBlackTreeNode *child = ptr->leftLink()->rightLink();
+				ptr->leftLink() = leftRotate(child, parent);
+				ptr = rightRotate(ptr->leftLink(), ptr);
+				lineage = 0;
+			}
+			else
+			{ // this might happen when parent is black
+			}
+		}
 	}
 	else
 	{
-		if (*pokemon < *ptr)
-		{
-			lineage = 1 + insert(ptr->leftLink(), pokemon);
-			if (lineage == 1)
-			{ // found parent
-				if (ptr->leftLink()->leftColor() != RED)
-				{
-					ptr->leftColor() = RED; // new child is always red, unless it has children
-				}
-			}
-			if (lineage == 2)
-			{ // found grandparent
-				// if new child's parent and aunt are both red
-				if (ptr->leftColor() == RED && ptr->rightColor() == RED)
-				{
-					ptr->leftColor() = ptr->rightColor() = BLACK;
-					lineage = 0;
-					// if new child's parent is red but aunt is black
-				}
-				else if (ptr->leftColor() == RED && ptr->leftLink()->leftColor() == RED)
-				{ // this is when ptr is not grandparent to val but needs to rotate
-					// left-left case, where child is left of parent and parent is left of granny
-					ptr = rightRotate(ptr->leftLink(), ptr);
-					lineage = 0;
-				}
-				else if (ptr->leftColor() == RED && ptr->leftLink()->rightColor() == RED)
-				{ // this is when ptr is not grandparent to val but needs to rotate
-					// left-right case, where child is right of parent and parent is left of granny
-					Pokemon *parent = ptr->leftLink();
-					Pokemon *child = ptr->leftLink()->rightLink();
-					ptr->leftLink() = leftRotate(child, parent);
-					ptr = rightRotate(ptr->leftLink(), ptr);
-					lineage = 0;
-				}
-				else
-				{ // this might happen when parent is black
-				}
+		lineage = 1 + insert(ptr->rightLink(), pokemon);
+		if (lineage == 1)
+		{ // found parent
+			if (ptr->rightLink()->rightColor() != RED)
+			{
+				ptr->rightColor() = RED; // new child is always red, unless it has children
 			}
 		}
-		else
-		{
-			lineage = 1 + insert(ptr->rightLink(), pokemon);
-			if (lineage == 1)
-			{ // found parent
-				if (ptr->rightLink()->rightColor() != RED)
-				{
-					ptr->rightColor() = RED; // new child is always red, unless it has children
-				}
+		if (lineage == 2)
+		{ // found grandparent
+			// if new child's parent and aunt are both red
+			if (ptr->leftColor() == RED && ptr->rightColor() == RED)
+			{
+				ptr->leftColor() = ptr->rightColor() = BLACK;
+				lineage = 0;
+				// if new child's parent is red but aunt is black
 			}
-			if (lineage == 2)
-			{ // found grandparent
-				// if new child's parent and aunt are both red
-				if (ptr->leftColor() == RED && ptr->rightColor() == RED)
-				{
-					ptr->leftColor() = ptr->rightColor() = BLACK;
-					lineage = 0;
-					// if new child's parent is red but aunt is black
-				}
-				else if (ptr->rightColor() == RED && ptr->rightLink()->rightColor() == RED)
-				{ // this is when ptr is not grandparent to val but needs to rotate
-					// right-right case, where child is right of parent and parent is right of granny
-					ptr = leftRotate(ptr->rightLink(), ptr);
-					lineage = 0;
-				}
-				else if (ptr->rightColor() == RED && ptr->rightLink()->leftColor() == RED)
-				{ // this is when ptr is not grandparent to val but needs to rotate
-					// right-left case, where child is right of parent and parent is left of granny
-					Pokemon *parent = ptr->rightLink();
-					Pokemon *child = ptr->rightLink()->leftLink();
-					ptr->rightLink() = rightRotate(child, parent);
-					ptr = leftRotate(ptr->rightLink(), ptr);
-					lineage = 0;
-				}
-				else
-				{ // this might happen when parent is black
-				}
+			else if (ptr->rightColor() == RED && ptr->rightLink()->rightColor() == RED)
+			{ // this is when ptr is not grandparent to val but needs to rotate
+				// right-right case, where child is right of parent and parent is right of granny
+				ptr = leftRotate(ptr->rightLink(), ptr);
+				lineage = 0;
+			}
+			else if (ptr->rightColor() == RED && ptr->rightLink()->leftColor() == RED)
+			{ // this is when ptr is not grandparent to val but needs to rotate
+				// right-left case, where child is right of parent and parent is left of granny
+				RedBlackTreeNode *parent = ptr->rightLink();
+				RedBlackTreeNode *child = ptr->rightLink()->leftLink();
+				ptr->rightLink() = rightRotate(child, parent);
+				ptr = leftRotate(ptr->rightLink(), ptr);
+				lineage = 0;
+			}
+			else
+			{ // this might happen when parent is black
 			}
 		}
 	}
@@ -194,30 +196,30 @@ int RedBlackTree::insert(Pokemon *&ptr, Pokemon *pokemon)
 }
 
 // rotate right to rebalance tree, switch colors
-Pokemon *RedBlackTree::rightRotate(Pokemon *&parent, Pokemon *&grandparent)
+RedBlackTreeNode *RedBlackTree::rightRotate(RedBlackTreeNode *&parent, RedBlackTreeNode *&grandparent)
 {
 	bool sib = parent->rightColor();
 	bool par = grandparent->leftColor();
 	parent->rightColor() = par;
 	grandparent->leftColor() = sib;
 
-	Pokemon *temp = parent;
-	Pokemon *sibling = parent->rightLink();
+	RedBlackTreeNode *temp = parent;
+	RedBlackTreeNode *sibling = parent->rightLink();
 	parent->rightLink() = grandparent;
 	grandparent->leftLink() = sibling;
 	return temp;
 }
 
 // rotate left to rebalance tree, switch colors
-Pokemon *RedBlackTree::leftRotate(Pokemon *&parent, Pokemon *&grandparent)
+RedBlackTreeNode *RedBlackTree::leftRotate(RedBlackTreeNode *&parent, RedBlackTreeNode *&grandparent)
 {
 	bool sib = parent->leftColor();
 	bool par = grandparent->rightColor();
 	parent->leftColor() = par;
 	grandparent->rightColor() = sib;
 
-	Pokemon *temp = parent;
-	Pokemon *sibling = parent->leftLink();
+	RedBlackTreeNode *temp = parent;
+	RedBlackTreeNode *sibling = parent->leftLink();
 	parent->leftLink() = grandparent;
 	grandparent->rightLink() = sibling;
 	return temp;
@@ -233,20 +235,21 @@ int RedBlackTree::displayInorder()
 }
 
 // dispaly inorder
-void RedBlackTree::displayInorder(Pokemon *ptr, int &count)
+void RedBlackTree::displayInorder(RedBlackTreeNode *ptr, int &count)
 {
 	if (!ptr)
 		return;
 
 	displayInorder(ptr->leftLink(), count);
 	cout << ++count << ")\n";
-	ptr->displayFullInfo();
+	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
+	pPtr->displayFullInfo();
 	cout << endl;
 	displayInorder(ptr->rightLink(), count);
 }
 
 // destroy tree
-void RedBlackTree::destroy(Pokemon *&ptr)
+void RedBlackTree::destroy(RedBlackTreeNode *&ptr)
 {
 	if (!ptr)
 		return;
@@ -258,23 +261,24 @@ void RedBlackTree::destroy(Pokemon *&ptr)
 }
 
 // retrieve pokemon by name helper function
-Pokemon *RedBlackTree::retrieve(const string &name)
+RedBlackTreeNode *RedBlackTree::retrieve(const string &name)
 {
 	return retrieve(root, name);
 }
 
 // recursively retrieve pokemon by name
-Pokemon *RedBlackTree::retrieve(Pokemon *ptr, const string &name)
+RedBlackTreeNode *RedBlackTree::retrieve(RedBlackTreeNode *ptr, const string &name)
 {
 	if (!ptr)
 		return nullptr;
 
-	Pokemon *temp = NULL;
-	if (name == *ptr)
+	RedBlackTreeNode *temp = NULL;
+	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
+	if (name == *pPtr)
 	{
 		temp = ptr;
 	}
-	else if (name < *ptr)
+	else if (name < *pPtr)
 	{
 		temp = retrieve(ptr->leftLink(), name);
 	}
@@ -287,9 +291,9 @@ Pokemon *RedBlackTree::retrieve(Pokemon *ptr, const string &name)
 }
 
 // choose by pokemon by number
-Pokemon *RedBlackTree::choose(const char *prompt)
+RedBlackTreeNode *RedBlackTree::choose(const char *prompt)
 {
-	Pokemon *chosen = NULL;
+	RedBlackTreeNode *chosen = NULL;
 	int count = displayInorder();
 	int select = minalib::getValidateInt(prompt, 1, count);
 	count = 0;
@@ -298,7 +302,7 @@ Pokemon *RedBlackTree::choose(const char *prompt)
 }
 
 // recursively choose a pokemon by number
-void RedBlackTree::choose(Pokemon *ptr, Pokemon *&chosen, int selection, int &count)
+void RedBlackTree::choose(RedBlackTreeNode *ptr, RedBlackTreeNode *&chosen, int selection, int &count)
 {
 	if (!ptr)
 		return;
@@ -319,18 +323,21 @@ int RedBlackTree::showGrown()
 }
 
 // recursively call pokemon to learn new move if it has leveled up
-int RedBlackTree::showGrown(Pokemon *ptr)
+int RedBlackTree::showGrown(RedBlackTreeNode *ptr)
 {
 	if (!ptr)
 		return 0;
 
 	int count = 0;
 	count = showGrown(ptr->leftLink());
-	if (ptr->hasGrown())
+
+	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
+	if (pPtr->hasGrown())
 	{
-		ptr->learnNewAttack();
+		pPtr->learnNewAttack();
 		++count;
 	}
+
 	count = count + showGrown(ptr->rightLink());
 
 	return count;
@@ -343,12 +350,13 @@ void RedBlackTree::restore()
 }
 
 // recursively restore all pokemons
-void RedBlackTree::restore(Pokemon *ptr)
+void RedBlackTree::restore(RedBlackTreeNode *ptr)
 {
 	if (!ptr)
 		return;
 
-	ptr->restore();
+	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
+	pPtr->restore();
 	restore(ptr->leftLink());
 	restore(ptr->rightLink());
 }

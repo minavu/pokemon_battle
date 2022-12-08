@@ -18,7 +18,29 @@ a pointer to the attacks/items database to populate their moves set.
 
 using namespace std;
 
-class Pokemon
+class RedBlackTreeNode {
+	protected:
+		enum
+		{
+			BLACK,
+			RED
+		};
+		bool lcolor;
+		bool rcolor;
+		RedBlackTreeNode *left;
+		RedBlackTreeNode *right;
+
+	public:
+		RedBlackTreeNode();
+
+		virtual bool &leftColor();	   // return left color for redblack tree
+		virtual bool &rightColor();	   // return right color for redblack tree
+		RedBlackTreeNode *&leftLink();  // return left pointer
+		RedBlackTreeNode *&rightLink(); // return right pointer
+
+};
+
+class Pokemon : public RedBlackTreeNode
 {
 private:
 	void copy(AddOns **source);			// copy array recursion for moves array
@@ -56,16 +78,6 @@ protected:
 	float *factor;
 	AddOns **moves;
 
-	enum
-	{
-		BLACK,
-		RED
-	};
-	bool lcolor;
-	bool rcolor;
-	Pokemon *left;
-	Pokemon *right;
-
 public:
 	Pokemon();					 // default constructor
 	Pokemon(const Pokemon &);	 // copy constructor
@@ -86,11 +98,6 @@ public:
 	bool isAlive();					 // return status for battle
 
 	void displayBattleStats() const; // display only name, level, hp
-
-	Pokemon *&leftLink();  // return left pointer
-	Pokemon *&rightLink(); // return right pointer
-	bool &leftColor();	   // return left color for redblack tree
-	bool &rightColor();	   // return right color for redblack tree
 
 	Pokemon &operator=(Pokemon &);		//= operator overload
 	Pokemon &operator+=(const Items &); //+= operator overload to hold item

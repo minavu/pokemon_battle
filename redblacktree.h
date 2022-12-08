@@ -22,19 +22,19 @@ private:
 		BLACK,
 		RED
 	};
-	Pokemon *root;
+	RedBlackTreeNode *root;
 
-	void copy(Pokemon *&, Pokemon *);				// copy from one tree to another
-	int height(Pokemon *);							// find height of the tree
-	void displayInorder(Pokemon *, int &);			// display by inorder
-	int insert(Pokemon *&, Pokemon *);				// recursively insert a new pokemon
-	Pokemon *rightRotate(Pokemon *&, Pokemon *&);	// rotate right for rebalance
-	Pokemon *leftRotate(Pokemon *&, Pokemon *&);	// rotate left for rebalace
-	void destroy(Pokemon *&);						// destroy tree
-	Pokemon *retrieve(Pokemon *, const string &);	// retrieve a pokemon from the tree by name
-	void choose(Pokemon *, Pokemon *&, int, int &); // select a pokemon form the tree by number
-	int showGrown(Pokemon *);						// find all pokemons that have leveled up
-	void restore(Pokemon *);						// restore all pokemons
+	void copy(RedBlackTreeNode *&, RedBlackTreeNode *);				// copy from one tree to another
+	int height(RedBlackTreeNode *);							// find height of the tree
+	void displayInorder(RedBlackTreeNode *, int &);			// display by inorder
+	int insert(RedBlackTreeNode *&, RedBlackTreeNode *);				// recursively insert a new pokemon
+	RedBlackTreeNode *rightRotate(RedBlackTreeNode *&, RedBlackTreeNode *&);	// rotate right for rebalance
+	RedBlackTreeNode *leftRotate(RedBlackTreeNode *&, RedBlackTreeNode *&);	// rotate left for rebalace
+	void destroy(RedBlackTreeNode *&);						// destroy tree
+	RedBlackTreeNode *retrieve(RedBlackTreeNode *, const string &);	// retrieve a pokemon from the tree by name
+	void choose(RedBlackTreeNode *, RedBlackTreeNode *&, int, int &); // select a pokemon form the tree by number
+	int showGrown(RedBlackTreeNode *);						// find all pokemons that have leveled up
+	void restore(RedBlackTreeNode *);						// restore all pokemons
 
 public:
 	RedBlackTree();						// default constructor
@@ -44,9 +44,9 @@ public:
 	bool isEmpty() const;			   // indicate if tree is empty or not
 	int height();					   // find height helper function
 	int displayInorder();			   // display by inorder helper function
-	int insert(Pokemon *);			   // insert into tree with created pokemon
-	Pokemon *retrieve(const string &); // retrieve pokemon by name
-	Pokemon *choose(const char *);	   // select a pokemon with prompt
+	int insert(RedBlackTreeNode *);			   // insert into tree with created pokemon
+	RedBlackTreeNode *retrieve(const string &); // retrieve pokemon by name
+	RedBlackTreeNode *choose(const char *);	   // select a pokemon with prompt
 	int showGrown();				   // show grown helper function
 	void restore();					   // restore helper function
 
