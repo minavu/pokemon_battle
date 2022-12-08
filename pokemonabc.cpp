@@ -8,7 +8,7 @@ Term:	    Fall 2020
 This file contains the implementations for class Pokemon.  Pokemon is an ABC.
 */
 
-#include "pokemon.h"
+#include "pokemonabc.h"
 
 // default constructor
 Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), factor(0), database(0), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)

@@ -12,7 +12,7 @@ RedBlackTree class is the data structure for the assignment.
 #ifndef REDBLACKTREE_H
 #define REDBLACKTREE_H
 
-#include "pokemon.h"
+#include "pokemonsub.h"
 
 class RedBlackTree
 {

@@ -1,7 +1,7 @@
 /*
 Programmer: Mina Vu
 Assignment: Prog3
-File name:  pokemon.h
+File name:  pokemonabc.h
 Class:      CS202
 Term:	    Fall 2020
 
@@ -10,8 +10,8 @@ Pikachu, Charmander, Squirtle, and Bulbasaur.  Each Pokemon derived classes take
 a pointer to the attacks/items database to populate their moves set.
 */
 
-#ifndef POKEMON_H
-#define POKEMON_H
+#ifndef POKEMONABC_H
+#define POKEMONABC_H
 
 #include <iostream>
 #include "addonsdb.h"
@@ -120,46 +120,6 @@ public:
 
 	friend ostream &operator<<(ostream &, const Pokemon &); // overload << operator
 	friend istream &operator>>(istream &, Pokemon &);		// overload << operator
-};
-
-class Pikachu : public Pokemon
-{
-public:
-	Pikachu();										  // default constructor
-	Pikachu(const Pikachu &);						  // copy constructor
-	Pikachu &operator=(Pikachu &); // overload = operator
-
-	void displayFullInfo() const;  // display all info
-};
-
-class Charmander : public Pokemon
-{
-public:
-	Charmander();											// default constructor
-	Charmander(const Charmander &);							// copy constructor
-	Charmander &operator=(Charmander &); // overload = operator
-
-	void displayFullInfo() const;  // display all info
-};
-
-class Squirtle : public Pokemon
-{
-public:
-	Squirtle();											// default constructor
-	Squirtle(const Squirtle &);							// copy constructor
-	Squirtle &operator=(Squirtle &); // overload = operator
-
-	void displayFullInfo() const;  // display all info
-};
-
-class Bulbasaur : public Pokemon
-{
-public:
-	Bulbasaur();										  // default constructor
-	Bulbasaur(const Bulbasaur &);						  // copy constructor
-	Bulbasaur &operator=(Bulbasaur &); // overload = operator
-
-	void displayFullInfo() const;  // display all info
 };
 
 #endif

@@ -10,7 +10,7 @@ kanto.o: kanto.h kanto.cpp
 redblacktree.o: redblacktree.h redblacktree.cpp
 	g++ -g -c redblacktree.cpp
 
-pokemon.o: pokemon.h pokemonabc.cpp pokemonsub.cpp
+pokemon.o: pokemonabc.h pokemonsub.h pokemonabc.cpp pokemonsub.cpp
 	g++ -g -c pokemonabc.cpp pokemonsub.cpp
 
 addonsdb.o: addonsdb.h addonsdb.cpp
