@@ -1,12 +1,7 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  addons.h
-Class:      CS202
-Term:	    Fall 2020
-
-This is the header file for the classes Attacks and Items.
-Items class is derived from Attacks class simply for dynamic binding in AddOnsDb.
 */
 
 #ifndef ADDONS_H
@@ -22,6 +17,7 @@ Items class is derived from Attacks class simply for dynamic binding in AddOnsDb
 
 using namespace std;
 
+// AddOns is an ABC to represent a node in a doubly-linked list
 class AddOns
 {
 protected:
@@ -30,17 +26,17 @@ protected:
 
 public:
 	AddOns();
-	// ~AddOns();
 
 	virtual void display(ostream &) const = 0;
 	virtual int use() = 0;
 	virtual string idType() = 0;
 
-	AddOns *&nextLink();								   // get next pointer
-	AddOns *&prevLink();								   // get prev pointer
-	friend ostream &operator<<(ostream &, const AddOns &); // overload << operator
+	AddOns *&nextLink();
+	AddOns *&prevLink();
+	friend ostream &operator<<(ostream &, const AddOns &);
 };
 
+// Attacks are used by a Pokemon to fight other Pokemons in battle
 class Attacks : public AddOns
 {
 private:
@@ -52,15 +48,16 @@ private:
 	int maxPP;
 
 public:
-	void display(ostream &) const; // display data members
-	int use();					   // decrement pp by one to use, return false if pp is 0 for attack
+	void display(ostream &) const;
+	int use();
 	string idType();
 
 	void setData(string move, string type, int pow, int acc, int maxPP);
-	int calcDamage(const float *, const int) const; // calculate damage
-	bool restore();									// restore pp to maxPP
+	int calcDamage(const float *, const int) const;
+	bool restore();
 };
 
+// Items are used by a Pokemon to restore its hp level
 class Items : public AddOns
 {
 private:
@@ -68,8 +65,8 @@ private:
 	int hp;
 
 public:
-	void display(ostream &) const; // display data members
-	int use();					   // return hp of item for usage
+	void display(ostream &) const;
+	int use();
 	string idType();
 
 	void setData(string name, int hp);

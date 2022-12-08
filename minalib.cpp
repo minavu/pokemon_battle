@@ -1,12 +1,7 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  minalib.cpp
-Class:      CS202
-Term:	    Fall 2020
-
-This file contains the implementations outlined in the header file.
-Implementations are for namespace minalib.
 */
 
 #include "minalib.h"
@@ -51,7 +46,7 @@ char minalib::getYesNo(const char *prompt)
 	return ch;
 }
 
-// user must hit 'Enter' to continue, halts program
+// halts program; user must hit 'Enter' to continue
 void minalib::enterToContinue()
 {
 	cout << "\nPress Enter to continue ";

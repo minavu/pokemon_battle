@@ -1,11 +1,7 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  kanto.h
-Class:      CS202
-Term:	    Fall 2020
-
-This is the header file for class Kanto.
 */
 
 #ifndef KANTO_H
@@ -18,15 +14,16 @@ This is the header file for class Kanto.
 #include <ctime>
 #include "redblacktree.h"
 
+// Region in Pokemon World to catch and train Pokemons
 class Kanto
 {
 private:
-	AddOnsDb database;
-	RedBlackTree backpack;
 	string menu;
 	string banner;
+	AddOnsDb database;
+	RedBlackTree backpack;
 
-	string readBannerFromFile(const char *file); // get banner from text file
+	string readBannerFromFile(const char *file);
 	int selectFromMenu();
 	bool winSearchLottery();
 	void foundPokemon();
@@ -34,21 +31,21 @@ private:
 	void foundItem();
 	Pokemon *drawPokemonType();
 	void giveItemToPokemon(Items *item);
-	void displayBigAnnouncement(const string = ""); // output an announcement
+	void displayBigAnnouncement(const string);
 	void choosePokemonsForBattle(Pokemon *&pokemon1, Pokemon *&pokemon2);
-	void battle(Pokemon &pokemon1, Pokemon &pokemon2); // pokemon battle!
+	void battle(Pokemon &pokemon1, Pokemon &pokemon2);
 	void attack(Pokemon &attacker, Pokemon &defender);
 	void declareWinner(Pokemon &pokemon1, Pokemon &pokemon2);
 
 public:
-	void init();			 // initialize the game
-	void startMenuOptions(); // menu for the whole game
-	void searchPokemon();	 // search for pokemon
-	void searchItem();		 // search for item
-	void battleSimulation(); // pokemon battle!
-	void viewPokemon();		 // display all pokemon in backpack
-	void trainPokemon();	 // pokemon training
-	void healPokemon();		 // heal all pokemon
+	void initializeGame();
+	void gameMenuOptions();
+	void searchPokemon();
+	void searchItem();
+	void trainPokemon();
+	void viewPokemon();
+	void battleSimulation();
+	void healPokemon();
 };
 
 #endif

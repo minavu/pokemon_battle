@@ -1,45 +1,40 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  addons.cpp
-Class:      CS202
-Term:	    Fall 2020
-
-This file contains the implementations for classes Attacks and Items.
-Some functions were created for an idea that never manifested or changed and therefore
-was not used in main program.  Information below for functions.
 */
 
 #include "addons.h"
 
+// default constructor
 AddOns::AddOns() : next(0), prev(0) {}
 
-// connection to next addon
+// get next AddOns pointer; return by reference
 AddOns *&AddOns::nextLink()
 {
 	return next;
 }
 
-// connection to previous addon
+// get previous AddOns pointer; return by reference
 AddOns *&AddOns::prevLink()
 {
 	return prev;
 }
 
-//<< operator overloading
+// calls AddOns virtual display function
 ostream &operator<<(ostream &os, const AddOns &addon)
 {
 	addon.display(os);
 	return os;
 }
 
-// display function to output the attack info
+// insert all Attacks data into ostream
 void Attacks::display(ostream &os) const
 {
 	os << move << ": " << type << ", " << power << " power, " << accuracy << " accuracy, " << pp << " pp";
 }
 
-// decrease pp, return pp used
+// decrement pp until 0; return 0 or 1
 int Attacks::use()
 {
 	if (pp == 0)
@@ -49,12 +44,13 @@ int Attacks::use()
 	return 1;
 }
 
+// identify type of attack
 string Attacks::idType()
 {
 	return type;
 }
 
-// calculate damage an attack deals to the pokemon, requires pokemon damage factor and type
+// calculates damage to a pokemon; requires pokemon damage factor and pokemon type
 int Attacks::calcDamage(const float *factor, const int index) const
 {
 	int damage = 0;
@@ -77,6 +73,7 @@ bool Attacks::restore()
 	return pp = maxPP;
 }
 
+// set all data for Attacks object
 void Attacks::setData(string amove, string atype, int apower, int acc, int amaxPP)
 {
 	move = amove;
@@ -87,7 +84,7 @@ void Attacks::setData(string amove, string atype, int apower, int acc, int amaxP
 	maxPP = amaxPP;
 }
 
-// display function to output the item info
+// insert all Items data into ostream
 void Items::display(ostream &os) const
 {
 	os << name << ": +" << hp << "hp";
@@ -99,11 +96,13 @@ int Items::use()
 	return hp;
 }
 
+// identify type as item
 string Items::idType()
 {
 	return "item";
 }
 
+// set all data for Items object
 void Items::setData(string a_name, int an_hp)
 {
 	name = a_name;

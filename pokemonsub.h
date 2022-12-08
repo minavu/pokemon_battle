@@ -1,13 +1,7 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  pokemonsub.h
-Class:      CS202
-Term:	    Fall 2020
-
-This is the header file for abstract base class Pokemon and its derived classes
-Pikachu, Charmander, Squirtle, and Bulbasaur.  Each Pokemon derived classes takes
-a pointer to the attacks/items database to populate their moves set.
 */
 
 #ifndef POKEMONSUB_H
@@ -18,44 +12,48 @@ a pointer to the attacks/items database to populate their moves set.
 
 using namespace std;
 
+// Electric type Pokemon
 class Pikachu : public Pokemon
 {
 public:
-	Pikachu();										  // default constructor
-	Pikachu(const Pikachu &);						  // copy constructor
-	Pikachu &operator=(Pikachu &); // overload = operator
+	Pikachu();
+	Pikachu(const Pikachu &);
+	Pikachu &operator=(Pikachu &);
 
-	void displayFullInfo() const;  // display all info
+	void displayFullInfo() const;
 };
 
+// Fire type Pokemon
 class Charmander : public Pokemon
 {
 public:
-	Charmander();											// default constructor
-	Charmander(const Charmander &);							// copy constructor
-	Charmander &operator=(Charmander &); // overload = operator
+	Charmander();
+	Charmander(const Charmander &);
+	Charmander &operator=(Charmander &);
 
-	void displayFullInfo() const;  // display all info
+	void displayFullInfo() const;
 };
 
+// Water type Pokemon
 class Squirtle : public Pokemon
 {
 public:
-	Squirtle();											// default constructor
-	Squirtle(const Squirtle &);							// copy constructor
-	Squirtle &operator=(Squirtle &); // overload = operator
+	Squirtle();
+	Squirtle(const Squirtle &);
+	Squirtle &operator=(Squirtle &);
 
-	void displayFullInfo() const;  // display all info
+	void displayFullInfo() const;
 };
 
+// Grass type Pokemon
 class Bulbasaur : public Pokemon
 {
 public:
-	Bulbasaur();										  // default constructor
-	Bulbasaur(const Bulbasaur &);						  // copy constructor
-	Bulbasaur &operator=(Bulbasaur &); // overload = operator
+	Bulbasaur();
+	Bulbasaur(const Bulbasaur &);
+	Bulbasaur &operator=(Bulbasaur &);
 
-	void displayFullInfo() const;  // display all info
+	void displayFullInfo() const;
 };
 
 #endif

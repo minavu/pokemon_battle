@@ -1,12 +1,7 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  addonsdb.h
-Class:      CS202
-Term:	    Fall 2020
-
-This is the header file for the classes AddOnsDb.
-AddOnsDb require two .txt files in the specs folder to load attacks and items.
 */
 
 #ifndef ADDONSDB_H
@@ -23,31 +18,33 @@ AddOnsDb require two .txt files in the specs folder to load attacks and items.
 
 using namespace std;
 
+// AddOnsDB is a data structure using array of doubly-linked lists
 class AddOnsDb
 {
 private:
 	AddOns **table;
-	int size;
+	int arraySize;
 
 	void copy(AddOns *&, AddOns *);						// copy all table, list recursion
 	void destroy(AddOns *&ptr);							// destroy everything, list recursion
 	int insert(AddOns *&, AddOns *addon);				// insert item, list recursion
 	void display(AddOns *);								// display all, list recursion
 	AddOns *retrieve(AddOns *, int &, bool &, int = 0); // retrieve an attack, list recursion
-	int incrSize();										// increase size of table array
+
+	int expandTable();
 
 public:
-	AddOnsDb();					// default constructor
-	AddOnsDb(const AddOnsDb &); // copy constructor
-	~AddOnsDb();				// destructor
+	AddOnsDb();
+	AddOnsDb(const AddOnsDb &);
+	~AddOnsDb();
 
 	bool insert(AddOns *addon);
-	void display();													 // display all, helper function
-	AddOns *retrieveAttack(const string &, const string = "normal"); // retrieve an attack by type
-	AddOns *retrieveItem();											 // retrieve an item
+	void displayAll();
+	AddOns *retrieveItem();
+	AddOns *retrieveAttack(const string &, const string = "normal");
 
-	bool addAttacks(const char *); // populate database with file of attacks
-	bool addItems(const char *);   // popluate database with file of items
+	bool attacksAddFromFile(const char *);
+	bool itemsAddFromFile(const char *);
 };
 
 #endif

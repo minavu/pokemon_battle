@@ -1,11 +1,7 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  redblacktree.cpp
-Class:      CS202
-Term:	    Fall 2020
-
-This file contains all the implementations for class RedBlackTree.
 */
 
 #include "redblacktree.h"
@@ -29,7 +25,7 @@ void RedBlackTree::copy(RedBlackTreeNode *&dstPtr, RedBlackTreeNode *srcPtr)
 	if (!srcPtr)
 		return;
 
-	Pokemon* ptr = dynamic_cast<Pokemon *>(srcPtr);
+	Pokemon *ptr = dynamic_cast<Pokemon *>(srcPtr);
 	if (typeid(*ptr) == typeid(Pikachu))
 	{
 		dstPtr = new Pikachu(*(dynamic_cast<Pikachu *>(ptr)));
@@ -50,7 +46,7 @@ void RedBlackTree::copy(RedBlackTreeNode *&dstPtr, RedBlackTreeNode *srcPtr)
 	copy(dstPtr->rightLink(), srcPtr->rightLink());
 }
 
-//= operator overload
+// = operator overload
 RedBlackTree &RedBlackTree::operator=(const RedBlackTree &source)
 {
 	if (&source == this)
@@ -112,8 +108,8 @@ int RedBlackTree::insert(RedBlackTreeNode *&ptr, RedBlackTreeNode *pokemon)
 	}
 
 	int lineage = 0;
-	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
-	Pokemon* pokemonPtr = dynamic_cast<Pokemon *>(pokemon);
+	Pokemon *pPtr = dynamic_cast<Pokemon *>(ptr);
+	Pokemon *pokemonPtr = dynamic_cast<Pokemon *>(pokemon);
 	if (*pokemonPtr < *pPtr)
 	{
 		lineage = 1 + insert(ptr->leftLink(), pokemon);
@@ -225,7 +221,7 @@ RedBlackTreeNode *RedBlackTree::leftRotate(RedBlackTreeNode *&parent, RedBlackTr
 	return temp;
 }
 
-// display inorder
+// display all inorder
 int RedBlackTree::displayInorder()
 {
 	int count = 0;
@@ -234,7 +230,7 @@ int RedBlackTree::displayInorder()
 	return count;
 }
 
-// dispaly inorder
+// recursively dispaly all inorder
 void RedBlackTree::displayInorder(RedBlackTreeNode *ptr, int &count)
 {
 	if (!ptr)
@@ -242,13 +238,13 @@ void RedBlackTree::displayInorder(RedBlackTreeNode *ptr, int &count)
 
 	displayInorder(ptr->leftLink(), count);
 	cout << ++count << ")\n";
-	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
+	Pokemon *pPtr = dynamic_cast<Pokemon *>(ptr);
 	pPtr->displayFullInfo();
 	cout << endl;
 	displayInorder(ptr->rightLink(), count);
 }
 
-// destroy tree
+// recursively destroy tree
 void RedBlackTree::destroy(RedBlackTreeNode *&ptr)
 {
 	if (!ptr)
@@ -273,7 +269,7 @@ RedBlackTreeNode *RedBlackTree::retrieve(RedBlackTreeNode *ptr, const string &na
 		return nullptr;
 
 	RedBlackTreeNode *temp = NULL;
-	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
+	Pokemon *pPtr = dynamic_cast<Pokemon *>(ptr);
 	if (name == *pPtr)
 	{
 		temp = ptr;
@@ -331,7 +327,7 @@ int RedBlackTree::showGrown(RedBlackTreeNode *ptr)
 	int count = 0;
 	count = showGrown(ptr->leftLink());
 
-	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
+	Pokemon *pPtr = dynamic_cast<Pokemon *>(ptr);
 	if (pPtr->hasGrown())
 	{
 		pPtr->learnNewAttack();
@@ -355,7 +351,7 @@ void RedBlackTree::restore(RedBlackTreeNode *ptr)
 	if (!ptr)
 		return;
 
-	Pokemon* pPtr = dynamic_cast<Pokemon *>(ptr);
+	Pokemon *pPtr = dynamic_cast<Pokemon *>(ptr);
 	pPtr->restore();
 	restore(ptr->leftLink());
 	restore(ptr->rightLink());
