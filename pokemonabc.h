@@ -32,9 +32,10 @@ class RedBlackTreeNode {
 
 	public:
 		RedBlackTreeNode();
+		virtual ~RedBlackTreeNode();
 
-		virtual bool &leftColor();	   // return left color for redblack tree
-		virtual bool &rightColor();	   // return right color for redblack tree
+		bool &leftColor();	   // return left color for redblack tree
+		bool &rightColor();	   // return right color for redblack tree
 		RedBlackTreeNode *&leftLink();  // return left pointer
 		RedBlackTreeNode *&rightLink(); // return right pointer
 
@@ -81,7 +82,7 @@ protected:
 public:
 	Pokemon();					 // default constructor
 	Pokemon(const Pokemon &);	 // copy constructor
-	virtual ~Pokemon() = 0;			 // destructor
+	~Pokemon() = 0;			 // destructor
 
 	virtual void displayFullInfo() const;	   // display all info
 	bool hit(const Attacks &);	   // take a hit from the opponent

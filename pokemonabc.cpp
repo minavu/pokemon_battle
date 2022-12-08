@@ -12,6 +12,8 @@ This file contains the implementations for class Pokemon.  Pokemon is an ABC.
 
 RedBlackTreeNode::RedBlackTreeNode() : lcolor(BLACK), rcolor(BLACK), left(0), right(0) {}
 
+RedBlackTreeNode::~RedBlackTreeNode() {}
+
 // return color of left child
 bool &RedBlackTreeNode::leftColor()
 {
