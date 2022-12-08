@@ -1,11 +1,7 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  pokemonabc.cpp
-Class:      CS202
-Term:	    Fall 2020
-
-This file contains the implementations for class Pokemon.  Pokemon is an ABC.
 */
 
 #include "pokemonabc.h"
@@ -28,10 +24,10 @@ Pokemon::Pokemon(const Pokemon &source) : RedBlackTreeNode(), type(source.type),
 	moves = new AddOns *[MAX_MOVES];
 	for (int i{0}; i < MAX_MOVES; ++i)
 		moves[i] = nullptr;
-	copy(source.moves);
+	copyMovesList(source.moves);
 }
 
-// destructor only sets database pointer to null and not delete
+// destructor
 Pokemon::~Pokemon()
 {
 	database = NULL;
@@ -42,8 +38,8 @@ Pokemon::~Pokemon()
 	moves = NULL;
 }
 
-// copy all from source table
-void Pokemon::copy(AddOns **source)
+// copy all moves from source moves table
+void Pokemon::copyMovesList(AddOns **source)
 {
 	if (source[ITEM])
 		moves[ITEM] = new Items(*(dynamic_cast<Items *>(source[ITEM])));
@@ -57,13 +53,12 @@ void Pokemon::copy(AddOns **source)
 void Pokemon::destroyMovesList()
 {
 	for (int i{0}; i < MAX_MOVES; ++i)
-		if (moves[i]) {
+		if (moves[i])
 			delete moves[i];
-		}
 }
 
-// display moves set helper function
-int Pokemon::displayMoves() const
+// display all attacks in moves table
+int Pokemon::displayAttacks() const
 {
 	int has{0};
 	for (int i{1}; i < MAX_MOVES; ++i)
@@ -93,7 +88,7 @@ void Pokemon::displayFullInfo() const
 		cout << name << " is not holding any item\n";
 	}
 	cout << name << "'s moves set\n";
-	displayMoves();
+	displayAttacks();
 }
 
 // display only pokemon battle stats
@@ -151,12 +146,11 @@ bool Pokemon::learnNewAttack()
 	return added;
 }
 
-// prompt user to select a move from moves set to switch out for new move
-// return false if user decides not to switch
+// prompt user to select an attack from moves table to switch out for new move
 bool Pokemon::switchAttacks(AddOns *attack)
 {
 	cout << "0. go back\n";
-	displayMoves();
+	displayAttacks();
 	int select = minalib::getValidateInt("Select a move to replace: ", 0, MOVES);
 	cout << "You selected " << select << endl;
 	if (select == 0)
@@ -169,7 +163,7 @@ bool Pokemon::switchAttacks(AddOns *attack)
 }
 
 // initializes pokemon with level, hp, and starting move
-bool Pokemon::initialize(AddOnsDb* db)
+bool Pokemon::initialize(AddOnsDb *db)
 {
 	database = db;
 	moves[1] = new Attacks(*(dynamic_cast<Attacks *>(database->retrieveAttack("normal"))));
@@ -181,7 +175,7 @@ bool Pokemon::initialize(AddOnsDb* db)
 }
 
 // add new item to moves set else indicate pokemon is holding an item already
-bool Pokemon::hold(const Items &item)
+bool Pokemon::holdItem(const Items &item)
 {
 	bool take = false;
 	if (!isHoldingItem())
@@ -196,13 +190,6 @@ bool Pokemon::hold(const Items &item)
 	return take;
 }
 
-//+= operator overload
-Pokemon &Pokemon::operator+=(const Items &item)
-{
-	hold(item);
-	return *this;
-}
-
 // indicate pokemon is holding an item or not
 bool Pokemon::isHoldingItem() const
 {
@@ -214,7 +201,7 @@ bool Pokemon::isHoldingItem() const
 // level up pokemon a little bit and calls opponent hit function
 bool Pokemon::attack(Pokemon &opponent)
 {
-	int count = displayMoves();
+	int count = displayAttacks();
 	int select = minalib::getValidateInt("Select a move from above to attack: ", 1, count);
 	bool usable = moves[select]->use();
 	while (!usable)
@@ -227,11 +214,11 @@ bool Pokemon::attack(Pokemon &opponent)
 	{
 		cout << name << " gained enough experiece to increase to level " << level << "!\n";
 	}
-	return opponent.hit(*(dynamic_cast<Attacks *>(moves[select])));
+	return opponent.takeHit(*(dynamic_cast<Attacks *>(moves[select])));
 }
 
 // takes damage an attack, use item if holding item, and change status if hp reaches 0
-bool Pokemon::hit(const Attacks &attack)
+bool Pokemon::takeHit(const Attacks &attack)
 {
 	bool hurt = false;
 	int damage = attack.calcDamage(factor, type);
@@ -306,7 +293,7 @@ void Pokemon::changeName(const string &newName)
 	name = newName;
 }
 
-//= operator overloading
+// = operator overloading
 Pokemon &Pokemon::operator=(Pokemon &source)
 {
 	if (&source == this)
@@ -329,147 +316,148 @@ Pokemon &Pokemon::operator=(Pokemon &source)
 	destroyMovesList();
 	delete[] moves;
 	moves = new AddOns *[MAX_MOVES];
-	copy(source.moves);
+	copyMovesList(source.moves);
 
 	return *this;
 }
 
-//<< operator overloading
+// += operator overload
+Pokemon &Pokemon::operator+=(const Items &item)
+{
+	holdItem(item);
+	return *this;
+}
+
+// + operator overload
+string operator+(const string &str, const Pokemon &pokemon)
+{
+	return str + pokemon.name;
+}
+
+// + operator overload
+string operator+(const Pokemon &pokemon, const string &str)
+{
+	return pokemon.name + str;
+}
+
+// == operator overload
+bool operator==(const Pokemon &str1, const Pokemon &str2)
+{
+	return str1.name == str2.name;
+}
+
+// == operator overload
+bool operator==(const Pokemon &str1, const string &str2)
+{
+	return str1.name == str2;
+}
+
+// == operator overload
+bool operator==(const string &str1, const Pokemon &str2)
+{
+	return str1 == str2.name;
+}
+
+// != operator overload
+bool operator!=(const Pokemon &str1, const Pokemon &str2)
+{
+	return str1.name != str2.name;
+}
+
+// != operator overload
+bool operator!=(const Pokemon &str1, const string &str2)
+{
+	return str1.name != str2;
+}
+
+// != operator overload
+bool operator!=(const string &str1, const Pokemon &str2)
+{
+	return str1 != str2.name;
+}
+
+// <= operator overload
+bool operator<=(const Pokemon &str1, const Pokemon &str2)
+{
+	return str1.name <= str2.name;
+}
+
+// <= operator overload
+bool operator<=(const Pokemon &str1, const string &str2)
+{
+	return str1.name <= str2;
+}
+
+// <= operator overload
+bool operator<=(const string &str1, const Pokemon &str2)
+{
+	return str1 <= str2.name;
+}
+
+// < operator overload
+bool operator<(const Pokemon &str1, const Pokemon &str2)
+{
+	return str1.name < str2.name;
+}
+
+// < operator overload
+bool operator<(const Pokemon &str1, const string &str2)
+{
+	return str1.name < str2;
+}
+
+// < operator overload
+bool operator<(const string &str1, const Pokemon &str2)
+{
+	return str1 < str2.name;
+}
+
+// >= operator overload
+bool operator>=(const Pokemon &str1, const Pokemon &str2)
+{
+	return str1.name >= str2.name;
+}
+
+// >= operator overload
+bool operator>=(const Pokemon &str1, const string &str2)
+{
+	return str1.name >= str2;
+}
+
+// >= operator overload
+bool operator>=(const string &str1, const Pokemon &str2)
+{
+	return str1 >= str2.name;
+}
+
+// > operator overload
+bool operator>(const Pokemon &str1, const Pokemon &str2)
+{
+	return str1.name > str2.name;
+}
+
+// > operator overload
+bool operator>(const Pokemon &str1, const string &str2)
+{
+	return str1.name > str2;
+}
+
+// > operator overload
+bool operator>(const string &str1, const Pokemon &str2)
+{
+	return str1 > str2.name;
+}
+
+// << operator overloading
 ostream &operator<<(ostream &os, const Pokemon &pokemon)
 {
 	os << pokemon.name;
 	return os;
 }
 
-//>> operator overload
+// >> operator overload
 istream &operator>>(istream &is, Pokemon &pokemon)
 {
 	is >> pokemon.name;
 	return is;
-}
-
-//+ operator overload
-string operator+(const string &str, const Pokemon &pokemon)
-{
-	return str + pokemon.name;
-}
-
-//+ operator overload
-string operator+(const Pokemon &pokemon, const string &str)
-{
-	return pokemon.name + str;
-}
-
-//+ operator overload
-string operator+(const Pokemon &pokemon1, const Pokemon &pokemon2)
-{
-	return pokemon1.name + pokemon2.name;
-}
-
-//== operator overload
-bool operator==(const Pokemon &str1, const Pokemon &str2)
-{
-	return str1.name == str2.name;
-}
-
-//== operator overload
-bool operator==(const Pokemon &str1, const string &str2)
-{
-	return str1.name == str2;
-}
-
-//== operator overload
-bool operator==(const string &str1, const Pokemon &str2)
-{
-	return str1 == str2.name;
-}
-
-//!= operator overload
-bool operator!=(const Pokemon &str1, const Pokemon &str2)
-{
-	return str1.name != str2.name;
-}
-
-//!= operator overload
-bool operator!=(const Pokemon &str1, const string &str2)
-{
-	return str1.name != str2;
-}
-
-//!= operator overload
-bool operator!=(const string &str1, const Pokemon &str2)
-{
-	return str1 != str2.name;
-}
-
-//<= operator overload
-bool operator<=(const Pokemon &str1, const Pokemon &str2)
-{
-	return str1.name <= str2.name;
-}
-
-//<= operator overload
-bool operator<=(const Pokemon &str1, const string &str2)
-{
-	return str1.name <= str2;
-}
-
-//<= operator overload
-bool operator<=(const string &str1, const Pokemon &str2)
-{
-	return str1 <= str2.name;
-}
-
-//>= operator overload
-bool operator>=(const Pokemon &str1, const Pokemon &str2)
-{
-	return str1.name >= str2.name;
-}
-
-//>= operator overload
-bool operator>=(const Pokemon &str1, const string &str2)
-{
-	return str1.name >= str2;
-}
-
-//>= operator overload
-bool operator>=(const string &str1, const Pokemon &str2)
-{
-	return str1 >= str2.name;
-}
-
-//< operator overload
-bool operator<(const Pokemon &str1, const Pokemon &str2)
-{
-	return str1.name < str2.name;
-}
-
-//< operator overload
-bool operator<(const Pokemon &str1, const string &str2)
-{
-	return str1.name < str2;
-}
-
-//< operator overload
-bool operator<(const string &str1, const Pokemon &str2)
-{
-	return str1 < str2.name;
-}
-
-//> operator overload
-bool operator>(const Pokemon &str1, const Pokemon &str2)
-{
-	return str1.name > str2.name;
-}
-
-//> operator overload
-bool operator>(const Pokemon &str1, const string &str2)
-{
-	return str1.name > str2;
-}
-
-//> operator overload
-bool operator>(const string &str1, const Pokemon &str2)
-{
-	return str1 > str2.name;
 }

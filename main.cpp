@@ -20,8 +20,8 @@ using namespace std;
 
 int main() {
 	Kanto kanto;
-	kanto.init();
-	kanto.startMenuOptions();
+	kanto.initializeGame();
+	kanto.gameMenuOptions();
 
 
 	return 0;

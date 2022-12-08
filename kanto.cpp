@@ -1,18 +1,13 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  kanto.cpp
-Class:      CS202
-Term:	    Fall 2020
-
-This file contains all the implementations for class Kanto.
-Function information below.
 */
 
 #include "kanto.h"
 
-// get input from text files
-void Kanto::init()
+// initialize game menu, banner, and database
+void Kanto::initializeGame()
 {
 	menu =
 		"\t\t\t   Welcome to Kanto!\n\n"
@@ -25,11 +20,11 @@ void Kanto::init()
 		"\t\t\t0) Quit\n"
 		"\n\n";
 	banner = readBannerFromFile("specs/arts/pokemon.txt");
-	database.addAttacks("specs/attacks.txt");
-	database.addItems("specs/items.txt");
+	database.attacksAddFromFile("specs/attacks.txt");
+	database.itemsAddFromFile("specs/items.txt");
 }
 
-// get banner from filename
+// read and get banner from file
 string Kanto::readBannerFromFile(const char *filename)
 {
 	string banner, buffer;
@@ -48,8 +43,8 @@ string Kanto::readBannerFromFile(const char *filename)
 	return banner + banner + banner;
 }
 
-// game menu
-void Kanto::startMenuOptions()
+// game loop
+void Kanto::gameMenuOptions()
 {
 	int userSelect{0};
 	do
@@ -87,6 +82,7 @@ void Kanto::startMenuOptions()
 	} while (userSelect);
 }
 
+// player select action from displayed menu
 int Kanto::selectFromMenu()
 {
 	int userSelect{0};
@@ -97,13 +93,13 @@ int Kanto::selectFromMenu()
 	return userSelect;
 }
 
+// generate random chance of finding something in search
 bool Kanto::winSearchLottery()
 {
 	return rand() % 3;
 }
 
-// search for pokemon using random number generator
-// user can add to backpack or not, and change name or not
+// search for pokemon
 void Kanto::searchPokemon()
 {
 	cout << "Searching for wild Pokemons.....\n";
@@ -112,6 +108,7 @@ void Kanto::searchPokemon()
 	cout << "\nYou can't find any wild Pokemon.\n\n";
 }
 
+// user chooses to capture the found Pokemon
 void Kanto::foundPokemon()
 {
 	Pokemon *newPokemon = drawPokemonType();
@@ -130,6 +127,7 @@ void Kanto::foundPokemon()
 	backpack.insert(newPokemon);
 }
 
+// randomly generate a different Pokemon type and initialize it
 Pokemon *Kanto::drawPokemonType()
 {
 	Pokemon *newPokemon{nullptr};
@@ -154,6 +152,7 @@ Pokemon *Kanto::drawPokemonType()
 	return newPokemon;
 }
 
+// user chooses to rename Pokemon or not
 void Kanto::renamePokemon(Pokemon *&pokemon)
 {
 	string newName;
@@ -167,8 +166,7 @@ void Kanto::renamePokemon(Pokemon *&pokemon)
 	pokemon->changeName(newName);
 }
 
-// search for item by rand num generator
-// give to pokemon to hold or lose
+// search for item
 void Kanto::searchItem()
 {
 	cout << "Searching for items.....\n";
@@ -177,6 +175,7 @@ void Kanto::searchItem()
 	cout << "\nYou can't find any item.\n\n";
 }
 
+// user chooses to keep found item or not
 void Kanto::foundItem()
 {
 	Items *newItem = dynamic_cast<Items *>(database.retrieveItem());
@@ -198,9 +197,10 @@ void Kanto::foundItem()
 	giveItemToPokemon(newItem);
 }
 
+// give item to Pokemon or else lose it
 void Kanto::giveItemToPokemon(Items *newItem)
 {
-	RedBlackTreeNode* node {nullptr};
+	RedBlackTreeNode *node{nullptr};
 	Pokemon *chosen{nullptr};
 	char userInput{'\0'};
 	do
@@ -226,7 +226,7 @@ void Kanto::giveItemToPokemon(Items *newItem)
 	} while (toupper(userInput) == 'Y');
 }
 
-// output string
+// display big annoucement by first clearing screen
 void Kanto::displayBigAnnouncement(const string message)
 {
 	minalib::clearScreen();
@@ -234,7 +234,7 @@ void Kanto::displayBigAnnouncement(const string message)
 	cout << message << endl;
 }
 
-// start battle similuation having user select two pokemons
+// start battle similuation by checking if player is ready
 void Kanto::battleSimulation()
 {
 	displayBigAnnouncement(
@@ -262,9 +262,10 @@ void Kanto::battleSimulation()
 	battle(*pokemon1, *pokemon2);
 }
 
+// player chooses two Pokemons to battle each other
 void Kanto::choosePokemonsForBattle(Pokemon *&pokemon1, Pokemon *&pokemon2)
 {
-	RedBlackTreeNode* node1, *node2;
+	RedBlackTreeNode *node1, *node2;
 	node1 = backpack.choose("Select your 1st Pokemon for battle simulation: ");
 	node2 = backpack.choose("Select your 2nd Pokemon for battle simulation: ");
 	pokemon1 = dynamic_cast<Pokemon *>(node1);
@@ -272,7 +273,7 @@ void Kanto::choosePokemonsForBattle(Pokemon *&pokemon1, Pokemon *&pokemon2)
 	while (pokemon1 == pokemon2)
 	{
 		node2 = backpack.choose("A Pokemon can't battle itself."
-								   "\nSelect a 2nd Pokemon for battle simulation: ");
+								"\nSelect a 2nd Pokemon for battle simulation: ");
 		pokemon2 = dynamic_cast<Pokemon *>(node2);
 	}
 }
@@ -303,6 +304,7 @@ void Kanto::battle(Pokemon &pokemon1, Pokemon &pokemon2)
 	declareWinner(pokemon1, pokemon2);
 }
 
+// Pokemon attack another
 void Kanto::attack(Pokemon &attacker, Pokemon &defender)
 {
 	cout << attacker << " attack!\n";
@@ -313,6 +315,7 @@ void Kanto::attack(Pokemon &attacker, Pokemon &defender)
 	cout << "\n\n";
 }
 
+// declare alive Pokemon as winner
 void Kanto::declareWinner(Pokemon &pokemon1, Pokemon &pokemon2)
 {
 	if (!pokemon1.isAlive())
@@ -321,7 +324,7 @@ void Kanto::declareWinner(Pokemon &pokemon1, Pokemon &pokemon2)
 		cout << pokemon2 << " KO! Winner is " << pokemon1 << "\n\n\n";
 }
 
-// display all pokemons
+// display all pokemons in backpack
 void Kanto::viewPokemon()
 {
 	if (backpack.isEmpty())
@@ -334,7 +337,7 @@ void Kanto::viewPokemon()
 	backpack.displayInorder();
 }
 
-// train pokemon
+// train pokemon that have leveled up from battle
 void Kanto::trainPokemon()
 {
 	if (!backpack.showGrown())
@@ -344,7 +347,7 @@ void Kanto::trainPokemon()
 	}
 }
 
-// heal pokemon
+// heal all pokemons
 void Kanto::healPokemon()
 {
 	backpack.restore();

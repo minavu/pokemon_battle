@@ -1,17 +1,15 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  redblacktreenode.cpp
-Class:      CS202
-Term:	    Fall 2020
-
-This file contains the implementations for class RedBlackTreeNode.
 */
 
 #include "redblacktreenode.h"
 
+// default constructor
 RedBlackTreeNode::RedBlackTreeNode() : lcolor(BLACK), rcolor(BLACK), left(0), right(0) {}
 
+// destructor
 RedBlackTreeNode::~RedBlackTreeNode() {}
 
 // return color of left child

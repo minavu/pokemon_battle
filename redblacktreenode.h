@@ -1,11 +1,7 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  redblacktreenode.h
-Class:      CS202
-Term:	    Fall 2020
-
-This is the header file for the class RedBlackTreeNode.
 */
 
 #ifndef REDBLACKTREENODE_H
@@ -16,27 +12,28 @@ This is the header file for the class RedBlackTreeNode.
 
 using namespace std;
 
-class RedBlackTreeNode {
-	protected:
-		enum
-		{
-			BLACK,
-			RED
-		};
-		bool lcolor;
-		bool rcolor;
-		RedBlackTreeNode *left;
-		RedBlackTreeNode *right;
+// TreeNode to use for RedBlackTree
+class RedBlackTreeNode
+{
+protected:
+	enum
+	{
+		BLACK,
+		RED
+	};
+	bool lcolor;
+	bool rcolor;
+	RedBlackTreeNode *left;
+	RedBlackTreeNode *right;
 
-	public:
-		RedBlackTreeNode();
-		virtual ~RedBlackTreeNode();
+public:
+	RedBlackTreeNode();
+	virtual ~RedBlackTreeNode();
 
-		bool &leftColor();	   // return left color for redblack tree
-		bool &rightColor();	   // return right color for redblack tree
-		RedBlackTreeNode *&leftLink();  // return left pointer
-		RedBlackTreeNode *&rightLink(); // return right pointer
-
+	bool &leftColor();				// return left color for redblack tree
+	bool &rightColor();				// return right color for redblack tree
+	RedBlackTreeNode *&leftLink();	// return left pointer
+	RedBlackTreeNode *&rightLink(); // return right pointer
 };
 
 #endif

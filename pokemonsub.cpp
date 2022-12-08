@@ -1,12 +1,7 @@
 /*
 Programmer: Mina Vu
-Assignment: Prog3
+Program:	Pokemon Battle Simulation
 File name:  pokemonsub.cpp
-Class:      CS202
-Term:	    Fall 2020
-
-This file contains the implementations for classes Pikachu, Charmander,
-Squirtle, and Bulbasaur.
 */
 
 #include "pokemonsub.h"
