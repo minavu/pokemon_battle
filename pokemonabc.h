@@ -5,41 +5,16 @@ File name:  pokemonabc.h
 Class:      CS202
 Term:	    Fall 2020
 
-This is the header file for abstract base class Pokemon and its derived classes
-Pikachu, Charmander, Squirtle, and Bulbasaur.  Each Pokemon derived classes takes
-a pointer to the attacks/items database to populate their moves set.
+This is the header file for abstract base class Pokemon.
 */
 
 #ifndef POKEMONABC_H
 #define POKEMONABC_H
 
 #include <iostream>
-#include "addonsdb.h"
+#include "redblacktreenode.h"
 
 using namespace std;
-
-class RedBlackTreeNode {
-	protected:
-		enum
-		{
-			BLACK,
-			RED
-		};
-		bool lcolor;
-		bool rcolor;
-		RedBlackTreeNode *left;
-		RedBlackTreeNode *right;
-
-	public:
-		RedBlackTreeNode();
-		virtual ~RedBlackTreeNode();
-
-		bool &leftColor();	   // return left color for redblack tree
-		bool &rightColor();	   // return right color for redblack tree
-		RedBlackTreeNode *&leftLink();  // return left pointer
-		RedBlackTreeNode *&rightLink(); // return right pointer
-
-};
 
 class Pokemon : public RedBlackTreeNode
 {

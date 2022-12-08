@@ -10,34 +10,6 @@ This file contains the implementations for class Pokemon.  Pokemon is an ABC.
 
 #include "pokemonabc.h"
 
-RedBlackTreeNode::RedBlackTreeNode() : lcolor(BLACK), rcolor(BLACK), left(0), right(0) {}
-
-RedBlackTreeNode::~RedBlackTreeNode() {}
-
-// return color of left child
-bool &RedBlackTreeNode::leftColor()
-{
-	return lcolor;
-}
-
-// return color of right child
-bool &RedBlackTreeNode::rightColor()
-{
-	return rcolor;
-}
-
-// connect with left child in RB tree
-RedBlackTreeNode *&RedBlackTreeNode::leftLink()
-{
-	return left;
-}
-
-// connect with right child in RB tree
-RedBlackTreeNode *&RedBlackTreeNode::rightLink()
-{
-	return right;
-}
-
 // default constructor
 Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), factor(0), database(0), moves(0)
 {
