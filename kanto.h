@@ -33,7 +33,7 @@ private:
 	void renamePokemon(Pokemon *&);
 	void foundItem();
 	Pokemon *drawPokemonType();
-	void giveItemToPokemon(Items *&item);
+	void giveItemToPokemon(Items *item);
 	void displayBigAnnouncement(const string = ""); // output an announcement
 	void choosePokemonsForBattle(Pokemon *&pokemon1, Pokemon *&pokemon2);
 	void battle(Pokemon &pokemon1, Pokemon &pokemon2); // pokemon battle!

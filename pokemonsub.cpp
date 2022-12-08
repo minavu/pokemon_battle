@@ -9,7 +9,7 @@ This file contains the implementations for classes Pikachu, Charmander,
 Squirtle, and Bulbasaur.
 */
 
-#include "pokemon.h"
+#include "pokemonsub.h"
 
 // default constructor
 Pikachu::Pikachu()

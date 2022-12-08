@@ -8,10 +8,10 @@ Term:	    Fall 2020
 This file contains the implementations for class Pokemon.  Pokemon is an ABC.
 */
 
-#include "pokemon.h"
+#include "pokemonabc.h"
 
 // default constructor
-Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), factor(0), database(0), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
+Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp(0), maxHP(0), factor(0), database(0), moves(0)
 {
 	moves = new AddOns *[MAX_MOVES];
 	for (int i{0}; i < MAX_MOVES; ++i)
@@ -19,7 +19,7 @@ Pokemon::Pokemon() : type(normal), status(alive), grown(0), level(0), exp(0), hp
 }
 
 // copy constructor
-Pokemon::Pokemon(const Pokemon &source) : type(source.type), status(source.status), grown(source.grown), level(source.level), exp(source.exp), hp(source.hp), maxHP(source.maxHP), factor(0), name(source.name), database(source.database), moves(0), lcolor(BLACK), rcolor(BLACK), left(0), right(0)
+Pokemon::Pokemon(const Pokemon &source) : RedBlackTreeNode(), type(source.type), status(source.status), grown(source.grown), level(source.level), exp(source.exp), hp(source.hp), maxHP(source.maxHP), factor(0), name(source.name), database(source.database), moves(0)
 {
 	factor = new float[TYPES];
 	for (int i = 0; i < TYPES; ++i)
@@ -57,7 +57,9 @@ void Pokemon::copy(AddOns **source)
 void Pokemon::destroyMovesList()
 {
 	for (int i{0}; i < MAX_MOVES; ++i)
-		delete moves[i];
+		if (moves[i]) {
+			delete moves[i];
+		}
 }
 
 // display moves set helper function
@@ -470,28 +472,4 @@ bool operator>(const Pokemon &str1, const string &str2)
 bool operator>(const string &str1, const Pokemon &str2)
 {
 	return str1 > str2.name;
-}
-
-// connect with left child in RB tree
-Pokemon *&Pokemon::leftLink()
-{
-	return left;
-}
-
-// connect with right child in RB tree
-Pokemon *&Pokemon::rightLink()
-{
-	return right;
-}
-
-// return color of left child
-bool &Pokemon::leftColor()
-{
-	return lcolor;
-}
-
-// return color of right child
-bool &Pokemon::rightColor()
-{
-	return rcolor;
 }

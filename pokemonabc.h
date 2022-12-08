@@ -1,24 +1,22 @@
 /*
 Programmer: Mina Vu
 Assignment: Prog3
-File name:  pokemon.h
+File name:  pokemonabc.h
 Class:      CS202
 Term:	    Fall 2020
 
-This is the header file for abstract base class Pokemon and its derived classes
-Pikachu, Charmander, Squirtle, and Bulbasaur.  Each Pokemon derived classes takes
-a pointer to the attacks/items database to populate their moves set.
+This is the header file for abstract base class Pokemon.
 */
 
-#ifndef POKEMON_H
-#define POKEMON_H
+#ifndef POKEMONABC_H
+#define POKEMONABC_H
 
 #include <iostream>
-#include "addonsdb.h"
+#include "redblacktreenode.h"
 
 using namespace std;
 
-class Pokemon
+class Pokemon : public RedBlackTreeNode
 {
 private:
 	void copy(AddOns **source);			// copy array recursion for moves array
@@ -56,20 +54,10 @@ protected:
 	float *factor;
 	AddOns **moves;
 
-	enum
-	{
-		BLACK,
-		RED
-	};
-	bool lcolor;
-	bool rcolor;
-	Pokemon *left;
-	Pokemon *right;
-
 public:
 	Pokemon();					 // default constructor
 	Pokemon(const Pokemon &);	 // copy constructor
-	virtual ~Pokemon() = 0;			 // destructor
+	~Pokemon() = 0;			 // destructor
 
 	virtual void displayFullInfo() const;	   // display all info
 	bool hit(const Attacks &);	   // take a hit from the opponent
@@ -86,11 +74,6 @@ public:
 	bool isAlive();					 // return status for battle
 
 	void displayBattleStats() const; // display only name, level, hp
-
-	Pokemon *&leftLink();  // return left pointer
-	Pokemon *&rightLink(); // return right pointer
-	bool &leftColor();	   // return left color for redblack tree
-	bool &rightColor();	   // return right color for redblack tree
 
 	Pokemon &operator=(Pokemon &);		//= operator overload
 	Pokemon &operator+=(const Items &); //+= operator overload to hold item
@@ -120,46 +103,6 @@ public:
 
 	friend ostream &operator<<(ostream &, const Pokemon &); // overload << operator
 	friend istream &operator>>(istream &, Pokemon &);		// overload << operator
-};
-
-class Pikachu : public Pokemon
-{
-public:
-	Pikachu();										  // default constructor
-	Pikachu(const Pikachu &);						  // copy constructor
-	Pikachu &operator=(Pikachu &); // overload = operator
-
-	void displayFullInfo() const;  // display all info
-};
-
-class Charmander : public Pokemon
-{
-public:
-	Charmander();											// default constructor
-	Charmander(const Charmander &);							// copy constructor
-	Charmander &operator=(Charmander &); // overload = operator
-
-	void displayFullInfo() const;  // display all info
-};
-
-class Squirtle : public Pokemon
-{
-public:
-	Squirtle();											// default constructor
-	Squirtle(const Squirtle &);							// copy constructor
-	Squirtle &operator=(Squirtle &); // overload = operator
-
-	void displayFullInfo() const;  // display all info
-};
-
-class Bulbasaur : public Pokemon
-{
-public:
-	Bulbasaur();										  // default constructor
-	Bulbasaur(const Bulbasaur &);						  // copy constructor
-	Bulbasaur &operator=(Bulbasaur &); // overload = operator
-
-	void displayFullInfo() const;  // display all info
 };
 
 #endif
